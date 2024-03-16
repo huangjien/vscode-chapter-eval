@@ -1,6 +1,8 @@
 # Compiled class file
-*.class
 
+out
+node_modules
+yarn.lock
 # Log file
 *.log
 
