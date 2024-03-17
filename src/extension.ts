@@ -27,8 +27,8 @@ export function activate(context: vscode.ExtensionContext) {
             vscode.window.showInformationMessage('No open Markdown file.');
             return;
         }
-        if (editor.document.languageId != "markdown") {
-            vscode.window.showInformationMessage('This is not a Markdown file.');
+        if (editor.document.languageId != "markdown" && editor.document.languageId != "plaintext") {
+            vscode.window.showInformationMessage('This is not a Markdown or Plaintext file.');
             return;
         }
 

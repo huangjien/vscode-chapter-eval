@@ -21,6 +21,7 @@
   "license": "MIT",
   "keywords": [
     "novel",
+    "chapter",
     "evaluate",
     "chinese",
     "GPT-4"
@@ -47,12 +48,31 @@
         "vscodeChapterEval.openaiApiKey": {
           "type": "string",
           "default": "",
+          "order": 0,
           "description": "OpenAI API Key for Chapter Evaluator extension"
+        },
+        "vscodeChapterEval.model": {
+          "type": "string",
+          "enum": [
+            "gpt-4",
+            "gpt-4-turbo-preview",
+            "gpt-3.5-turbo"
+          ],
+          "default": "gpt-4",
+          "description": "Which ChatGPT model to use",
+          "order": 1
         },
         "vscodeChapterEval.prompt": {
           "type": "string",
+          "order": 2,
           "default": "You are ASSISTANT , work as literary critic. Please evaluate the tension of the following chapter and give it a score out of 100. Also, describe the curve of the tension changes in the chapter. Point out the three most outstanding advantages and the three biggest disadvantages of the chapter. If you find any typographical errors, please point them out. \nUSER: $PROMPT$ \nASSISTANT: ",
           "description": "OpenAI API prompt for Chapter Evaluator extension"
+        },
+        "vscodeChapterEval.temperature":{
+          "type": "number",
+          "default": 0.7,
+          "description": "Temperature to use for the GPT (between 0 (conservative) and 2 (creative))",
+          "order": 3
         }
       }
     },
