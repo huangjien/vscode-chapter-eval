@@ -1,9 +1,9 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Evaluate a chapter of novel with ChatGPT.",
-  "main": "./out/src/extension",
+  "main": "./dist/extension",
   "publisher": "huangjien",
   "homepage": "https://github.com/huangjien/vscode-chapter-eval/blob/main/README.md",
   "bugs": {
@@ -28,30 +28,71 @@
   "preview": false,
   "private": false,
   "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    "vscode:prepublish": "yarn run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir dist",
+    "watch-tests": "tsc -p . -w --outDir dist",
+    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/runTest.js",
+    "update-package-lock": "npm install --package-lock-only"
+  },
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "Chapter Evaluator Configuration",
+      "properties": {
+        "vscodeChapterEval.openaiApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "OpenAI API Key for Chapter Evaluator extension"
+        },
+        "vscodeChapterEval.prompt": {
+          "type": "string",
+          "default": "You are ASSISTANT , work as literary critic. Please evaluate the tension of the following chapter and give it a score out of 100. Also, describe the curve of the tension changes in the chapter. Point out the three most outstanding advantages and the three biggest disadvantages of the chapter. If you find any typographical errors, please point them out. \nUSER: $PROMPT$ \nASSISTANT: ",
+          "description": "OpenAI API prompt for Chapter Evaluator extension"
+        }
+      }
+    },
+    "activationEvents": [
+      "onCommand:vscodeChapterEval.evaluateMarkdown"
+    ],
+    "commands": [
+      {
+        "command": "vscodeChapterEval.evaluateMarkdown",
+        "title": "Evaluate Chapter"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "resourceLangId == markdown",
+          "command": "vscodeChapterEval.evaluateMarkdown",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "devDependencies": {
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.1",
-    "@types/node": "16.x",
+    "@types/node": "^20.11.28",
     "@types/vscode": "^1.73.0",
-    "@typescript-eslint/eslint-plugin": "^5.45.0",
-    "@typescript-eslint/parser": "^5.45.0",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
     "@vscode/test-electron": "^2.2.0",
     "eslint": "^8.28.0",
-    "glob": "^8.0.3",
+    "glob": "^10.3.10",
     "mocha": "^10.1.0",
-    "vscode": "^1.1.37",
     "ts-loader": "^9.4.1",
-    "typescript": "^4.9.3",
+    "typescript": "^5.4.2",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.0"
   },
   "dependencies": {
-    "openai" :"^4.29.1"
+    "crypto": "^1.0.1",
+    "openai": "^4.29.1"
   }
 }
