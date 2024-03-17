@@ -8,4 +8,8 @@ tsconfig.json
 vsc-extension-quickstart.md
 node_modules
 out/
+.yarnrc
 webpack.config.js
+vsc-extension-quickstart.md
+**/.eslintrc.json
+**/*.ts

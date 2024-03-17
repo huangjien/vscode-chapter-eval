@@ -20,8 +20,22 @@ export function activate(context: vscode.ExtensionContext) {
         return;
     }
 
+    var model: string = vscode.workspace.getConfiguration('vscodeChapterEval').get('model')!;
+    if(!model){
+        model ="GPT-4"
+    }
 
-    let disposable = vscode.commands.registerCommand('vscodeChapterEval.evaluateMarkdown', async () => {
+    var temperature: number = vscode.workspace.getConfiguration('vscodeChapterEval').get('temperature')!;
+    if(!temperature){
+        temperature = 1
+    }
+
+    var maxToken: number = vscode.workspace.getConfiguration('vscodeChapterEval').get('maxToken')!;
+    if(!maxToken){
+        maxToken = 8192
+    }
+
+    let evaluator = vscode.commands.registerCommand('vscodeChapterEval.evaluateMarkdown', async () => {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
             vscode.window.showInformationMessage('No open Markdown file.');
@@ -53,10 +67,10 @@ export function activate(context: vscode.ExtensionContext) {
             const openai = new OpenAI();
             process.env.OPENAI_API_KEY = apiKey
             await openai.chat.completions.create({
-                model: "gpt-4-0125-preview",
+                model: model,
                 messages: [{ role: "system", content: promptString }],
-                temperature: 0.7,
-                max_tokens: 4096,
+                temperature: temperature,
+                max_tokens: maxToken,
             }).then(data => {
                 return JSON.stringify(data);
             }).then(data => {
@@ -72,7 +86,7 @@ export function activate(context: vscode.ExtensionContext) {
             displayMarkdownFromFile(resultFilePath);
         }
     });
-    context.subscriptions.push(disposable);
+    context.subscriptions.push(evaluator);
 }
 
 // this method is called when your extension is deactivated
