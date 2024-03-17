@@ -12,7 +12,7 @@
   },
   "repository": "https://github.com/huangjien/vscode-chapter-eval.git",
   "engines": {
-    "vscode": "^1.60.0"
+    "vscode": "^1.74.0"
   },
   "categories": [
     "Other"
