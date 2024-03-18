@@ -129,7 +129,7 @@ export function printToOutput(result: string) {
 }
 
 export function digest(message: string) {
-    return CryptoJS.createHash('sha1').update(message.replace(/\s/g, ''), 'utf8').digest('hex');
+    return CryptoJS.createHash('sha1').update(message.replace(/\s/g, ''), 'utf8').digest('hex').substring(0,8);
 }
 
 export function writeToLocal(fileName: string, fileContent: string): string {
