@@ -19,7 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.showErrorMessage('OpenAI API key is not set in settings.');
         return;
     }
-
+    process.env.OPENAI_API_KEY = apiKey;
     var model: string = vscode.workspace.getConfiguration('vscodeChapterEval').get('model')!;
     if(!model){
         model ="GPT-4"
@@ -56,37 +56,53 @@ export function activate(context: vscode.ExtensionContext) {
             \n\nUSER: $PROMPT$ \n\nASSISTANT: `
         }
 
-        const documentText = editor.document.getText();
-        // Proceed to evaluate the documentText with OpenAI and handle the result
-        // calculate its hash, if we have done that before, it will be save in your local disk, just read from there
-        const stringHash = digest(documentText);
-        const resultFilePath = path.join(storagePath, stringHash + '.md');
-        promptString = promptString.replace('$PROMPT$', documentText)
-        if (!fs.existsSync(resultFilePath)) {
-            // does not exist, call openAi to make it.
-            const openai = new OpenAI();
-            process.env.OPENAI_API_KEY = apiKey
-            await openai.chat.completions.create({
-                model: model,
-                messages: [{ role: "system", content: promptString }],
-                temperature: temperature,
-                max_tokens: maxToken,
-            }).then(data => {
-                return JSON.stringify(data);
-            }).then(data => {
-                const evalContent = JSON.parse(data);
-                writeToLocal(resultFilePath, evalContent.choices[0]['message']['content']);
-            }).catch(err => {
-                vscode.window.showErrorMessage(err.message)
-            })
-
-        }
-
-        if (fs.existsSync(resultFilePath)) {
-            displayMarkdownFromFile(resultFilePath);
-        }
+        const longRunTask = evaluateChapter(editor, storagePath, promptString, apiKey, model, temperature, maxToken);
+        showStatusBarProgress(longRunTask);
     });
     context.subscriptions.push(evaluator);
+}
+
+function showStatusBarProgress(task: Promise<any>) {
+    vscode.window.withProgress({
+        location: vscode.ProgressLocation.Notification,
+        title: "Processing...",
+        cancellable: true // Set to true if you want to allow cancelling the task
+    }, () => {
+        return task; // The progress UI will show until this Promise resolves
+    });
+}
+
+async function evaluateChapter(editor: vscode.TextEditor, storagePath: string, promptString: string, apiKey: string, model: string, temperature: number, maxToken: number) {
+    const documentText = editor.document.getText();
+    // Proceed to evaluate the documentText with OpenAI and handle the result
+    // calculate its hash, if we have done that before, it will be save in your local disk, just read from there
+    const stringHash = digest(documentText);
+    const resultFilePath = path.join(storagePath, stringHash + '.md');
+    promptString = promptString.replace('$PROMPT$', documentText);
+    if (!fs.existsSync(resultFilePath)) {
+        // does not exist, call openAi to make it.
+        const openai = new OpenAI();
+        
+        await openai.chat.completions.create({
+            model: model,
+            messages: [{ role: "system", content: promptString }],
+            temperature: temperature,
+            max_tokens: maxToken,
+        }).then(data => {
+            return JSON.stringify(data);
+        }).then(data => {
+            const evalContent = JSON.parse(data);
+            writeToLocal(resultFilePath, evalContent.choices[0]['message']['content']);
+        }).catch(err => {
+            vscode.window.showErrorMessage(err.message);
+        });
+
+    }
+
+    if (fs.existsSync(resultFilePath)) {
+        displayMarkdownFromFile(resultFilePath);
+    }
+    return promptString;
 }
 
 // this method is called when your extension is deactivated

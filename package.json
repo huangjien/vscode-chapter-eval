@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "publisher": "huangjien",
@@ -76,7 +76,7 @@
         },
         "vscodeChapterEval.maxToken":{
           "type": "number",
-          "default": 8192,
+          "default": 4096,
           "description": "Maximum number of tokens inside response per request",
           "order": 4
         }
@@ -89,7 +89,11 @@
       {
         "command": "vscodeChapterEval.evaluateMarkdown",
         "title": "Evaluate Chapter"
-      }
+      },
+      {
+        "command": "vscodeChapterEval.showProgress",
+        "title": "Evaluating ..."
+    }
     ],
     "menus": {
       "editor/context": [
