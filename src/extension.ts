@@ -32,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     var maxToken: number = vscode.workspace.getConfiguration('vscodeChapterEval').get('maxToken')!;
     if(!maxToken){
-        maxToken = 8192
+        maxToken = 4096
     }
 
     let evaluator = vscode.commands.registerCommand('vscodeChapterEval.evaluateMarkdown', async () => {
@@ -60,6 +60,55 @@ export function activate(context: vscode.ExtensionContext) {
         showStatusBarProgress(longRunTask);
     });
     context.subscriptions.push(evaluator);
+    context.subscriptions.push(vscode.commands.registerCommand('vscodeChapterEval.formatMarkdown', () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            vscode.window.showInformationMessage('No open Markdown file.');
+            return;
+        }
+        if (editor.document.languageId != "markdown" && editor.document.languageId != "plaintext") {
+            vscode.window.showInformationMessage('This is not a Markdown or Plaintext file.');
+            return;
+        }
+            const firstLine = editor.document.lineAt(0);
+            const lastLine = editor.document.lineAt(editor.document.lineCount - 1);
+            const textRange = new vscode.Range(firstLine.range.start, lastLine.range.end);
+            
+            // Your formatting logic here
+            const formattedText = formatMarkdown(editor.document.getText());
+            vscode.window.activeTextEditor?.edit(builder => {
+                const doc = editor.document;
+                builder.replace(new vscode.Range(doc.lineAt(0).range.start, doc.lineAt(doc.lineCount - 1).range.end), formattedText);    
+            })
+            return ;
+        
+    }));
+}
+
+function formatMarkdown(text: string): string {
+    // Split the text into paragraphs
+    const paragraphs = text.trim().split(/\n\s*\n/);
+
+    // Process each paragraph
+    const processedParagraphs = paragraphs.map(paragraph => {
+        // Trim whitespace
+        paragraph = paragraph.trim();
+
+        // Ensure spacing between English and Chinese characters
+        // Regex explains: English to Chinese
+        paragraph = paragraph.replace(/([a-zA-Z])([\u4e00-\u9fa5])/g, "$1 $2");
+        // Chinese to English
+        paragraph = paragraph.replace(/([\u4e00-\u9fa5])([a-zA-Z])/g, "$1 $2");
+
+        
+        // Add 2 spaces indentation
+        paragraph = paragraph.split('\n').map(line => line).join('\n');
+
+        return "　　" + paragraph;
+    });
+
+    // Reassemble the paragraphs, ensuring an empty line between each
+    return "　　\n\n" +processedParagraphs.join('\n\n');
 }
 
 function showStatusBarProgress(task: Promise<any>) {

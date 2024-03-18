@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.3.2",
+  "version": "0.3.5",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "publisher": "huangjien",
@@ -91,6 +91,10 @@
         "title": "Evaluate Chapter"
       },
       {
+        "command": "vscodeChapterEval.formatMarkdown",
+        "title": "Format Chapter"
+      },
+      {
         "command": "vscodeChapterEval.showProgress",
         "title": "Evaluating ..."
     }
@@ -98,8 +102,13 @@
     "menus": {
       "editor/context": [
         {
-          "when": "resourceLangId == markdown",
+          "when": "resourceLangId == markdown || resourceLangId == plaintext",
           "command": "vscodeChapterEval.evaluateMarkdown",
+          "group": "navigation"
+        },
+        {
+          "when": "resourceLangId == markdown || resourceLangId == plaintext",
+          "command": "vscodeChapterEval.formatMarkdown",
           "group": "navigation"
         }
       ]
