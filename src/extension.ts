@@ -70,9 +70,6 @@ export function activate(context: vscode.ExtensionContext) {
             vscode.window.showInformationMessage('This is not a Markdown or Plaintext file.');
             return;
         }
-            const firstLine = editor.document.lineAt(0);
-            const lastLine = editor.document.lineAt(editor.document.lineCount - 1);
-            const textRange = new vscode.Range(firstLine.range.start, lastLine.range.end);
             
             // Your formatting logic here
             const formattedText = formatMarkdown(editor.document.getText());
@@ -178,7 +175,7 @@ export function printToOutput(result: string) {
 }
 
 export function digest(message: string) {
-    return CryptoJS.createHash('sha1').update(message.replace(/\s/g, ''), 'utf8').digest('hex').substring(0,8);
+    return CryptoJS.createHash('sha1').update(message.replace(/\s/g, '').replace("　", ''), 'utf8').digest('hex').substring(0,8);
 }
 
 export function writeToLocal(fileName: string, fileContent: string): string {
