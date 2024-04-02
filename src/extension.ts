@@ -43,21 +43,21 @@ export function activate(context: vscode.ExtensionContext) {
     maxToken = 4096;
   }
 
-  vscode.languages.registerHoverProvider('markdown',{
+  vscode.languages.registerHoverProvider("markdown", {
     provideHover(document, position, token) {
-        // only when hover at the beginning of the chapter, will show tooltip
-        if (position.line > 0 && position.character >0) {
-            return;
-        }
-        var tip = "No Evaluation Now.";
-        const content = document.getText();
-        const stringHash = digest(content);
-        const resultFilePath = path.join(storagePath, stringHash + ".md");
-        if (fs.existsSync(resultFilePath)) {
-            tip = fs.readFileSync(resultFilePath).toString();
-        }
-        return new vscode.Hover(tip)
-    }
+      // only when hover at the beginning of the chapter, will show tooltip
+      if (position.line > 0 && position.character > 0) {
+        return;
+      }
+      var tip = "No Evaluation Now.";
+      var filename = document.fileName.split('\\').pop()?.split('/').pop()!;
+      
+      const resultFilePath = path.join(storagePath, filename);
+      if (fs.existsSync(resultFilePath)) {
+        tip = fs.readFileSync(resultFilePath).toString();
+      }
+      return new vscode.Hover(tip);
+    },
   });
 
   let evaluator = vscode.commands.registerCommand(
@@ -187,37 +187,62 @@ async function evaluateChapter(
   temperature: number,
   maxToken: number
 ) {
+  // get file base info, and chars number
+  if (editor.document.isDirty) {
+    vscode.window.showWarningMessage(
+      "Please save your file before evaluation, or you may just waste your money!"
+    );
+    return;
+  }
+  const source_file_uri = editor.document.uri;
+  const source_file_stat = fs.lstatSync(source_file_uri.fsPath);
+  const filename = editor.document.fileName.split('\\').pop()?.split('/').pop()!;
+  
   const documentText = editor.document.getText();
+  const text_length = documentText.length;
   // Proceed to evaluate the documentText with OpenAI and handle the result
   // calculate its hash, if we have done that before, it will be save in your local disk, just read from there
   const stringHash = digest(documentText);
-  const resultFilePath = path.join(storagePath, stringHash + ".md");
+  const resultFilePath = path.join(storagePath, filename);
   promptString = promptString.replace("$PROMPT$", documentText);
-  if (!fs.existsSync(resultFilePath)) {
-    // does not exist, call openAi to make it.
-    const openai = new OpenAI();
-
-    await openai.chat.completions
-      .create({
-        model: model,
-        messages: [{ role: "system", content: promptString }],
-        temperature: temperature,
-        max_tokens: maxToken,
-      })
-      .then((data) => {
-        return JSON.stringify(data);
-      })
-      .then((data) => {
-        const evalContent = JSON.parse(data);
-        writeToLocal(
-          resultFilePath,
-          evalContent.choices[0]["message"]["content"]
-        );
-      })
-      .catch((err) => {
-        vscode.window.showErrorMessage(err.message);
-      });
+  // if file already existed, check its first 8 chars,
+  // if matched, then we have done the evaluation, just display it.
+  // if not matched, need to do evaluation again.
+  var exist_content = "";
+  if (fs.existsSync(resultFilePath)) {
+    var content = fs.readFileSync(resultFilePath).toString();
+    if (content.startsWith(stringHash)) {
+      displayMarkdownFromFile(resultFilePath);
+      return;
+    }
+    exist_content = "\n\n---\n\n" + content;
   }
+
+  // does not exist, call openAi to make it.
+  const openai = new OpenAI();
+
+  await openai.chat.completions
+    .create({
+      model: model,
+      messages: [{ role: "system", content: promptString }],
+      temperature: temperature,
+      max_tokens: maxToken,
+    })
+    .then((data) => {
+      return JSON.stringify(data);
+    })
+    .then((data) => {
+      const evalContent = JSON.parse(data);
+      writeToLocal(
+        resultFilePath,
+        stringHash + "\n\nLength: " + text_length + "\n\nLast Modified: " + source_file_stat.mtime.toISOString()
+        + "\n\n<details><summary>"+ source_file_stat.mtime.toISOString()+ "</summary><br/>"
+        +evalContent.choices[0]["message"]["content"] + "</details>" + exist_content
+      );
+    })
+    .catch((err) => {
+      vscode.window.showErrorMessage(err.message);
+    });
 
   if (fs.existsSync(resultFilePath)) {
     displayMarkdownFromFile(resultFilePath);
@@ -255,6 +280,11 @@ export function digest(message: string) {
 }
 
 export function writeToLocal(fileName: string, fileContent: string): string {
+  // if file already existed, get its content, append to the end of fileContent
+  //   var writeContent = fileContent;
+  //   if (fs.existsSync(fileName)) {
+  //     writeContent = fileContent + "\n\n---\n\n" +fs.readFileSync(fileName).toString();
+  //   }
   fs.writeFileSync(fileName, fileContent, "utf8");
   vscode.window.showInformationMessage(
     `Evaluation result saved to ${fileName}`
