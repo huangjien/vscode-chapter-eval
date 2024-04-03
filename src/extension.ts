@@ -26,7 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
     .getConfiguration("vscodeChapterEval")
     .get("model")!;
   if (!model) {
-    model = "GPT-4";
+    model = "gpt-4-turbo-preview";
   }
 
   var temperature: number = vscode.workspace

@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "publisher": "huangjien",
@@ -71,13 +71,13 @@
           "default": "You are ASSISTANT , work as literary critic. Please evaluate the tension of the following chapter and give it a score out of 100. Also, describe the curve of the tension changes in the chapter. Point out the three most outstanding advantages and the three biggest disadvantages of the chapter. If you find any typographical errors, please point them out. \nUSER: $PROMPT$ \nASSISTANT: ",
           "description": "OpenAI API prompt for Chapter Evaluator extension"
         },
-        "vscodeChapterEval.temperature":{
+        "vscodeChapterEval.temperature": {
           "type": "number",
           "default": 0.7,
           "description": "Temperature to use for the GPT (between 0 (conservative) and 2 (creative))",
           "order": 3
         },
-        "vscodeChapterEval.maxToken":{
+        "vscodeChapterEval.maxToken": {
           "type": "number",
           "default": 4096,
           "description": "Maximum number of tokens inside response per request",
@@ -85,8 +85,7 @@
         }
       }
     },
-    
-    "keybindings":[
+    "keybindings": [
       {
         "command": "vscodeChapterEval.showExistedEvaluation",
         "key": "ctrl+f1",
@@ -109,7 +108,7 @@
       {
         "command": "vscodeChapterEval.showProgress",
         "title": "Evaluating ..."
-    }
+      }
     ],
     "menus": {
       "editor/context": [
@@ -129,21 +128,21 @@
   "devDependencies": {
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.1",
-    "@types/node": "^20.11.28",
+    "@types/node": "^20.12.3",
     "@types/vscode": "^1.73.0",
-    "@typescript-eslint/eslint-plugin": "^7.2.0",
-    "@typescript-eslint/parser": "^7.2.0",
+    "@typescript-eslint/eslint-plugin": "^7.5.0",
+    "@typescript-eslint/parser": "^7.5.0",
     "@vscode/test-electron": "^2.2.0",
     "eslint": "^8.28.0",
-    "glob": "^10.3.10",
-    "mocha": "^10.1.0",
+    "glob": "^10.3.12",
+    "mocha": "^10.4.0",
     "ts-loader": "^9.4.1",
-    "typescript": "^5.4.2",
-    "webpack": "^5.75.0",
+    "typescript": "^5.4.3",
+    "webpack": "^5.91.0",
     "webpack-cli": "^5.0.0"
   },
   "dependencies": {
     "crypto": "^1.0.1",
-    "openai": "^4.29.1"
+    "openai": "^4.32.1"
   }
 }
