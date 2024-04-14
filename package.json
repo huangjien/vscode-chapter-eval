@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "publisher": "huangjien",
@@ -41,6 +41,7 @@
     "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/runTest.js",
+    "prettier": "prettier --write .",
     "update-package-lock": "npm install --package-lock-only"
   },
   "contributes": {
@@ -135,6 +136,7 @@
     "@vscode/test-electron": "^2.2.0",
     "eslint": "^8.28.0",
     "glob": "^10.3.12",
+    "prettier": "^3.2.5",
     "mocha": "^10.4.0",
     "ts-loader": "^9.4.1",
     "typescript": "^5.4.3",

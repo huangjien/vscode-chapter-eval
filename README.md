@@ -1,6 +1,5 @@
 # Chapter Evaluator
 
-
 This Visual Studio Code extension allows you to use ChatGPT to evaluate your novel chapter.
 
 ### Why I write this extension
@@ -20,7 +19,7 @@ In current version, the following format is supported:
 1. Markdown file.
 2. Plain text file.
 
-*📢 **Warning:** default `ChatGPT Prompt` may not suits you, you'd better change to yours.*
+_📢 **Warning:** default `ChatGPT Prompt` may not suits you, you'd better change to yours._
 
 ### Obtaining API key
 
@@ -32,7 +31,7 @@ To use this extension, you will need an API key from OpenAI. To obtain one, foll
 
 ### Configure Extension
 
-In VS Code settings, update the settings for this extension. 
+In VS Code settings, update the settings for this extension.
 
 <img src="resources/setup.png" alt="Settings" />
 
@@ -41,6 +40,7 @@ default prompt is:
 ```
 You are ASSISTANT , work as literary critic. Please evaluate the tension of the following chapter and give it a score out of 100. Also, describe the curve of the tension changes in the chapter. Point out the three most outstanding advantages and the three biggest disadvantages of the chapter. If you find any typographical errors, please point them out. \nUSER: $PROMPT$ \nASSISTANT:
 ```
+
 Note: the $PROMPT$ need to be kept, it represents the content of current chapter.
 
 ### How to use it
@@ -67,4 +67,3 @@ Please note that this extension is currently a proof of concept and may have som
                 />
             </a></div>
 <br />
-
