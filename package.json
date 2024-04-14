@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "publisher": "huangjien",
@@ -58,10 +58,10 @@
           "type": "string",
           "enum": [
             "gpt-4",
-            "gpt-4-turbo-preview",
+            "gpt-4-turbo",
             "gpt-3.5-turbo"
           ],
-          "default": "gpt-4",
+          "default": "gpt-4-turbo",
           "description": "Which ChatGPT model to use",
           "order": 1
         },
