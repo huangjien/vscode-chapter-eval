@@ -14,11 +14,21 @@ export function activate(context: vscode.ExtensionContext) {
   if (!fs.existsSync(storagePath)) {
     fs.mkdirSync(storagePath, { recursive: true });
   }
+  const location: string = vscode.workspace
+    .getConfiguration('vscodeChapterEval')
+    .get('modelLocation')!;
+  const localModel: string = vscode.workspace
+    .getConfiguration('vscodeChapterEval')
+    .get('localModel')!;
   const apiKey: string = vscode.workspace
     .getConfiguration('vscodeChapterEval')
     .get('openaiApiKey')!;
-  if (!apiKey) {
+  if (!apiKey && location === 'Remote') {
     vscode.window.showErrorMessage('OpenAI API key is not set in settings.');
+    return;
+  }
+  if (!localModel && location === 'Local') {
+    vscode.window.showErrorMessage('Local model is not set in settings.');
     return;
   }
   process.env.OPENAI_API_KEY = apiKey;
@@ -41,6 +51,22 @@ export function activate(context: vscode.ExtensionContext) {
     .get('maxToken')!;
   if (!maxToken) {
     maxToken = 4096;
+  }
+
+  var openai: OpenAI;
+  if (location === 'Remote') {
+    openai = new OpenAI();
+  } else {
+    openai = new OpenAI({
+      baseURL: 'http://localhost:11434/v1',
+      apiKey: 'ollama', // required but unused
+    });
+    model = vscode.workspace
+      .getConfiguration('vscodeChapterEval')
+      .get('localModel')!;
+      if (!model) {
+        model = 'llama3';
+      }
   }
 
   vscode.languages.registerHoverProvider('markdown', {
@@ -91,10 +117,10 @@ export function activate(context: vscode.ExtensionContext) {
       }
 
       const longRunTask = evaluateChapter(
+        openai,
         editor,
         storagePath,
         promptString,
-        apiKey,
         model,
         temperature,
         maxToken
@@ -179,10 +205,10 @@ function showStatusBarProgress(task: Promise<any>) {
 }
 
 async function evaluateChapter(
+  openai: OpenAI,
   editor: vscode.TextEditor,
   storagePath: string,
   promptString: string,
-  apiKey: string,
   model: string,
   temperature: number,
   maxToken: number
@@ -223,12 +249,11 @@ async function evaluateChapter(
   }
 
   // does not exist, call openAi to make it.
-  const openai = new OpenAI();
 
   await openai.chat.completions
     .create({
       model: model,
-      messages: [{ role: 'system', content: promptString }],
+      messages: [{ role: 'user', content: promptString }],
       temperature: temperature,
       max_tokens: maxToken,
     })

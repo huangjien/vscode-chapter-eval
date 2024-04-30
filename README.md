@@ -57,6 +57,14 @@ This is an evaluation of Farewell to Arms
 
 ---
 
+Note: From v0.7.x , it starts to support local models (ollama).
+
+But the results are terrible (tested with llama3).
+
+Hope in future, the local models will be more powerful and smarter.
+
+---
+
 Please note that this extension is currently a proof of concept and may have some limitations or bugs. We welcome feedback and contributions to improve the extension. If you enjoy this extension, please consider [buying me a coffee ☕️ ](https://www.buymeacoffee.com/huangjien) to support my work!
 
 <div >
