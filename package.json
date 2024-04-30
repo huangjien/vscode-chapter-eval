@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "publisher": "huangjien",
@@ -42,7 +42,8 @@
     "lint": "eslint src --ext ts",
     "test": "node ./out/runTest.js",
     "prettier": "prettier --write .",
-    "update-package-lock": "npm install --package-lock-only"
+    "update-package-lock": "npm install --package-lock-only",
+    "prepare": "husky"
   },
   "contributes": {
     "configuration": {
@@ -150,22 +151,23 @@
   "devDependencies": {
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.1",
-    "@types/node": "^20.12.3",
-    "@types/vscode": "^1.73.0",
-    "@typescript-eslint/eslint-plugin": "^7.5.0",
-    "@typescript-eslint/parser": "^7.5.0",
+    "@types/node": "^20.12.7",
+    "@types/vscode": "^1.88.0",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
     "@vscode/test-electron": "^2.2.0",
-    "eslint": "^8.28.0",
+    "eslint": "^8.57.0",
     "glob": "^10.3.12",
-    "prettier": "^3.2.5",
     "mocha": "^10.4.0",
+    "prettier": "^3.2.5",
     "ts-loader": "^9.4.1",
-    "typescript": "^5.4.3",
+    "typescript": "^5.4.5",
     "webpack": "^5.91.0",
     "webpack-cli": "^5.0.0"
   },
   "dependencies": {
     "crypto": "^1.0.1",
-    "openai": "^4.32.1"
+    "husky": "^9.0.11",
+    "openai": "^4.39.0"
   }
 }
