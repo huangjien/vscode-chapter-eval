@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "publisher": "huangjien",
@@ -49,10 +49,20 @@
       "type": "object",
       "title": "Chapter Evaluator Configuration",
       "properties": {
+        "vscodeChapterEval.modelLocation": {
+          "type": "string",
+          "enum": [
+            "Local",
+            "Remote"
+          ],
+          "default": "Remote",
+          "description": "Use local ollama or remote open-ai?",
+          "order": 0
+        },
         "vscodeChapterEval.openaiApiKey": {
           "type": "string",
           "default": "",
-          "order": 0,
+          "order": 1,
           "description": "OpenAI API Key for Chapter Evaluator extension"
         },
         "vscodeChapterEval.model": {
@@ -64,11 +74,22 @@
           ],
           "default": "gpt-4-turbo",
           "description": "Which ChatGPT model to use",
-          "order": 1
+          "order": 2
+        },
+        "vscodeChapterEval.localModel": {
+          "type": "string",
+          "enum": [
+            "llama3",
+            "qwen:7b",
+            "wangshenzhi/llama3-8b-chinese-chat-ollama-q8"
+          ],
+          "default": "wangshenzhi/llama3-8b-chinese-chat-ollama-q8",
+          "description": "Which local ollama model to use",
+          "order": 3
         },
         "vscodeChapterEval.prompt": {
           "type": "string",
-          "order": 2,
+          "order": 4,
           "default": "You are ASSISTANT , work as literary critic. Please evaluate the tension of the following chapter and give it a score out of 100. Also, describe the curve of the tension changes in the chapter. Point out the three most outstanding advantages and the three biggest disadvantages of the chapter. If you find any typographical errors, please point them out. \nUSER: $PROMPT$ \nASSISTANT: ",
           "description": "OpenAI API prompt for Chapter Evaluator extension"
         },
@@ -76,13 +97,13 @@
           "type": "number",
           "default": 0.7,
           "description": "Temperature to use for the GPT (between 0 (conservative) and 2 (creative))",
-          "order": 3
+          "order": 5
         },
         "vscodeChapterEval.maxToken": {
           "type": "number",
-          "default": 4096,
+          "default": 8192,
           "description": "Maximum number of tokens inside response per request",
-          "order": 4
+          "order": 6
         }
       }
     },
