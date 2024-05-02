@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Build and Deploy to GCR
+    name: Build and Deploy to VS Code marketplace
 
     permissions:
       contents: 'read'
