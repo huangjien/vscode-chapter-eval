@@ -10,7 +10,7 @@ import OpenAI from 'openai';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-  const storagePath = context.globalStoragePath;
+  const storagePath = context.globalStorageUri.fsPath;
   if (!fs.existsSync(storagePath)) {
     fs.mkdirSync(storagePath, { recursive: true });
   }
