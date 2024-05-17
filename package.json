@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.7.5",
+  "version": "0.7.6",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "publisher": "huangjien",
@@ -13,7 +13,7 @@
   "icon": "resources/chapter_eval.png",
   "repository": "https://github.com/huangjien/vscode-chapter-eval.git",
   "engines": {
-    "vscode": "^1.88.0"
+    "vscode": "^1.89.0"
   },
   "categories": [
     "Other"
@@ -70,7 +70,7 @@
         "vscodeChapterEval.model": {
           "type": "string",
           "enum": [
-            "gpt-4",
+            "gpt-4o",
             "gpt-4-turbo",
             "gpt-3.5-turbo"
           ],
@@ -152,13 +152,13 @@
   "devDependencies": {
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.1",
-    "@types/node": "^20.12.7",
-    "@types/vscode": "^1.88.0",
-    "@typescript-eslint/eslint-plugin": "^7.8.0",
-    "@typescript-eslint/parser": "^7.8.0",
-    "@vscode/test-electron": "^2.2.0",
+    "@types/node": "^20.12.12",
+    "@types/vscode": "^1.89.0",
+    "@typescript-eslint/eslint-plugin": "^7.9.0",
+    "@typescript-eslint/parser": "^7.9.0",
+    "@vscode/test-electron": "^2.3.10",
     "eslint": "^8.57.0",
-    "glob": "^10.3.12",
+    "glob": "^10.3.15",
     "mocha": "^10.4.0",
     "prettier": "^3.2.5",
     "ts-loader": "^9.4.1",
@@ -169,6 +169,6 @@
   "dependencies": {
     "crypto": "^1.0.1",
     "husky": "^9.0.11",
-    "openai": "^4.39.0"
+    "openai": "^4.47.1"
   }
 }
