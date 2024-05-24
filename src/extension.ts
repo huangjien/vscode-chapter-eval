@@ -64,9 +64,9 @@ export function activate(context: vscode.ExtensionContext) {
     model = vscode.workspace
       .getConfiguration('vscodeChapterEval')
       .get('localModel')!;
-      if (!model) {
-        model = 'llama3';
-      }
+    if (!model) {
+      model = 'llama3';
+    }
   }
 
   vscode.languages.registerHoverProvider('markdown', {
@@ -129,6 +129,19 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
   context.subscriptions.push(evaluator);
+  context.subscriptions.push(
+    vscode.commands.registerCommand('vscodeChapterEval.generatePDF', (uri: vscode.Uri) => {
+      vscode.window.showInformationMessage(`PDF Generated on ${uri.fsPath}`);
+    })
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'vscodeChapterEval.generateWordsCloud',
+      (uri: vscode.Uri) => {
+        vscode.window.showInformationMessage(`Words Cloud Generated on ${uri.fsPath}`);
+      }
+    )
+  );
   context.subscriptions.push(
     vscode.commands.registerCommand('vscodeChapterEval.formatMarkdown', () => {
       const editor = vscode.window.activeTextEditor;
