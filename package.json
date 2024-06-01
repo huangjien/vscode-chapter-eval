@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.7.8",
+  "version": "0.7.9",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "publisher": "huangjien",
@@ -31,7 +31,6 @@
     "ChatGPT"
   ],
   "preview": false,
-  "private": false,
   "scripts": {
     "vscode:prepublish": "yarn run package",
     "compile": "webpack",
@@ -182,7 +181,7 @@
   "devDependencies": {
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.1",
-    "@types/node": "^20.12.12",
+    "@types/node": "^20.13.0",
     "@types/vscode": "^1.89.0",
     "@typescript-eslint/eslint-plugin": "^7.10.0",
     "@typescript-eslint/parser": "^7.10.0",
@@ -199,6 +198,6 @@
   "dependencies": {
     "crypto": "^1.0.1",
     "husky": "^9.0.11",
-    "openai": "^4.47.1"
+    "openai": "^4.47.3"
   }
 }
