@@ -5,7 +5,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import OpenAI from 'openai';
-import { formatMarkdown , showStatusBarProgress } from './Utils';
+import { formatMarkdown, showStatusBarProgress, generatePDF } from './Utils';
 import { evaluateChapter } from './Utils';
 
 // this method is called when your extension is activated
@@ -131,15 +131,29 @@ export function activate(context: vscode.ExtensionContext) {
   );
   context.subscriptions.push(evaluator);
   context.subscriptions.push(
-    vscode.commands.registerCommand('vscodeChapterEval.generatePDF', (uri: vscode.Uri) => {
-      vscode.window.showInformationMessage(`PDF Generated on ${uri.fsPath}`);
-    })
+    vscode.commands.registerCommand(
+      'vscodeChapterEval.generatePDF',
+      (uri: vscode.Uri) => {
+        vscode.window.showInformationMessage(`PDF Generated on ${uri.fsPath}`);
+      }
+    )
   );
   context.subscriptions.push(
     vscode.commands.registerCommand(
       'vscodeChapterEval.generateWordsCloud',
       (uri: vscode.Uri) => {
-        vscode.window.showInformationMessage(`Words Cloud Generated on ${uri.fsPath}`);
+        // vscode.window.showInformationMessage(
+        //   `Words Cloud Generated on ${uri.fsPath}`
+        // );
+        if (uri) {
+          try {
+            generatePDF(uri.fsPath);
+          } catch (err) {
+            vscode.window.showErrorMessage(
+              'PDF generate from ' + uri.fsPath + ' failed:\n${err.message}'
+            );
+          }
+        }
       }
     )
   );

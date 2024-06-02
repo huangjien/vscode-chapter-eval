@@ -1,9 +1,18 @@
 'use strict';
-import * as CryptoJS from "crypto";
-import * as fs from "fs";
-import OpenAI from "openai";
-import * as path from "path";
-import * as vscode from "vscode";
+import * as CryptoJS from 'crypto';
+import * as fs from 'fs-extra';
+import OpenAI from 'openai';
+import * as path from 'path';
+import * as vscode from 'vscode';
+
+export async function generatePDF(filePath: string) {
+  const stat = await fs.lstat(filePath);
+  if (stat.isDirectory()) {
+    await generatePDFFromFolder(filePath);
+  } else {
+    await generatePDFFromFile(filePath);
+  }
+}
 
 export function printToOutput(result: string) {
   // Create an output channel (if it doesn't exist already) and get a reference to it
@@ -102,11 +111,11 @@ export async function evaluateChapter(
   }
   const source_file_uri = editor.document.uri;
   const source_file_stat = fs.lstatSync(source_file_uri.fsPath);
-  const filename = (editor.document.fileName
+  const filename = editor.document.fileName
     .split('\\')
     .pop()
     ?.split('/')
-    .pop())!;
+    .pop()!;
 
   const documentText = editor.document.getText();
   const text_length = documentText.length;
@@ -144,16 +153,16 @@ export async function evaluateChapter(
       writeToLocal(
         resultFilePath,
         stringHash +
-        '\n\nLength: ' +
-        text_length +
-        '\n\nLast Modified: ' +
-        source_file_stat.mtime.toISOString() +
-        '\n\n<details><summary>' +
-        source_file_stat.mtime.toISOString() +
-        '</summary><br/>' +
-        evalContent.choices[0]['message']['content'] +
-        '</details>' +
-        exist_content
+          '\n\nLength: ' +
+          text_length +
+          '\n\nLast Modified: ' +
+          source_file_stat.mtime.toISOString() +
+          '\n\n<details><summary>' +
+          source_file_stat.mtime.toISOString() +
+          '</summary><br/>' +
+          evalContent.choices[0]['message']['content'] +
+          '</details>' +
+          exist_content
       );
     })
     .catch((err) => {
@@ -165,4 +174,15 @@ export async function evaluateChapter(
   }
   return promptString;
 }
+async function generatePDFFromFolder(filePath: string) {
+  throw new Error('Function not implemented.');
+}
 
+async function generatePDFFromFile(filePath: string) {
+  const content = await fs.readFile(filePath, 'utf-8');
+  const pdfPath = filePath.replace(/\.[^/.]+$/, '.pdf');
+  const doc = new pdftype.PDFDocument();
+  doc.pipe(fs.createWriteStream(pdfPath));
+  doc.font('Times-Roman').fontSize(12).text(content);
+  doc.end();
+}
