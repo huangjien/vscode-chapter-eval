@@ -5,6 +5,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import OpenAI from 'openai';
+
 import { formatMarkdown, showStatusBarProgress, generatePDF } from './Utils';
 import { evaluateChapter } from './Utils';
 

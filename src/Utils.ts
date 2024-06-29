@@ -4,6 +4,7 @@ import * as fs from 'fs-extra';
 import OpenAI from 'openai';
 import * as path from 'path';
 import * as vscode from 'vscode';
+import { jsPDF } from 'jspdf'
 
 export async function generatePDF(filePath: string) {
   const stat = await fs.lstat(filePath);
@@ -181,8 +182,8 @@ async function generatePDFFromFolder(filePath: string) {
 async function generatePDFFromFile(filePath: string) {
   const content = await fs.readFile(filePath, 'utf-8');
   const pdfPath = filePath.replace(/\.[^/.]+$/, '.pdf');
-  const doc = new pdftype.PDFDocument();
-  doc.pipe(fs.createWriteStream(pdfPath));
-  doc.font('Times-Roman').fontSize(12).text(content);
-  doc.end();
+  const doc = new jsPDF();
+  doc.text(content, 10, 10);
+  doc.save(pdfPath);
+  
 }
