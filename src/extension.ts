@@ -6,6 +6,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as CryptoJS from 'crypto';
 import OpenAI from 'openai';
+import { window } from 'vscode';
+import { exec } from 'child_process';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -130,6 +132,31 @@ export function activate(context: vscode.ExtensionContext) {
   );
   context.subscriptions.push(evaluator);
   context.subscriptions.push(
+    vscode.commands.registerCommand('vscodeChapterEval.readOutLoud', ()=>{
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) {
+        vscode.window.showInformationMessage('No open Markdown file.');
+        return;
+      }
+      if (
+        editor.document.languageId != 'markdown' &&
+        editor.document.languageId != 'plaintext'
+      ) {
+        vscode.window.showInformationMessage(
+          'This is not a Markdown or Plaintext file.'
+        );
+        return;
+      }
+      const text = editor.document.getText(editor.selection);
+            if (text) {
+              readTextAloud(text);
+            } else {
+                vscode.window.showInformationMessage('No text selected');
+            }
+
+    })
+  )
+  context.subscriptions.push(
     vscode.commands.registerCommand('vscodeChapterEval.formatMarkdown', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
@@ -161,6 +188,42 @@ export function activate(context: vscode.ExtensionContext) {
       return;
     })
   );
+}
+
+function readTextAloud(text: string) {
+  const platform = process.platform;
+
+  let command = '';
+  switch (platform) {
+      case 'win32':
+          // Windows
+          command = `powershell -Command "Add-Type -AssemblyName System.speech;` +
+                    `[System.Speech.Synthesis.SpeechSynthesizer]::new().Speak('${text.replace(/'/g, "''")}');"`;
+          break;
+      case 'darwin':
+          // macOS
+          command = `say "${text}"`;
+          break;
+      case 'linux':
+          // Linux
+          command = `espeak "${text}"`;
+          break;
+      default:
+          vscode.window.showErrorMessage('Unsupported platform');
+          return;
+  }
+
+  exec(command, (error, stdout, stderr) => {
+      if (error) {
+          vscode.window.showErrorMessage(`Error: ${error.message}`);
+          return;
+      }
+      if (stderr) {
+          vscode.window.showErrorMessage(`stderr: ${stderr}`);
+          return;
+      }
+      vscode.window.showInformationMessage(`Text read out loud successfully`);
+  });
 }
 
 function formatMarkdown(text: string): string {
