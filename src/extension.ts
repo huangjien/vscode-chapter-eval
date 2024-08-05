@@ -71,6 +71,36 @@ export function activate(context: vscode.ExtensionContext) {
       }
   }
 
+  context.subscriptions.push(
+    // ctrl+f1, show existed evaluation
+    vscode.commands.registerCommand('vscodeChapterEval.showExistedEvaluation', ()=>{
+      async () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+          vscode.window.showInformationMessage('No open Markdown file.');
+          return;
+        }
+        if (
+          editor.document.languageId != 'markdown' &&
+          editor.document.languageId != 'plaintext'
+        ) {
+          vscode.window.showInformationMessage(
+            'This is not a Markdown or Plaintext file.'
+          );
+          return;
+        }
+        var tip = 'No Evaluation Now.';
+        var filename = editor.document.fileName.split('\\').pop()?.split('/').pop()!;
+
+        const resultFilePath = path.join(storagePath, filename);
+        if (fs.existsSync(resultFilePath)) {
+          tip = fs.readFileSync(resultFilePath).toString();
+        }
+        return new vscode.Hover(tip);
+        }
+    })
+  );
+
   vscode.languages.registerHoverProvider('markdown', {
     provideHover(document, position, token) {
       // only when hover at the beginning of the chapter, will show tooltip
