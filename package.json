@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.7.17",
+  "version": "0.7.18",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "publisher": "huangjien",
@@ -13,7 +13,7 @@
   "icon": "resources/chapter_eval.png",
   "repository": "https://github.com/huangjien/vscode-chapter-eval.git",
   "engines": {
-    "vscode": "^1.91.0"
+    "vscode": "^1.92.0"
   },
   "categories": [
     "Other"
