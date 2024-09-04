@@ -66,39 +66,46 @@ export function activate(context: vscode.ExtensionContext) {
     model = vscode.workspace
       .getConfiguration('vscodeChapterEval')
       .get('localModel')!;
-      if (!model) {
-        model = 'llama3';
-      }
+    if (!model) {
+      model = 'llama3';
+    }
   }
 
   context.subscriptions.push(
     // ctrl+f1, show existed evaluation
-    vscode.commands.registerCommand('vscodeChapterEval.showExistedEvaluation', ()=>{
-      async () => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) {
-          vscode.window.showInformationMessage('No open Markdown file.');
-          return;
-        }
-        if (
-          editor.document.languageId != 'markdown' &&
-          editor.document.languageId != 'plaintext'
-        ) {
-          vscode.window.showInformationMessage(
-            'This is not a Markdown or Plaintext file.'
-          );
-          return;
-        }
-        var tip = 'No Evaluation Now.';
-        var filename = editor.document.fileName.split('\\').pop()?.split('/').pop()!;
+    vscode.commands.registerCommand(
+      'vscodeChapterEval.showExistedEvaluation',
+      () => {
+        async () => {
+          const editor = vscode.window.activeTextEditor;
+          if (!editor) {
+            vscode.window.showInformationMessage('No open Markdown file.');
+            return;
+          }
+          if (
+            editor.document.languageId != 'markdown' &&
+            editor.document.languageId != 'plaintext'
+          ) {
+            vscode.window.showInformationMessage(
+              'This is not a Markdown or Plaintext file.'
+            );
+            return;
+          }
+          var tip = 'No Evaluation Now.';
+          var filename = editor.document.fileName
+            .split('\\')
+            .pop()
+            ?.split('/')
+            .pop()!;
 
-        const resultFilePath = path.join(storagePath, filename);
-        if (fs.existsSync(resultFilePath)) {
-          tip = fs.readFileSync(resultFilePath).toString();
-        }
-        return new vscode.Hover(tip);
-        }
-    })
+          const resultFilePath = path.join(storagePath, filename);
+          if (fs.existsSync(resultFilePath)) {
+            tip = fs.readFileSync(resultFilePath).toString();
+          }
+          return new vscode.Hover(tip);
+        };
+      }
+    )
   );
 
   vscode.languages.registerHoverProvider('markdown', {
@@ -162,7 +169,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
   context.subscriptions.push(evaluator);
   context.subscriptions.push(
-    vscode.commands.registerCommand('vscodeChapterEval.readOutLoud', ()=>{
+    vscode.commands.registerCommand('vscodeChapterEval.readOutLoud', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
         vscode.window.showInformationMessage('No open Markdown file.');
@@ -178,14 +185,13 @@ export function activate(context: vscode.ExtensionContext) {
         return;
       }
       const text = editor.document.getText(editor.selection);
-            if (text) {
-              readTextAloud(text);
-            } else {
-                vscode.window.showInformationMessage('No text selected');
-            }
-
+      if (text) {
+        readTextAloud(text);
+      } else {
+        vscode.window.showInformationMessage('No text selected');
+      }
     })
-  )
+  );
   context.subscriptions.push(
     vscode.commands.registerCommand('vscodeChapterEval.formatMarkdown', () => {
       const editor = vscode.window.activeTextEditor;
@@ -220,39 +226,54 @@ export function activate(context: vscode.ExtensionContext) {
   );
 }
 
+function getAnalysisFolder() {
+  const workspaceFolders = vscode.workspace.workspaceFolders;
+  if (!workspaceFolders) {
+    return undefined;
+  }
+  const workspaceRoot = workspaceFolders[0].uri.fsPath;
+  const a_path = path.join(workspaceRoot, '\\Analysis\\');
+  if (!fs.existsSync(a_path)) {
+    fs.mkdirSync(a_path);
+  }
+
+  return a_path;
+}
+
 function readTextAloud(text: string) {
   const platform = process.platform;
 
   let command = '';
   switch (platform) {
-      case 'win32':
-          // Windows
-          command = `powershell -Command "Add-Type -AssemblyName System.speech;` +
-                    `[System.Speech.Synthesis.SpeechSynthesizer]::new().Speak('${text.replace(/'/g, "''")}');"`;
-          break;
-      case 'darwin':
-          // macOS
-          command = `say "${text}"`;
-          break;
-      case 'linux':
-          // Linux
-          command = `espeak "${text}"`;
-          break;
-      default:
-          vscode.window.showErrorMessage('Unsupported platform');
-          return;
+    case 'win32':
+      // Windows
+      command =
+        `powershell -Command "Add-Type -AssemblyName System.speech;` +
+        `[System.Speech.Synthesis.SpeechSynthesizer]::new().Speak('${text.replace(/'/g, "''")}');"`;
+      break;
+    case 'darwin':
+      // macOS
+      command = `say "${text}"`;
+      break;
+    case 'linux':
+      // Linux
+      command = `espeak "${text}"`;
+      break;
+    default:
+      vscode.window.showErrorMessage('Unsupported platform');
+      return;
   }
 
   exec(command, (error, stdout, stderr) => {
-      if (error) {
-          vscode.window.showErrorMessage(`Error: ${error.message}`);
-          return;
-      }
-      if (stderr) {
-          vscode.window.showErrorMessage(`stderr: ${stderr}`);
-          return;
-      }
-      vscode.window.showInformationMessage(`Text read out loud successfully`);
+    if (error) {
+      vscode.window.showErrorMessage(`Error: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      vscode.window.showErrorMessage(`stderr: ${stderr}`);
+      return;
+    }
+    vscode.window.showInformationMessage(`Text read out loud successfully`);
   });
 }
 

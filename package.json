@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.7.16",
+  "version": "0.7.17",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "publisher": "huangjien",
@@ -81,11 +81,11 @@
         "vscodeChapterEval.localModel": {
           "type": "string",
           "enum": [
-            "llama3",
-            "qwen:7b",
-            "wangshenzhi/llama3-8b-chinese-chat-ollama-q8"
+            "llama3.1:latest",
+            "qwen2:7b",
+            "gemma:latest"
           ],
-          "default": "wangshenzhi/llama3-8b-chinese-chat-ollama-q8",
+          "default": "llama3.1:latest",
           "description": "Which local ollama model to use",
           "order": 3
         },
@@ -159,26 +159,26 @@
     }
   },
   "devDependencies": {
-    "@types/glob": "^8.0.0",
+    "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.7",
-    "@types/node": "^20.14.1",
-    "@types/vscode": "^1.91.0",
-    "@typescript-eslint/eslint-plugin": "^7.16.1",
-    "@typescript-eslint/parser": "^7.16.1",
+    "@types/node": "^22.5.3",
+    "@types/vscode": "^1.92.0",
+    "@typescript-eslint/eslint-plugin": "^8.4.0",
+    "@typescript-eslint/parser": "^8.4.0",
     "@vscode/test-electron": "^2.4.1",
     "eslint": "^8.57.0",
     "glob": "^11.0.0",
-    "mocha": "^10.7.0",
+    "mocha": "^10.7.3",
     "prettier": "^3.3.3",
-    "ts-loader": "^9.4.1",
-    "typescript": "^5.5.3",
-    "webpack": "^5.93.0",
-    "webpack-cli": "^5.0.0"
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.5.4",
+    "webpack": "^5.94.0",
+    "webpack-cli": "^5.1.4"
   },
   "dependencies": {
     "child_process": "^1.0.2",
     "crypto": "^1.0.1",
-    "husky": "^9.1.1",
-    "openai": "^4.52.7"
+    "husky": "^9.1.5",
+    "openai": "^4.57.2"
   }
 }
