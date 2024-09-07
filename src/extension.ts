@@ -6,55 +6,27 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as CryptoJS from 'crypto';
 import OpenAI from 'openai';
-import { window } from 'vscode';
 import { exec } from 'child_process';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-  const storagePath = context.globalStorageUri.fsPath;
-  if (!fs.existsSync(storagePath)) {
-    fs.mkdirSync(storagePath, { recursive: true });
-  }
-  const location: string = getConfiguration('modelLocation')!;
-  const localModel: string = getConfiguration('localModel')!;
-  const apiKey: string = getConfiguration('openaiApiKey')!;
-  if (!apiKey && location === 'Remote') {
-    showMessage('OpenAI API key is not set in settings.', 'error');
-    return;
-  }
-  if (!localModel && location === 'Local') {
-    showMessage('Local model is not set in settings.', 'error');
-    return;
-  }
-  process.env.OPENAI_API_KEY = apiKey;
-  let model: string = getConfiguration('model', 'gpt-4o-mini')!;
+  const storagePath = getAnalysisFolder(context);
 
-  let temperature: number = getConfiguration('temperature', 1)!;
+  // const statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
+  //   context.subscriptions.push(statusBar);
 
-  let maxToken: number = getConfiguration('maxToken', 4096)!;
+  //   let isEvaluated = false; // Placeholder for actual evaluation state storage
 
-  let openai: OpenAI;
-  if (location === 'Remote') {
-    openai = new OpenAI();
-  } else {
-    openai = new OpenAI({
-      baseURL: 'http://localhost:11434/v1',
-      apiKey: 'ollama', // required but unused
-    });
-    model = getConfiguration('localModel', 'llama3.1:latest')!;
-  }
+  //   function updateStatusBar() {
+  //       statusBar.text = isEvaluated ? 'Evaluated ✔️' : 'Not Evaluated ❌';
+  //       statusBar.command = 'extension.showEvaluationOptions';
+  //       statusBar.show();
+  //   }
 
   registerCommandOfShowExistedEvaluation(context, storagePath);
   registerHoverProvider(storagePath);
-  registerCommandOfEvaluation(
-    openai,
-    storagePath,
-    model,
-    temperature,
-    maxToken,
-    context
-  );
+  registerCommandOfEvaluation(storagePath, context);
   registerCommandOfReadOutLoud(context);
   registerCommandOfFormat(context);
 }
@@ -168,13 +140,38 @@ function registerCommandOfReadOutLoud(context: vscode.ExtensionContext) {
 }
 
 function registerCommandOfEvaluation(
-  openai: OpenAI,
   storagePath: string,
-  model: string,
-  temperature: number,
-  maxToken: number,
   context: vscode.ExtensionContext
 ) {
+  const location: string = getConfiguration('modelLocation')!;
+  const localModel: string = getConfiguration('localModel')!;
+  const apiKey: string = getConfiguration('openaiApiKey')!;
+  if (!apiKey && location === 'Remote') {
+    showMessage('OpenAI API key is not set in settings.', 'error');
+    return;
+  }
+  if (!localModel && location === 'Local') {
+    showMessage('Local model is not set in settings.', 'error');
+    return;
+  }
+  process.env.OPENAI_API_KEY = apiKey;
+  let model: string = getConfiguration('model', 'gpt-4o-mini')!;
+
+  let temperature: number = getConfiguration('temperature', 1)!;
+
+  let maxToken: number = getConfiguration('maxToken', 4096)!;
+
+  let openai: OpenAI;
+  if (location === 'Remote') {
+    openai = new OpenAI();
+  } else {
+    openai = new OpenAI({
+      baseURL: 'http://localhost:11434/v1',
+      apiKey: 'ollama', // required but unused
+    });
+    model = getConfiguration('localModel', 'llama3.1:latest')!;
+  }
+
   const evaluator = vscode.commands.registerCommand(
     'vscodeChapterEval.evaluateMarkdown',
     async () => {
@@ -213,10 +210,14 @@ function registerCommandOfEvaluation(
   context.subscriptions.push(evaluator);
 }
 
-function getAnalysisFolder() {
+function getAnalysisFolder(context: vscode.ExtensionContext) {
   const workspaceFolders = vscode.workspace.workspaceFolders;
   if (!workspaceFolders) {
-    return undefined;
+    const storagePath = context.globalStorageUri.fsPath;
+    if (!fs.existsSync(storagePath)) {
+      fs.mkdirSync(storagePath, { recursive: true });
+    }
+    return storagePath;
   }
   const workspaceRoot = workspaceFolders[0].uri.fsPath;
   const a_path = path.join(workspaceRoot, '\\Analysis\\');
