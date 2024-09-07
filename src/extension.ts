@@ -16,44 +16,23 @@ export function activate(context: vscode.ExtensionContext) {
   if (!fs.existsSync(storagePath)) {
     fs.mkdirSync(storagePath, { recursive: true });
   }
-  const location: string = vscode.workspace
-    .getConfiguration('vscodeChapterEval')
-    .get('modelLocation')!;
-  const localModel: string = vscode.workspace
-    .getConfiguration('vscodeChapterEval')
-    .get('localModel')!;
-  const apiKey: string = vscode.workspace
-    .getConfiguration('vscodeChapterEval')
-    .get('openaiApiKey')!;
+  const location: string = ('modelLocation')!;
+  const localModel: string = ('localModel')!;
+  const apiKey: string = ('openaiApiKey')!;
   if (!apiKey && location === 'Remote') {
-    vscode.window.showErrorMessage('OpenAI API key is not set in settings.');
+    showMessage('OpenAI API key is not set in settings.', 'error');
     return;
   }
   if (!localModel && location === 'Local') {
-    vscode.window.showErrorMessage('Local model is not set in settings.');
+    showMessage('Local model is not set in settings.', 'error');
     return;
   }
   process.env.OPENAI_API_KEY = apiKey;
-  let model: string = vscode.workspace
-    .getConfiguration('vscodeChapterEval')
-    .get('model')!;
-  if (!model) {
-    model = 'gpt-4-turbo';
-  }
+  let model: string = getConfiguration('model', 'gpt-4o-mini')!;
 
-  let temperature: number = vscode.workspace
-    .getConfiguration('vscodeChapterEval')
-    .get('temperature')!;
-  if (!temperature) {
-    temperature = 1;
-  }
+  let temperature: number = getConfiguration('temperature', 1)!;
 
-  let maxToken: number = vscode.workspace
-    .getConfiguration('vscodeChapterEval')
-    .get('maxToken')!;
-  if (!maxToken) {
-    maxToken = 4096;
-  }
+  let maxToken: number = getConfiguration('maxToken', 4096)!;
 
   let openai: OpenAI;
   if (location === 'Remote') {
@@ -63,12 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
       baseURL: 'http://localhost:11434/v1',
       apiKey: 'ollama', // required but unused
     });
-    model = vscode.workspace
-      .getConfiguration('vscodeChapterEval')
-      .get('localModel')!;
-    if (!model) {
-      model = 'llama3';
-    }
+    model = getConfiguration('localModel', 'llama3.1:latest')!;
   }
 
   context.subscriptions.push(
@@ -79,16 +53,11 @@ export function activate(context: vscode.ExtensionContext) {
         return async () => {
           const editor = vscode.window.activeTextEditor;
           if (!editor) {
-            vscode.window.showInformationMessage('No open Markdown file.');
+            showMessage('No open Markdown file.', 'info');
             return;
           }
-          if (
-            editor.document.languageId != 'markdown' &&
-            editor.document.languageId != 'plaintext'
-          ) {
-            vscode.window.showInformationMessage(
-              'This is not a Markdown or Plaintext file.'
-            );
+          if (!isMarkdownOrPlainText(editor)) {
+            showMessage('This is not a Markdown or Plaintext file.', 'info');
             return;
           }
           let tip = 'No Evaluation Now.';
@@ -130,24 +99,17 @@ export function activate(context: vscode.ExtensionContext) {
     async () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
-        vscode.window.showInformationMessage('No open Markdown file.');
+        showMessage('No open Markdown file.', 'info');
         return;
       }
-      if (
-        editor.document.languageId != 'markdown' &&
-        editor.document.languageId != 'plaintext'
-      ) {
-        vscode.window.showInformationMessage(
-          'This is not a Markdown or Plaintext file.'
-        );
+      if (!isMarkdownOrPlainText(editor)) {
+        showMessage('This is not a Markdown or Plaintext file.', 'info');
         return;
       }
 
-      let promptString: string = vscode.workspace
-        .getConfiguration('vscodeChapterEval')
-        .get('prompt')!;
+      let promptString: string = getConfiguration('prompt')!;
       if (!promptString) {
-        vscode.window.showWarningMessage('OpenAI prompt is not set!');
+        showMessage('OpenAI prompt is not set!', 'warning');
         promptString = `You are ASSISTANT , work as literary critic. Please evaluate the tension of the following chapter and give it a score out of 100. 
             Also, describe the curve of the tension changes in the chapter. 
             Point out the three most outstanding advantages and the three biggest disadvantages of the chapter. 
@@ -172,23 +134,18 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('vscodeChapterEval.readOutLoud', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
-        vscode.window.showInformationMessage('No open Markdown file.');
+        showMessage('No open Markdown file.', 'info');
         return;
       }
-      if (
-        editor.document.languageId != 'markdown' &&
-        editor.document.languageId != 'plaintext'
-      ) {
-        vscode.window.showInformationMessage(
-          'This is not a Markdown or Plaintext file.'
-        );
+      if (!isMarkdownOrPlainText(editor)) {
+        showMessage('This is not a Markdown or Plaintext file.', 'info');
         return;
       }
       const text = editor.document.getText(editor.selection);
       if (text) {
         readTextAloud(text);
       } else {
-        vscode.window.showInformationMessage('No text selected');
+        showMessage('No text selected', 'info');
       }
     })
   );
@@ -196,16 +153,11 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('vscodeChapterEval.formatMarkdown', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
-        vscode.window.showInformationMessage('No open Markdown file.');
+        showMessage('No open Markdown file.', 'info');
         return;
       }
-      if (
-        editor.document.languageId != 'markdown' &&
-        editor.document.languageId != 'plaintext'
-      ) {
-        vscode.window.showInformationMessage(
-          'This is not a Markdown or Plaintext file.'
-        );
+      if (!isMarkdownOrPlainText(editor)) {
+        showMessage('This is not a Markdown or Plaintext file.', 'info');
         return;
       }
 
@@ -260,20 +212,20 @@ function readTextAloud(text: string) {
       command = `espeak "${text}"`;
       break;
     default:
-      vscode.window.showErrorMessage('Unsupported platform');
+      showMessage('Unsupported platform', 'error');
       return;
   }
 
   exec(command, (error, stdout, stderr) => {
     if (error) {
-      vscode.window.showErrorMessage(`Error: ${error.message}`);
+      showMessage(`Error: ${error.message}`, 'error');
       return;
     }
     if (stderr) {
-      vscode.window.showErrorMessage(`stderr: ${stderr}`);
+      showMessage(`stderr: ${stderr}`, 'error');
       return;
     }
-    vscode.window.showInformationMessage(`Text read out loud successfully`);
+    showMessage(`Text read out loud successfully`, 'info');
   });
 }
 
@@ -329,9 +281,7 @@ async function evaluateChapter(
 ) {
   // get file base info, and chars number
   if (editor.document.isDirty) {
-    vscode.window.showWarningMessage(
-      'Please save your file before evaluation, or you may just waste your money!'
-    );
+    showMessage('Please save your file before evaluation, or you may just waste your money!', 'warning');
     return;
   }
   const source_file_uri = editor.document.uri;
@@ -388,7 +338,7 @@ async function evaluateChapter(
       );
     })
     .catch((err) => {
-      vscode.window.showErrorMessage(err.message);
+      showMessage(err.message, 'error');
     });
 
   if (fs.existsSync(resultFilePath)) {
@@ -400,9 +350,27 @@ async function evaluateChapter(
 // this method is called when your extension is deactivated
 export function deactivate() {}
 
+export function showMessage(message: string, type: 'info' | 'warning' | 'error') {
+  switch (type) {
+      case 'info':
+          vscode.window.showInformationMessage(message);
+          break;
+      case 'warning':
+          vscode.window.showWarningMessage(message);
+          break;
+      case 'error':
+          vscode.window.showErrorMessage(message);
+          break;
+  }
+}
+
 export function displayMarkdownFromFile(filePath: string) {
   const uri = vscode.Uri.file(filePath);
   vscode.commands.executeCommand('markdown.showPreview', uri);
+}
+
+export function isMarkdownOrPlainText(editor: vscode.TextEditor) {
+  return editor.document.languageId === 'markdown' || editor.document.languageId === 'plaintext';
 }
 
 export function printToOutput(result: string) {
@@ -433,8 +401,10 @@ export function writeToLocal(fileName: string, fileContent: string): string {
   //     writeContent = fileContent + "\n\n---\n\n" +fs.readFileSync(fileName).toString();
   //   }
   fs.writeFileSync(fileName, fileContent, 'utf8');
-  vscode.window.showInformationMessage(
-    `Evaluation result saved to ${fileName}`
-  );
+  showMessage(`Evaluation result saved to ${fileName}`, 'info');
   return fileName;
+}
+
+function getConfiguration(key: string, defaultValue?: any) {
+  return vscode.workspace.getConfiguration('vscodeChapterEval').get(key, defaultValue);
 }
