@@ -16,9 +16,9 @@ export function activate(context: vscode.ExtensionContext) {
   if (!fs.existsSync(storagePath)) {
     fs.mkdirSync(storagePath, { recursive: true });
   }
-  const location: string = ('modelLocation')!;
-  const localModel: string = ('localModel')!;
-  const apiKey: string = ('openaiApiKey')!;
+  const location: string = getConfiguration('modelLocation')!;
+  const localModel: string = getConfiguration('localModel')!;
+  const apiKey: string = getConfiguration('openaiApiKey')!;
   if (!apiKey && location === 'Remote') {
     showMessage('OpenAI API key is not set in settings.', 'error');
     return;
@@ -47,7 +47,14 @@ export function activate(context: vscode.ExtensionContext) {
 
   registerCommandOfShowExistedEvaluation(context, storagePath);
   registerHoverProvider(storagePath);
-  registerCommandOfEvaluation(openai, storagePath, model, temperature, maxToken, context);
+  registerCommandOfEvaluation(
+    openai,
+    storagePath,
+    model,
+    temperature,
+    maxToken,
+    context
+  );
   registerCommandOfReadOutLoud(context);
   registerCommandOfFormat(context);
 }
@@ -71,7 +78,10 @@ function registerHoverProvider(storagePath: string) {
   });
 }
 
-function registerCommandOfShowExistedEvaluation(context: vscode.ExtensionContext, storagePath: string) {
+function registerCommandOfShowExistedEvaluation(
+  context: vscode.ExtensionContext,
+  storagePath: string
+) {
   context.subscriptions.push(
     // ctrl+f1, show existed evaluation
     vscode.commands.registerCommand(
@@ -157,7 +167,14 @@ function registerCommandOfReadOutLoud(context: vscode.ExtensionContext) {
   );
 }
 
-function registerCommandOfEvaluation(openai: OpenAI, storagePath: string, model: string, temperature: number, maxToken: number, context: vscode.ExtensionContext) {
+function registerCommandOfEvaluation(
+  openai: OpenAI,
+  storagePath: string,
+  model: string,
+  temperature: number,
+  maxToken: number,
+  context: vscode.ExtensionContext
+) {
   const evaluator = vscode.commands.registerCommand(
     'vscodeChapterEval.evaluateMarkdown',
     async () => {
@@ -299,12 +316,19 @@ async function evaluateChapter(
 ) {
   // get file base info, and chars number
   if (editor.document.isDirty) {
-    showMessage('Please save your file before evaluation, or you may just waste your money!', 'warning');
+    showMessage(
+      'Please save your file before evaluation, or you may just waste your money!',
+      'warning'
+    );
     return;
   }
   const source_file_uri = editor.document.uri;
   const source_file_stat = fs.lstatSync(source_file_uri.fsPath);
-  const filename = editor.document.fileName.split('\\')?.pop()?.split('/')?.pop()!;
+  const filename = editor.document.fileName
+    .split('\\')
+    ?.pop()
+    ?.split('/')
+    ?.pop()!;
 
   const documentText = editor.document.getText();
   const text_length = documentText.length;
@@ -368,17 +392,20 @@ async function evaluateChapter(
 // this method is called when your extension is deactivated
 export function deactivate() {}
 
-export function showMessage(message: string, type: 'info' | 'warning' | 'error') {
+export function showMessage(
+  message: string,
+  type: 'info' | 'warning' | 'error'
+) {
   switch (type) {
-      case 'info':
-          vscode.window.showInformationMessage(message);
-          break;
-      case 'warning':
-          vscode.window.showWarningMessage(message);
-          break;
-      case 'error':
-          vscode.window.showErrorMessage(message);
-          break;
+    case 'info':
+      vscode.window.showInformationMessage(message);
+      break;
+    case 'warning':
+      vscode.window.showWarningMessage(message);
+      break;
+    case 'error':
+      vscode.window.showErrorMessage(message);
+      break;
   }
 }
 
@@ -388,7 +415,10 @@ export function displayMarkdownFromFile(filePath: string) {
 }
 
 export function isMarkdownOrPlainText(editor: vscode.TextEditor) {
-  return editor.document.languageId === 'markdown' || editor.document.languageId === 'plaintext';
+  return (
+    editor.document.languageId === 'markdown' ||
+    editor.document.languageId === 'plaintext'
+  );
 }
 
 export function printToOutput(result: string) {
@@ -424,5 +454,7 @@ export function writeToLocal(fileName: string, fileContent: string): string {
 }
 
 function getConfiguration(key: string, defaultValue?: any) {
-  return vscode.workspace.getConfiguration('vscodeChapterEval').get(key, defaultValue);
+  return vscode.workspace
+    .getConfiguration('vscodeChapterEval')
+    .get(key, defaultValue);
 }
