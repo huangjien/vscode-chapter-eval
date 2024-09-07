@@ -45,6 +45,33 @@ export function activate(context: vscode.ExtensionContext) {
     model = getConfiguration('localModel', 'llama3.1:latest')!;
   }
 
+  registerCommandOfShowExistedEvaluation(context, storagePath);
+  registerHoverProvider(storagePath);
+  registerCommandOfEvaluation(openai, storagePath, model, temperature, maxToken, context);
+  registerCommandOfReadOutLoud(context);
+  registerCommandOfFormat(context);
+}
+
+function registerHoverProvider(storagePath: string) {
+  vscode.languages.registerHoverProvider('markdown', {
+    provideHover(document, position, token) {
+      // only when hover at the beginning of the chapter, will show tooltip
+      if (position.line > 0 && position.character > 0) {
+        return;
+      }
+      let tip = 'No Evaluation Now.';
+      const filename = document?.fileName.split('\\').pop()?.split('/').pop()!;
+
+      const resultFilePath = path.join(storagePath, filename);
+      if (fs.existsSync(resultFilePath)) {
+        tip = fs.readFileSync(resultFilePath).toString();
+      }
+      return new vscode.Hover(tip);
+    },
+  });
+}
+
+function registerCommandOfShowExistedEvaluation(context: vscode.ExtensionContext, storagePath: string) {
   context.subscriptions.push(
     // ctrl+f1, show existed evaluation
     vscode.commands.registerCommand(
@@ -76,24 +103,61 @@ export function activate(context: vscode.ExtensionContext) {
       }
     )
   );
+}
 
-  vscode.languages.registerHoverProvider('markdown', {
-    provideHover(document, position, token) {
-      // only when hover at the beginning of the chapter, will show tooltip
-      if (position.line > 0 && position.character > 0) {
+function registerCommandOfFormat(context: vscode.ExtensionContext) {
+  context.subscriptions.push(
+    vscode.commands.registerCommand('vscodeChapterEval.formatMarkdown', () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) {
+        showMessage('No open Markdown file.', 'info');
         return;
       }
-      let tip = 'No Evaluation Now.';
-      const filename = document?.fileName.split('\\').pop()?.split('/').pop()!;
-
-      const resultFilePath = path.join(storagePath, filename);
-      if (fs.existsSync(resultFilePath)) {
-        tip = fs.readFileSync(resultFilePath).toString();
+      if (!isMarkdownOrPlainText(editor)) {
+        showMessage('This is not a Markdown or Plaintext file.', 'info');
+        return;
       }
-      return new vscode.Hover(tip);
-    },
-  });
 
+      // Your formatting logic here
+      const formattedText = formatMarkdown(editor.document.getText());
+      vscode.window.activeTextEditor?.edit((builder) => {
+        const doc = editor.document;
+        builder.replace(
+          new vscode.Range(
+            doc.lineAt(0).range.start,
+            doc.lineAt(doc.lineCount - 1).range.end
+          ),
+          formattedText
+        );
+      });
+      return;
+    })
+  );
+}
+
+function registerCommandOfReadOutLoud(context: vscode.ExtensionContext) {
+  context.subscriptions.push(
+    vscode.commands.registerCommand('vscodeChapterEval.readOutLoud', () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) {
+        showMessage('No open Markdown file.', 'info');
+        return;
+      }
+      if (!isMarkdownOrPlainText(editor)) {
+        showMessage('This is not a Markdown or Plaintext file.', 'info');
+        return;
+      }
+      const text = editor.document.getText(editor.selection);
+      if (text) {
+        readTextAloud(text);
+      } else {
+        showMessage('No text selected', 'info');
+      }
+    })
+  );
+}
+
+function registerCommandOfEvaluation(openai: OpenAI, storagePath: string, model: string, temperature: number, maxToken: number, context: vscode.ExtensionContext) {
   const evaluator = vscode.commands.registerCommand(
     'vscodeChapterEval.evaluateMarkdown',
     async () => {
@@ -130,52 +194,6 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
   context.subscriptions.push(evaluator);
-  context.subscriptions.push(
-    vscode.commands.registerCommand('vscodeChapterEval.readOutLoud', () => {
-      const editor = vscode.window.activeTextEditor;
-      if (!editor) {
-        showMessage('No open Markdown file.', 'info');
-        return;
-      }
-      if (!isMarkdownOrPlainText(editor)) {
-        showMessage('This is not a Markdown or Plaintext file.', 'info');
-        return;
-      }
-      const text = editor.document.getText(editor.selection);
-      if (text) {
-        readTextAloud(text);
-      } else {
-        showMessage('No text selected', 'info');
-      }
-    })
-  );
-  context.subscriptions.push(
-    vscode.commands.registerCommand('vscodeChapterEval.formatMarkdown', () => {
-      const editor = vscode.window.activeTextEditor;
-      if (!editor) {
-        showMessage('No open Markdown file.', 'info');
-        return;
-      }
-      if (!isMarkdownOrPlainText(editor)) {
-        showMessage('This is not a Markdown or Plaintext file.', 'info');
-        return;
-      }
-
-      // Your formatting logic here
-      const formattedText = formatMarkdown(editor.document.getText());
-      vscode.window.activeTextEditor?.edit((builder) => {
-        const doc = editor.document;
-        builder.replace(
-          new vscode.Range(
-            doc.lineAt(0).range.start,
-            doc.lineAt(doc.lineCount - 1).range.end
-          ),
-          formattedText
-        );
-      });
-      return;
-    })
-  );
 }
 
 function getAnalysisFolder() {
