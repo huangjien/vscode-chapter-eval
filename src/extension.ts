@@ -34,28 +34,28 @@ export function activate(context: vscode.ExtensionContext) {
     return;
   }
   process.env.OPENAI_API_KEY = apiKey;
-  var model: string = vscode.workspace
+  let model: string = vscode.workspace
     .getConfiguration('vscodeChapterEval')
     .get('model')!;
   if (!model) {
     model = 'gpt-4-turbo';
   }
 
-  var temperature: number = vscode.workspace
+  let temperature: number = vscode.workspace
     .getConfiguration('vscodeChapterEval')
     .get('temperature')!;
   if (!temperature) {
     temperature = 1;
   }
 
-  var maxToken: number = vscode.workspace
+  let maxToken: number = vscode.workspace
     .getConfiguration('vscodeChapterEval')
     .get('maxToken')!;
   if (!maxToken) {
     maxToken = 4096;
   }
 
-  var openai: OpenAI;
+  let openai: OpenAI;
   if (location === 'Remote') {
     openai = new OpenAI();
   } else {
@@ -76,7 +76,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       'vscodeChapterEval.showExistedEvaluation',
       () => {
-        async () => {
+        return async () => {
           const editor = vscode.window.activeTextEditor;
           if (!editor) {
             vscode.window.showInformationMessage('No open Markdown file.');
@@ -91,8 +91,8 @@ export function activate(context: vscode.ExtensionContext) {
             );
             return;
           }
-          var tip = 'No Evaluation Now.';
-          var filename = editor.document.fileName
+          let tip = 'No Evaluation Now.';
+          const filename = editor.document.fileName
             .split('\\')
             .pop()
             ?.split('/')
@@ -114,8 +114,8 @@ export function activate(context: vscode.ExtensionContext) {
       if (position.line > 0 && position.character > 0) {
         return;
       }
-      var tip = 'No Evaluation Now.';
-      var filename = document.fileName.split('\\').pop()?.split('/').pop()!;
+      let tip = 'No Evaluation Now.';
+      const filename = document?.fileName.split('\\').pop()?.split('/').pop()!;
 
       const resultFilePath = path.join(storagePath, filename);
       if (fs.existsSync(resultFilePath)) {
@@ -125,7 +125,7 @@ export function activate(context: vscode.ExtensionContext) {
     },
   });
 
-  let evaluator = vscode.commands.registerCommand(
+  const evaluator = vscode.commands.registerCommand(
     'vscodeChapterEval.evaluateMarkdown',
     async () => {
       const editor = vscode.window.activeTextEditor;
@@ -336,11 +336,7 @@ async function evaluateChapter(
   }
   const source_file_uri = editor.document.uri;
   const source_file_stat = fs.lstatSync(source_file_uri.fsPath);
-  const filename = editor.document.fileName
-    .split('\\')
-    .pop()
-    ?.split('/')
-    .pop()!;
+  const filename = editor.document.fileName.split('\\')?.pop()?.split('/')?.pop()!;
 
   const documentText = editor.document.getText();
   const text_length = documentText.length;
@@ -352,9 +348,9 @@ async function evaluateChapter(
   // if file already existed, check its first 8 chars,
   // if matched, then we have done the evaluation, just display it.
   // if not matched, need to do evaluation again.
-  var exist_content = '';
+  let exist_content = '';
   if (fs.existsSync(resultFilePath)) {
-    var content = fs.readFileSync(resultFilePath).toString();
+    const content = fs.readFileSync(resultFilePath).toString();
     if (content.startsWith(stringHash)) {
       displayMarkdownFromFile(resultFilePath);
       return;
@@ -432,7 +428,7 @@ export function digest(message: string) {
 
 export function writeToLocal(fileName: string, fileContent: string): string {
   // if file already existed, get its content, append to the end of fileContent
-  //   var writeContent = fileContent;
+  //   let writeContent = fileContent;
   //   if (fs.existsSync(fileName)) {
   //     writeContent = fileContent + "\n\n---\n\n" +fs.readFileSync(fileName).toString();
   //   }

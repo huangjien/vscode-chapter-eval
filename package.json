@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.7.19",
+  "version": "0.7.20",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "publisher": "huangjien",
@@ -179,6 +179,6 @@
     "child_process": "^1.0.2",
     "crypto": "^1.0.1",
     "husky": "^9.1.5",
-    "openai": "^4.57.3"
+    "openai": "^4.58.1"
   }
 }
