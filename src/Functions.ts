@@ -1,96 +1,102 @@
 import { exec } from 'child_process';
-import { digest, displayMarkdownFromFile, getFileName, showMessage, writeToLocal } from './Utils';
+import {
+  digest,
+  displayMarkdownFromFile,
+  getFileName,
+  showMessage,
+  writeToLocal,
+} from './Utils';
 import * as fs from 'fs';
 import * as path from 'path';
 import OpenAI from 'openai';
 import * as vscode from 'vscode';
 
 export async function evaluateChapter(
-    openai: OpenAI,
-    editor: vscode.TextEditor,
-    storagePath: string,
-    promptString: string,
-    model: string,
-    temperature: number,
-    maxToken: number
-  ) {
-    // get file base info, and chars number
-    if (editor.document.isDirty) {
-      showMessage(
-        'Please save your file before evaluation, or you may just waste your money!',
-        'warning'
-      );
+  openai: OpenAI,
+  editor: vscode.TextEditor,
+  storagePath: string,
+  promptString: string,
+  model: string,
+  temperature: number,
+  maxToken: number
+) {
+  // get file base info, and chars number
+  if (editor.document.isDirty) {
+    showMessage(
+      'Please save your file before evaluation, or you may just waste your money!',
+      'warning'
+    );
+    return;
+  }
+  const source_file_uri = editor.document.uri;
+  const source_file_stat = fs.lstatSync(source_file_uri.fsPath);
+  const filename = getFileName(editor.document);
+
+  const documentText = editor.document.getText();
+  const text_length = documentText.length;
+  // Proceed to evaluate the documentText with OpenAI and handle the result
+  // calculate its hash, if we have done that before, it will be save in your local disk, just read from there
+  const stringHash = digest(documentText);
+  const resultFilePath = path.join(storagePath, filename);
+  promptString = promptString.replace('$PROMPT$', documentText);
+  // if file already existed, check its first 8 chars,
+  // if matched, then we have done the evaluation, just display it.
+  // if not matched, need to do evaluation again.
+  let exist_content = '';
+  if (fs.existsSync(resultFilePath)) {
+    const content = fs.readFileSync(resultFilePath).toString();
+    if (content.startsWith(stringHash)) {
+      displayMarkdownFromFile(resultFilePath);
       return;
     }
-    const source_file_uri = editor.document.uri;
-    const source_file_stat = fs.lstatSync(source_file_uri.fsPath);
-    const filename = getFileName(editor.document);
-  
-    const documentText = editor.document.getText();
-    const text_length = documentText.length;
-    // Proceed to evaluate the documentText with OpenAI and handle the result
-    // calculate its hash, if we have done that before, it will be save in your local disk, just read from there
-    const stringHash = digest(documentText);
-    const resultFilePath = path.join(storagePath, filename);
-    promptString = promptString.replace('$PROMPT$', documentText);
-    // if file already existed, check its first 8 chars,
-    // if matched, then we have done the evaluation, just display it.
-    // if not matched, need to do evaluation again.
-    let exist_content = '';
-    if (fs.existsSync(resultFilePath)) {
-      const content = fs.readFileSync(resultFilePath).toString();
-      if (content.startsWith(stringHash)) {
-        displayMarkdownFromFile(resultFilePath);
-        return;
-      }
-      exist_content = '\n\n---\n\n' + content;
-    }
-  
-    // does not exist, call openAi to make it.
-  
-    await openai.chat.completions
-      .create({
-        model: model,
-        messages: [{ role: 'user', content: promptString }],
-        temperature: temperature,
-        max_tokens: maxToken,
-      })
-      .then((data) => {
-        return JSON.stringify(data);
-      })
-      .then((data) => {
-        const evalContent = JSON.parse(data);
-        writeToLocal(
-          resultFilePath,
-          stringHash +
-            '\n\nLength: ' +
-            text_length +
-            '\n\nLast Modified: ' +
-            source_file_stat.mtime
-              .toISOString()
-              .replace('T', ' ')
-              .replace('Z', '') +
-            '\n\n<details><summary>' +
-            source_file_stat.mtime
-              .toISOString()
-              .replace('T', ' ')
-              .replace('Z', '') +
-            '</summary><br/>' +
-            evalContent.choices[0]['message']['content'] +
-            '</details>' +
-            exist_content
-        );
-      })
-      .catch((err) => {
-        showMessage(err.message, 'error');
-      });
-  
-    if (fs.existsSync(resultFilePath)) {
-      displayMarkdownFromFile(resultFilePath);
-    }
-    return promptString;
+    exist_content = '\n\n---\n\n' + content;
   }
-  
+
+  // does not exist, call openAi to make it.
+
+  await openai.chat.completions
+    .create({
+      model: model,
+      messages: [{ role: 'user', content: promptString }],
+      temperature: temperature,
+      max_tokens: maxToken,
+    })
+    .then((data) => {
+      return JSON.stringify(data);
+    })
+    .then((data) => {
+      const evalContent = JSON.parse(data);
+      writeToLocal(
+        resultFilePath,
+        stringHash +
+          '\n\nLength: ' +
+          text_length +
+          '\n\nLast Modified: ' +
+          source_file_stat.mtime
+            .toISOString()
+            .replace('T', ' ')
+            .replace('Z', '') +
+          '\n\n<details><summary>' +
+          source_file_stat.mtime
+            .toISOString()
+            .replace('T', ' ')
+            .replace('Z', '') +
+          '</summary><br/>' +
+          evalContent.choices[0]['message']['content'] +
+          '</details>' +
+          exist_content
+      );
+    })
+    .catch((err) => {
+      showMessage(err.message, 'error');
+    });
+
+  if (fs.existsSync(resultFilePath)) {
+    displayMarkdownFromFile(resultFilePath);
+  }
+  return promptString;
+}
+
 export function formatMarkdown(text: string): string {
   // Split the text into paragraphs
   const paragraphs = text.trim().split(/\n\s*\n/);

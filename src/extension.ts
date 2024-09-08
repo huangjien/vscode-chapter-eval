@@ -14,7 +14,7 @@ import {
 } from './Utils';
 import OpenAI from 'openai';
 import { readTextAloud, formatMarkdown, evaluateChapter } from './Functions';
-// import {EvaluationWebViewProvider} from './EvaluationWebViewProvider';
+import { EvaluationWebViewProvider } from './EvaluationWebViewProvider';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -28,14 +28,50 @@ export function activate(context: vscode.ExtensionContext) {
   registerCommandOfReadOutLoud(context);
   registerCommandOfFormat(context);
 
-  // 创建一个状态栏项
   setupStatusBarItem(context, storagePath);
 
-  const provider = new EvaluationWebViewProvider(context);
-  context.subscriptions.push(vscode.window.registerWebviewViewProvider('vscodeChapterEval_markdownWebview', provider))
+  const provider = setupSidebarWebviewProvider(context);
+  registerCommandOfShowEvaluation(context, provider, storagePath);
 }
 
-function setupStatusBarItem(context: vscode.ExtensionContext, storagePath: string) {
+function setupSidebarWebviewProvider(context: vscode.ExtensionContext) {
+  const provider = new EvaluationWebViewProvider(context);
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+      'vscodeChapterEval_markdownWebview',
+      provider
+    )
+  );
+  return provider;
+}
+
+function registerCommandOfShowEvaluation(
+  context: vscode.ExtensionContext,
+  provider: EvaluationWebViewProvider,
+  storagePath: string
+) {
+  context.subscriptions.push(
+    vscode.commands.registerCommand('vscodeChapterEval.showEvaluation', () => {
+      if (provider._view) {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+          return;
+        }
+        const filename = getFileName(editor.document);
+        const resultFilePath = path.join(storagePath, filename);
+        if (fs.existsSync(resultFilePath)) {
+          const text = fs.readFileSync(resultFilePath).toString();
+          provider.updateContent(text);
+        }
+      }
+    })
+  );
+}
+
+function setupStatusBarItem(
+  context: vscode.ExtensionContext,
+  storagePath: string
+) {
   const statusBarItem = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right,
     400
@@ -74,8 +110,7 @@ function setupStatusBarItem(context: vscode.ExtensionContext, storagePath: strin
         if (selectedOption === 'Evaluate Current Chapter') {
           if (statusBarItem.text.startsWith('Evaluated')) {
             showMessage('Display existing evaluation...', 'info');
-            
-            // TODO logic to show existing evaluation
+            vscode.commands.executeCommand('vscodeChapterEval.showEvaluation');
           } else {
             showMessage('Evaluating current document...', 'info');
             vscode.commands.executeCommand(
@@ -118,6 +153,7 @@ function updateStatusBar(
       const resultFilePath = path.join(storagePath, filename);
       if (fs.existsSync(resultFilePath)) {
         statusBarItem.text = 'Evaluated ✔️';
+        vscode.commands.executeCommand('vscodeChapterEval.showEvaluation');
       } else {
         statusBarItem.text = 'Not Evaluated ⏳';
       }
@@ -140,41 +176,6 @@ function registerHoverProvider(storagePath: string) {
       return null;
     },
   });
-}
-
-function registerCommandOfShowEvaluation(
-  context: vscode.ExtensionContext,
-  storagePath: string
-) {
-  context.subscriptions.push(
-    vscode.commands.registerCommand('vscodeChapterEval.showEvaluation', () => {
-      return async () => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) {
-          showMessage('No open Markdown file.', 'info');
-          return;
-        }
-        if (!isMarkdownOrPlainText(editor)) {
-          showMessage('This is not a Markdown or Plaintext file.', 'info');
-          return;
-        }
-        const filename = getFileName(editor.document);
-
-        const resultFilePath = path.join(storagePath, filename);
-        if (fs.existsSync(resultFilePath)) {
-          const panel = vscode.window.createWebviewPanel(
-            'vscodeChapterEval_markdownWebview',
-            'Evaluation',
-            { viewColumn: vscode.ViewColumn.One },
-            { enableScripts: true }
-          );
-          const markdownText = fs.readFileSync(resultFilePath).toString();
-          console.log(markdownText);
-          panel.webview.html = getWebviewContent(markdownText);
-        }
-      };
-    })
-  );
 }
 
 function registerCommandOfShowExistedEvaluation(
@@ -333,68 +334,4 @@ function registerCommandOfEvaluation(
     }
   );
   context.subscriptions.push(evaluator);
-}
-
-function getWebviewContent(markdownText: string) {
-  return `
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Chapter Evaluation</title>
-      <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  </head>
-  <body>
-      <h1>Evaluation</h1>
-      <div id="content">## Hello, Author!</div>
-
-      <script>
-          const content = document.getElementById('content');
-          const markdownText = content.innerText;
-          content.innerHTML = marked("${markdownText}");
-      </script>
-  </body>
-  </html>
-  `;
-}
-
-class EvaluationWebViewProvider implements vscode.WebviewViewProvider {
-  constructor(private context: vscode.ExtensionContext) {}
-  resolveWebviewView(webviewView: vscode.WebviewView, context: vscode.WebviewViewResolveContext, token: vscode.CancellationToken): Thenable<void> | void {
-      webviewView.webview.options = {
-          enableScripts: true
-      };
-      webviewView.webview.html = this.getWebviewContent();
-
-      webviewView.webview.onDidReceiveMessage(async (message) => {
-          switch (message.command) {
-              case "showEvaluation":
-                  
-                  break;
-          
-              default:
-                  break;
-          }
-      })
-  }
-  getWebviewContent(): string {
-      return `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chapter Evaluation</title>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-</head>
-<body>
-    <h1>Evaluation</h1>
-    <div id="content">## Hello, Author!</div>
-
-    
-</body>
-</html>
-`;;
-  }
 }

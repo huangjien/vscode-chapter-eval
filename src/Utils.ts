@@ -123,16 +123,15 @@ export function displayMarkdownFromFile(filePath: string) {
   vscode.commands.executeCommand('vscodeChapterEval.showEvaluation', uri);
 }
 
-
 export function showStatusBarProgress(task: Promise<any>) {
-    vscode.window.withProgress(
-      {
-        location: vscode.ProgressLocation.Notification,
-        title: 'Processing...',
-        cancellable: true, // Set to true if you want to allow cancelling the task
-      },
-      () => {
-        return task; // The progress UI will show until this Promise resolves
-      }
-    );
-  }
+  vscode.window.withProgress(
+    {
+      location: vscode.ProgressLocation.Notification,
+      title: 'Processing...',
+      cancellable: true, // Set to true if you want to allow cancelling the task
+    },
+    () => {
+      return task; // The progress UI will show until this Promise resolves
+    }
+  );
+}
