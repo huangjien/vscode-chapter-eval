@@ -14,6 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
   const storagePath = getAnalysisFolder(context);
 
   registerCommandOfShowExistedEvaluation(context, storagePath);
+  registerCommandOfShowEvaluation(context, storagePath);
   registerHoverProvider(storagePath);
   registerCommandOfEvaluation(storagePath, context);
   registerCommandOfReadOutLoud(context);
@@ -21,11 +22,12 @@ export function activate(context: vscode.ExtensionContext) {
 
   // 创建一个状态栏项
   let statusBarItem = vscode.window.createStatusBarItem(
-    vscode.StatusBarAlignment.Right,100
+    vscode.StatusBarAlignment.Right,
+    400
   );
-  let isEvaluated = false; // Placeholder for actual evaluation state storage
-  statusBarItem.text = isEvaluated ? 'Evaluated ✔️' : 'Not Evaluated ❌';
-  statusBarItem.tooltip = 'Click to show options';
+  // let isEvaluated = false; // Placeholder for actual evaluation state storage
+  // statusBarItem.text = isEvaluated ? 'Evaluated ✔️' : 'Not Evaluated ⏳';
+  // statusBarItem.tooltip = 'Click to show options';
   statusBarItem.command = 'vscodeChapterEval.toggleStatusBar';
   statusBarItem.hide(); // 默认隐藏状态栏项
 
@@ -38,26 +40,82 @@ export function activate(context: vscode.ExtensionContext) {
     null,
     context.subscriptions
   );
-  vscode.workspace.onDidSaveTextDocument(updateStatusBar(storagePath, statusBarItem),null,context.subscriptions)
+  vscode.workspace.onDidSaveTextDocument(
+    updateStatusBar(storagePath, statusBarItem),
+    null,
+    context.subscriptions
+  );
 
   // 定义点击状态栏后显示的菜单
-  let disposable3 = vscode.commands.registerCommand(
-    'vscodeChapterEval.toggleStatusBar',
-    () => {
-      console.log("clicked")
-    });
-
-  context.subscriptions.push(disposable3);
-
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'vscodeChapterEval.toggleStatusBar',
+      async () => {
+        const selectedOption = await vscode.window.showQuickPick(
+          ['Evaluate', 'Format', 'Info'],
+          { placeHolder: 'You can choose' }
+        );
+        if (selectedOption === 'Evaluate Current Chapter') {
+          if (statusBarItem.text.startsWith('Evaluated')) {
+            showMessage('Display existing evaluation...', 'info');
+            // TODO logic to show existing evaluation
+          } else {
+            showMessage('Evaluating current document...', 'info');
+            vscode.commands.executeCommand(
+              'vscodeChapterEval.evaluateMarkdown'
+            );
+          }
+        }
+        if (selectedOption === 'Format Current Chapter') {
+          vscode.commands.executeCommand('vscodeChapterEval.formatMarkdown');
+        }
+        if (selectedOption === 'Information of Current Chapter') {
+          showMessage(statusBarItem.tooltip!.toString(), 'info');
+        }
+      }
+    )
+  );
 }
 
-function updateStatusBar(storagePath: string, statusBarItem: vscode.StatusBarItem): (e: vscode.TextEditor| vscode.TextDocument | undefined) => any {
+function countChineseChar(ch: string) {
+  // Count chinese Chars
+  let count = 0;
+  const regexChineseChar = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
+  if (regexChineseChar.test(ch)) {
+    return true;
+  }
+  return false;
+}
+function countChineseString(text: string) {
+  let count = 0;
+  let non = 0;
+  for (let index = 0; index < text.length; index++) {
+    if (countChineseChar(text.charAt(index))) {
+      count++;
+    } else {
+      non++;
+    }
+  }
+  return [count, non];
+}
+
+function updateStatusBar(
+  storagePath: string,
+  statusBarItem: vscode.StatusBarItem
+): (e: vscode.TextEditor | vscode.TextDocument | undefined) => any {
   return () => {
     const editor = vscode.window.activeTextEditor;
     if (editor && isMarkdownOrPlainText(editor)) {
       const documentText = editor.document.getText();
-      const text_length = documentText.length;
-      statusBarItem.tooltip = "word count: " + text_length.toString()
+      const [text_length, non] = countChineseString(documentText);
+      const source_file_stat = fs.lstatSync(editor.document.uri.fsPath);
+      statusBarItem.tooltip =
+        '📃 ' +
+        text_length.toString() +
+        ' 🔠' +
+        non.toString() +
+        '\n🕗 ' +
+        source_file_stat.mtime.toISOString();
       const filename = getFileName(editor.document);
 
       const resultFilePath = path.join(storagePath, filename);
@@ -68,7 +126,6 @@ function updateStatusBar(storagePath: string, statusBarItem: vscode.StatusBarIte
       }
       statusBarItem.show();
     } else {
-      console.log("want to hide");
       statusBarItem.hide();
     }
   };
@@ -76,21 +133,52 @@ function updateStatusBar(storagePath: string, statusBarItem: vscode.StatusBarIte
 
 function registerHoverProvider(storagePath: string) {
   vscode.languages.registerHoverProvider('markdown', {
-    provideHover(document, position, token) {
-      // only when hover at the beginning of the chapter, will show tooltip
-      if (position.line > 0 && position.character > 0) {
-        return;
-      }
-      let tip = 'No Evaluation Now.';
+    provideHover(document) {
       const filename = getFileName(document);
-
       const resultFilePath = path.join(storagePath, filename);
       if (fs.existsSync(resultFilePath)) {
-        tip = fs.readFileSync(resultFilePath).toString();
+        let tip = fs.readFileSync(resultFilePath).toString();
+        return new vscode.Hover(tip);
       }
-      return new vscode.Hover(tip);
+      return null;
     },
   });
+}
+
+function registerCommandOfShowEvaluation(
+  context: vscode.ExtensionContext,
+  storagePath: string
+) {
+  context.subscriptions.push(
+    vscode.commands.registerCommand('vscodeChapterEval.showEvaluation', () => {
+      return async () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+          showMessage('No open Markdown file.', 'info');
+          return;
+        }
+        if (!isMarkdownOrPlainText(editor)) {
+          showMessage('This is not a Markdown or Plaintext file.', 'info');
+          return;
+        }
+        let tip = 'No Evaluation Now.';
+        const filename = getFileName(editor.document);
+
+        const resultFilePath = path.join(storagePath, filename);
+        if (fs.existsSync(resultFilePath)) {
+          const panel = vscode.window.createWebviewPanel(
+            'vscodeChapterEval_markdownWebview',
+            'Evaluation',
+            { viewColumn: vscode.ViewColumn.One },
+            { enableScripts: true }
+          );
+          const markdownText = fs.readFileSync(resultFilePath).toString();
+          console.log(markdownText);
+          panel.webview.html = getWebviewContent(markdownText);
+        }
+      };
+    })
+  );
 }
 
 function registerCommandOfShowExistedEvaluation(
@@ -267,6 +355,30 @@ function getAnalysisFolder(context: vscode.ExtensionContext) {
   return a_path;
 }
 
+function getWebviewContent(markdownText: string) {
+  return `
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Chapter Evaluation</title>
+      <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  </head>
+  <body>
+      <h1>Evaluation</h1>
+      <div id="content">## Hello, Author!</div>
+
+      <script>
+          const content = document.getElementById('content');
+          const markdownText = content.innerText;
+          content.innerHTML = marked("${markdownText}");
+      </script>
+  </body>
+  </html>
+  `;
+}
+
 function readTextAloud(text: string) {
   const platform = process.platform;
 
@@ -426,11 +538,7 @@ async function evaluateChapter(
 }
 
 function getFileName(document: vscode.TextDocument) {
-  return document.fileName
-    .split('\\')
-    ?.pop()
-    ?.split('/')
-    ?.pop()!;
+  return document.fileName.split('\\')?.pop()?.split('/')?.pop()!;
 }
 
 // this method is called when your extension is deactivated
@@ -455,7 +563,8 @@ export function showMessage(
 
 export function displayMarkdownFromFile(filePath: string) {
   const uri = vscode.Uri.file(filePath);
-  vscode.commands.executeCommand('markdown.showPreview', uri);
+  // vscode.commands.executeCommand('markdown.showPreview', uri);
+  vscode.commands.executeCommand('vscodeChapterEval.showEvaluation', uri);
 }
 
 export function isMarkdownOrPlainText(editor: vscode.TextEditor) {
