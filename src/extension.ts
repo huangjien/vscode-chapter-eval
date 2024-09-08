@@ -1,12 +1,20 @@
 'use strict';
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as CryptoJS from 'crypto';
+import {
+  showMessage,
+  countChineseString,
+  isMarkdownOrPlainText,
+  getConfiguration,
+  getAnalysisFolder,
+  getFileName,
+  showStatusBarProgress,
+  printToOutput,
+} from './Utils';
 import OpenAI from 'openai';
-import { exec } from 'child_process';
+import { readTextAloud, formatMarkdown, evaluateChapter } from './Functions';
+// import {EvaluationWebViewProvider} from './EvaluationWebViewProvider';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -14,20 +22,24 @@ export function activate(context: vscode.ExtensionContext) {
   const storagePath = getAnalysisFolder(context);
 
   registerCommandOfShowExistedEvaluation(context, storagePath);
-  registerCommandOfShowEvaluation(context, storagePath);
+  // registerCommandOfShowEvaluation(context, storagePath);
   registerHoverProvider(storagePath);
   registerCommandOfEvaluation(storagePath, context);
   registerCommandOfReadOutLoud(context);
   registerCommandOfFormat(context);
 
   // 创建一个状态栏项
-  let statusBarItem = vscode.window.createStatusBarItem(
+  setupStatusBarItem(context, storagePath);
+
+  const provider = new EvaluationWebViewProvider(context);
+  context.subscriptions.push(vscode.window.registerWebviewViewProvider('vscodeChapterEval_markdownWebview', provider))
+}
+
+function setupStatusBarItem(context: vscode.ExtensionContext, storagePath: string) {
+  const statusBarItem = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right,
     400
   );
-  // let isEvaluated = false; // Placeholder for actual evaluation state storage
-  // statusBarItem.text = isEvaluated ? 'Evaluated ✔️' : 'Not Evaluated ⏳';
-  // statusBarItem.tooltip = 'Click to show options';
   statusBarItem.command = 'vscodeChapterEval.toggleStatusBar';
   statusBarItem.hide(); // 默认隐藏状态栏项
 
@@ -52,12 +64,17 @@ export function activate(context: vscode.ExtensionContext) {
       'vscodeChapterEval.toggleStatusBar',
       async () => {
         const selectedOption = await vscode.window.showQuickPick(
-          ['Evaluate Current Chapter', 'Format Current Chapter', 'Information of Current Chapter'],
+          [
+            'Evaluate Current Chapter',
+            'Format Current Chapter',
+            'Information of Current Chapter',
+          ],
           { placeHolder: 'You can choose' }
         );
         if (selectedOption === 'Evaluate Current Chapter') {
           if (statusBarItem.text.startsWith('Evaluated')) {
             showMessage('Display existing evaluation...', 'info');
+            
             // TODO logic to show existing evaluation
           } else {
             showMessage('Evaluating current document...', 'info');
@@ -70,38 +87,11 @@ export function activate(context: vscode.ExtensionContext) {
           vscode.commands.executeCommand('vscodeChapterEval.formatMarkdown');
         }
         if (selectedOption === 'Information of Current Chapter') {
-          showMessage(statusBarItem.tooltip!.toString(), 'info');
+          printToOutput(statusBarItem.tooltip!.toString());
         }
       }
     )
   );
-}
-
-function countChineseChar(ch: string) {
-  // Count chinese Chars
-  let count = 0;
-  const regexChineseChar = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
-  if (regexChineseChar.test(ch)) {
-    return true;
-  }
-  return false;
-}
-function countChineseString(text: string) {
-  let count = 0;
-  let non = 0;
-  let invisible = 0;
-  for (let index = 0; index < text.length; index++) {
-    const ch = text.charAt(index);
-    if (countChineseChar(ch)) {
-      count++;
-    } else {
-      non++;
-      if (ch === ' ' || ch === '\t' || ch === '\n' || ch === '\r') {
-        invisible++;
-      }
-    }
-  }
-  return [count, non, invisible];
 }
 
 function updateStatusBar(
@@ -144,7 +134,7 @@ function registerHoverProvider(storagePath: string) {
       const filename = getFileName(document);
       const resultFilePath = path.join(storagePath, filename);
       if (fs.existsSync(resultFilePath)) {
-        let tip = fs.readFileSync(resultFilePath).toString();
+        const tip = fs.readFileSync(resultFilePath).toString();
         return new vscode.Hover(tip);
       }
       return null;
@@ -168,7 +158,6 @@ function registerCommandOfShowEvaluation(
           showMessage('This is not a Markdown or Plaintext file.', 'info');
           return;
         }
-        let tip = 'No Evaluation Now.';
         const filename = getFileName(editor.document);
 
         const resultFilePath = path.join(storagePath, filename);
@@ -291,9 +280,9 @@ function registerCommandOfEvaluation(
   process.env.OPENAI_API_KEY = apiKey;
   let model: string = getConfiguration('model', 'gpt-4o-mini')!;
 
-  let temperature: number = getConfiguration('temperature', 1)!;
+  const temperature: number = getConfiguration('temperature', 1)!;
 
-  let maxToken: number = getConfiguration('maxToken', 4096)!;
+  const maxToken: number = getConfiguration('maxToken', 4096)!;
 
   let openai: OpenAI;
   if (location === 'Remote') {
@@ -310,12 +299,12 @@ function registerCommandOfEvaluation(
     'vscodeChapterEval.evaluateMarkdown',
     async () => {
       const editor = vscode.window.activeTextEditor;
-      console.log("before check editor")
+      console.log('before check editor');
       if (!editor) {
         showMessage('No open Markdown file.', 'info');
         return;
       }
-      console.log("after check editor")
+      console.log('after check editor');
       if (!isMarkdownOrPlainText(editor)) {
         showMessage('This is not a Markdown or Plaintext file.', 'info');
         return;
@@ -346,24 +335,6 @@ function registerCommandOfEvaluation(
   context.subscriptions.push(evaluator);
 }
 
-function getAnalysisFolder(context: vscode.ExtensionContext) {
-  const workspaceFolders = vscode.workspace.workspaceFolders;
-  if (!workspaceFolders) {
-    const storagePath = context.globalStorageUri.fsPath;
-    if (!fs.existsSync(storagePath)) {
-      fs.mkdirSync(storagePath, { recursive: true });
-    }
-    return storagePath;
-  }
-  const workspaceRoot = workspaceFolders[0].uri.fsPath;
-  const a_path = path.join(workspaceRoot, 'Analysis');
-  if (!fs.existsSync(a_path)) {
-    fs.mkdirSync(a_path);
-  }
-
-  return a_path;
-}
-
 function getWebviewContent(markdownText: string) {
   return `
   <!DOCTYPE html>
@@ -388,235 +359,42 @@ function getWebviewContent(markdownText: string) {
   `;
 }
 
-function readTextAloud(text: string) {
-  const platform = process.platform;
+class EvaluationWebViewProvider implements vscode.WebviewViewProvider {
+  constructor(private context: vscode.ExtensionContext) {}
+  resolveWebviewView(webviewView: vscode.WebviewView, context: vscode.WebviewViewResolveContext, token: vscode.CancellationToken): Thenable<void> | void {
+      webviewView.webview.options = {
+          enableScripts: true
+      };
+      webviewView.webview.html = this.getWebviewContent();
 
-  let command = '';
-  switch (platform) {
-    case 'win32':
-      // Windows
-      command =
-        `powershell -Command "Add-Type -AssemblyName System.speech;` +
-        `[System.Speech.Synthesis.SpeechSynthesizer]::new().Speak('${text.replace(/'/g, "''")}');"`;
-      break;
-    case 'darwin':
-      // macOS
-      command = `say "${text}"`;
-      break;
-    case 'linux':
-      // Linux
-      command = `espeak "${text}"`;
-      break;
-    default:
-      showMessage('Unsupported platform', 'error');
-      return;
+      webviewView.webview.onDidReceiveMessage(async (message) => {
+          switch (message.command) {
+              case "showEvaluation":
+                  
+                  break;
+          
+              default:
+                  break;
+          }
+      })
   }
+  getWebviewContent(): string {
+      return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter Evaluation</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <h1>Evaluation</h1>
+    <div id="content">## Hello, Author!</div>
 
-  exec(command, (error, stdout, stderr) => {
-    if (error) {
-      showMessage(`Error: ${error.message}`, 'error');
-      return;
-    }
-    if (stderr) {
-      showMessage(`stderr: ${stderr}`, 'error');
-      return;
-    }
-    showMessage(`Text read out loud successfully`, 'info');
-  });
-}
-
-function formatMarkdown(text: string): string {
-  // Split the text into paragraphs
-  const paragraphs = text.trim().split(/\n\s*\n/);
-
-  // Process each paragraph
-  const processedParagraphs = paragraphs.map((paragraph) => {
-    // Trim whitespace
-    paragraph = paragraph.trim();
-
-    // Ensure spacing between English and Chinese characters
-    // Regex explains: English to Chinese
-    paragraph = paragraph.replace(/([a-zA-Z])([\u4e00-\u9fa5])/g, '$1 $2');
-    // Chinese to English
-    paragraph = paragraph.replace(/([\u4e00-\u9fa5])([a-zA-Z])/g, '$1 $2');
-
-    // Add 2 spaces indentation
-    paragraph = paragraph
-      .split('\n')
-      .map((line) => line)
-      .join('\n');
-
-    return '　　' + paragraph;
-  });
-
-  // Reassemble the paragraphs, ensuring an empty line between each
-  return '　　\n\n' + processedParagraphs.join('\n\n');
-}
-
-function showStatusBarProgress(task: Promise<any>) {
-  vscode.window.withProgress(
-    {
-      location: vscode.ProgressLocation.Notification,
-      title: 'Processing...',
-      cancellable: true, // Set to true if you want to allow cancelling the task
-    },
-    () => {
-      return task; // The progress UI will show until this Promise resolves
-    }
-  );
-}
-
-async function evaluateChapter(
-  openai: OpenAI,
-  editor: vscode.TextEditor,
-  storagePath: string,
-  promptString: string,
-  model: string,
-  temperature: number,
-  maxToken: number
-) {
-  // get file base info, and chars number
-  if (editor.document.isDirty) {
-    showMessage(
-      'Please save your file before evaluation, or you may just waste your money!',
-      'warning'
-    );
-    return;
+    
+</body>
+</html>
+`;;
   }
-  const source_file_uri = editor.document.uri;
-  const source_file_stat = fs.lstatSync(source_file_uri.fsPath);
-  const filename = getFileName(editor.document);
-
-  const documentText = editor.document.getText();
-  const text_length = documentText.length;
-  // Proceed to evaluate the documentText with OpenAI and handle the result
-  // calculate its hash, if we have done that before, it will be save in your local disk, just read from there
-  const stringHash = digest(documentText);
-  const resultFilePath = path.join(storagePath, filename);
-  promptString = promptString.replace('$PROMPT$', documentText);
-  // if file already existed, check its first 8 chars,
-  // if matched, then we have done the evaluation, just display it.
-  // if not matched, need to do evaluation again.
-  let exist_content = '';
-  if (fs.existsSync(resultFilePath)) {
-    const content = fs.readFileSync(resultFilePath).toString();
-    if (content.startsWith(stringHash)) {
-      displayMarkdownFromFile(resultFilePath);
-      return;
-    }
-    exist_content = '\n\n---\n\n' + content;
-  }
-
-  // does not exist, call openAi to make it.
-
-  await openai.chat.completions
-    .create({
-      model: model,
-      messages: [{ role: 'user', content: promptString }],
-      temperature: temperature,
-      max_tokens: maxToken,
-    })
-    .then((data) => {
-      return JSON.stringify(data);
-    })
-    .then((data) => {
-      const evalContent = JSON.parse(data);
-      writeToLocal(
-        resultFilePath,
-        stringHash +
-          '\n\nLength: ' +
-          text_length +
-          '\n\nLast Modified: ' +
-          source_file_stat.mtime.toISOString().replace('T', ' ').replace('Z', '') +
-          '\n\n<details><summary>' +
-          source_file_stat.mtime.toISOString().replace('T', ' ').replace('Z', '') +
-          '</summary><br/>' +
-          evalContent.choices[0]['message']['content'] +
-          '</details>' +
-          exist_content
-      );
-    })
-    .catch((err) => {
-      showMessage(err.message, 'error');
-    });
-
-  if (fs.existsSync(resultFilePath)) {
-    displayMarkdownFromFile(resultFilePath);
-  }
-  return promptString;
-}
-
-function getFileName(document: vscode.TextDocument) {
-  return document.fileName.split('\\')?.pop()?.split('/')?.pop()!;
-}
-
-// this method is called when your extension is deactivated
-export function deactivate() {}
-
-export function showMessage(
-  message: string,
-  type: 'info' | 'warning' | 'error'
-) {
-  switch (type) {
-    case 'info':
-      vscode.window.showInformationMessage(message);
-      break;
-    case 'warning':
-      vscode.window.showWarningMessage(message);
-      break;
-    case 'error':
-      vscode.window.showErrorMessage(message);
-      break;
-  }
-}
-
-export function displayMarkdownFromFile(filePath: string) {
-  const uri = vscode.Uri.file(filePath);
-  // vscode.commands.executeCommand('markdown.showPreview', uri);
-  vscode.commands.executeCommand('vscodeChapterEval.showEvaluation', uri);
-}
-
-export function isMarkdownOrPlainText(editor: vscode.TextEditor) {
-  return (
-    editor.document.languageId === 'markdown' ||
-    editor.document.languageId === 'plaintext'
-  );
-}
-
-export function printToOutput(result: string) {
-  // Create an output channel (if it doesn't exist already) and get a reference to it
-  const outputChannel = vscode.window.createOutputChannel('Chapter Evaluation');
-
-  // Clear any previous content in the output channel
-  outputChannel.clear();
-
-  // Write the result to the output channel
-  outputChannel.appendLine(result);
-
-  // Bring the Output window into focus with our output channel visible
-  outputChannel.show(true); // Pass `true` to preserve focus on the editor
-}
-
-export function digest(message: string) {
-  return CryptoJS.createHash('sha1')
-    .update(message.replace(/\s/g, '').replace('　', ''), 'utf8')
-    .digest('hex')
-    .substring(0, 8);
-}
-
-export function writeToLocal(fileName: string, fileContent: string): string {
-  // if file already existed, get its content, append to the end of fileContent
-  //   let writeContent = fileContent;
-  //   if (fs.existsSync(fileName)) {
-  //     writeContent = fileContent + "\n\n---\n\n" +fs.readFileSync(fileName).toString();
-  //   }
-  fs.writeFileSync(fileName, fileContent, 'utf8');
-  showMessage(`Evaluation result saved to ${fileName}`, 'info');
-  return fileName;
-}
-
-function getConfiguration(key: string, defaultValue?: any) {
-  return vscode.workspace
-    .getConfiguration('vscodeChapterEval')
-    .get(key, defaultValue);
 }
