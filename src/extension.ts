@@ -52,7 +52,7 @@ export function activate(context: vscode.ExtensionContext) {
       'vscodeChapterEval.toggleStatusBar',
       async () => {
         const selectedOption = await vscode.window.showQuickPick(
-          ['Evaluate', 'Format', 'Info'],
+          ['Evaluate Current Chapter', 'Format Current Chapter', 'Information of Current Chapter'],
           { placeHolder: 'You can choose' }
         );
         if (selectedOption === 'Evaluate Current Chapter') {
@@ -89,14 +89,19 @@ function countChineseChar(ch: string) {
 function countChineseString(text: string) {
   let count = 0;
   let non = 0;
+  let invisible = 0;
   for (let index = 0; index < text.length; index++) {
-    if (countChineseChar(text.charAt(index))) {
+    const ch = text.charAt(index);
+    if (countChineseChar(ch)) {
       count++;
     } else {
       non++;
+      if (ch === ' ' || ch === '\t' || ch === '\n' || ch === '\r') {
+        invisible++;
+      }
     }
   }
-  return [count, non];
+  return [count, non, invisible];
 }
 
 function updateStatusBar(
@@ -107,15 +112,17 @@ function updateStatusBar(
     const editor = vscode.window.activeTextEditor;
     if (editor && isMarkdownOrPlainText(editor)) {
       const documentText = editor.document.getText();
-      const [text_length, non] = countChineseString(documentText);
+      const [text_length, non, invisible] = countChineseString(documentText);
       const source_file_stat = fs.lstatSync(editor.document.uri.fsPath);
       statusBarItem.tooltip =
-        '📃 ' +
+        '🇨🇳 ' +
         text_length.toString() +
         ' 🔠' +
         non.toString() +
+        '📃 ' +
+        invisible.toString() +
         '\n🕗 ' +
-        source_file_stat.mtime.toISOString();
+        source_file_stat.mtime.toISOString().replace('T', ' ').replace('Z', '');
       const filename = getFileName(editor.document);
 
       const resultFilePath = path.join(storagePath, filename);
@@ -303,10 +310,12 @@ function registerCommandOfEvaluation(
     'vscodeChapterEval.evaluateMarkdown',
     async () => {
       const editor = vscode.window.activeTextEditor;
+      console.log("before check editor")
       if (!editor) {
         showMessage('No open Markdown file.', 'info');
         return;
       }
+      console.log("after check editor")
       if (!isMarkdownOrPlainText(editor)) {
         showMessage('This is not a Markdown or Plaintext file.', 'info');
         return;
@@ -518,9 +527,9 @@ async function evaluateChapter(
           '\n\nLength: ' +
           text_length +
           '\n\nLast Modified: ' +
-          source_file_stat.mtime.toISOString() +
+          source_file_stat.mtime.toISOString().replace('T', ' ').replace('Z', '') +
           '\n\n<details><summary>' +
-          source_file_stat.mtime.toISOString() +
+          source_file_stat.mtime.toISOString().replace('T', ' ').replace('Z', '') +
           '</summary><br/>' +
           evalContent.choices[0]['message']['content'] +
           '</details>' +
