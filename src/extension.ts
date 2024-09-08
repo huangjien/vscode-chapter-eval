@@ -13,22 +13,65 @@ import { exec } from 'child_process';
 export function activate(context: vscode.ExtensionContext) {
   const storagePath = getAnalysisFolder(context);
 
-  // const statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
-  //   context.subscriptions.push(statusBar);
-
-  //   let isEvaluated = false; // Placeholder for actual evaluation state storage
-
-  //   function updateStatusBar() {
-  //       statusBar.text = isEvaluated ? 'Evaluated ✔️' : 'Not Evaluated ❌';
-  //       statusBar.command = 'extension.showEvaluationOptions';
-  //       statusBar.show();
-  //   }
-
   registerCommandOfShowExistedEvaluation(context, storagePath);
   registerHoverProvider(storagePath);
   registerCommandOfEvaluation(storagePath, context);
   registerCommandOfReadOutLoud(context);
   registerCommandOfFormat(context);
+
+  // 创建一个状态栏项
+  let statusBarItem = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right,100
+  );
+  let isEvaluated = false; // Placeholder for actual evaluation state storage
+  statusBarItem.text = isEvaluated ? 'Evaluated ✔️' : 'Not Evaluated ❌';
+  statusBarItem.tooltip = 'Click to show options';
+  statusBarItem.command = 'vscodeChapterEval.toggleStatusBar';
+  statusBarItem.hide(); // 默认隐藏状态栏项
+
+  context.subscriptions.push(statusBarItem);
+  updateStatusBar(storagePath, statusBarItem);
+
+  // 监听活动编辑器的变化
+  vscode.window.onDidChangeActiveTextEditor(
+    updateStatusBar(storagePath, statusBarItem),
+    null,
+    context.subscriptions
+  );
+  vscode.workspace.onDidSaveTextDocument(updateStatusBar(storagePath, statusBarItem),null,context.subscriptions)
+
+  // 定义点击状态栏后显示的菜单
+  let disposable3 = vscode.commands.registerCommand(
+    'vscodeChapterEval.toggleStatusBar',
+    () => {
+      console.log("clicked")
+    });
+
+  context.subscriptions.push(disposable3);
+
+}
+
+function updateStatusBar(storagePath: string, statusBarItem: vscode.StatusBarItem): (e: vscode.TextEditor| vscode.TextDocument | undefined) => any {
+  return () => {
+    const editor = vscode.window.activeTextEditor;
+    if (editor && isMarkdownOrPlainText(editor)) {
+      const documentText = editor.document.getText();
+      const text_length = documentText.length;
+      statusBarItem.tooltip = "word count: " + text_length.toString()
+      const filename = getFileName(editor.document);
+
+      const resultFilePath = path.join(storagePath, filename);
+      if (fs.existsSync(resultFilePath)) {
+        statusBarItem.text = 'Evaluated ✔️';
+      } else {
+        statusBarItem.text = 'Not Evaluated ⏳';
+      }
+      statusBarItem.show();
+    } else {
+      console.log("want to hide");
+      statusBarItem.hide();
+    }
+  };
 }
 
 function registerHoverProvider(storagePath: string) {
@@ -39,7 +82,7 @@ function registerHoverProvider(storagePath: string) {
         return;
       }
       let tip = 'No Evaluation Now.';
-      const filename = document?.fileName.split('\\').pop()?.split('/').pop()!;
+      const filename = getFileName(document);
 
       const resultFilePath = path.join(storagePath, filename);
       if (fs.existsSync(resultFilePath)) {
@@ -70,11 +113,7 @@ function registerCommandOfShowExistedEvaluation(
             return;
           }
           let tip = 'No Evaluation Now.';
-          const filename = editor.document.fileName
-            .split('\\')
-            .pop()
-            ?.split('/')
-            .pop()!;
+          const filename = getFileName(editor.document);
 
           const resultFilePath = path.join(storagePath, filename);
           if (fs.existsSync(resultFilePath)) {
@@ -220,7 +259,7 @@ function getAnalysisFolder(context: vscode.ExtensionContext) {
     return storagePath;
   }
   const workspaceRoot = workspaceFolders[0].uri.fsPath;
-  const a_path = path.join(workspaceRoot, '\\Analysis\\');
+  const a_path = path.join(workspaceRoot, 'Analysis');
   if (!fs.existsSync(a_path)) {
     fs.mkdirSync(a_path);
   }
@@ -325,11 +364,7 @@ async function evaluateChapter(
   }
   const source_file_uri = editor.document.uri;
   const source_file_stat = fs.lstatSync(source_file_uri.fsPath);
-  const filename = editor.document.fileName
-    .split('\\')
-    ?.pop()
-    ?.split('/')
-    ?.pop()!;
+  const filename = getFileName(editor.document);
 
   const documentText = editor.document.getText();
   const text_length = documentText.length;
@@ -388,6 +423,14 @@ async function evaluateChapter(
     displayMarkdownFromFile(resultFilePath);
   }
   return promptString;
+}
+
+function getFileName(document: vscode.TextDocument) {
+  return document.fileName
+    .split('\\')
+    ?.pop()
+    ?.split('/')
+    ?.pop()!;
 }
 
 // this method is called when your extension is deactivated

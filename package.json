@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "publisher": "huangjien",
@@ -15,6 +15,9 @@
   "engines": {
     "vscode": "^1.93.0"
   },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "categories": [
     "Other"
   ],
@@ -109,7 +112,8 @@
     "keybindings": [
       {
         "command": "vscodeChapterEval.showExistedEvaluation",
-        "key": "ctrl+f1",
+        "key": "ctrl+e",
+        "mac": "cmd+e",
         "when": "editorTextFocus"
       }
     ],
