@@ -15,18 +15,6 @@ export class EvaluationWebViewProvider implements vscode.WebviewViewProvider {
       enableScripts: true,
     };
     webviewView.webview.html = this.getWebviewContent(webviewView.webview);
-
-    webviewView.webview.onDidReceiveMessage(async (message) => {
-      console.log('message', message);
-      switch (message.command) {
-        case 'updateContent':
-          this.updateContent(message.text);
-          break;
-
-        default:
-          break;
-      }
-    });
   }
   public updateContent(markdownText: string): void {
     this._view!.webview!.html = this.getWebviewContent(

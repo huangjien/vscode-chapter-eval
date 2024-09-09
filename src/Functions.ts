@@ -69,13 +69,10 @@ export async function evaluateChapter(
       writeToLocal(
         resultFilePath,
         stringHash +
+          '\n\nFilename: ' +
+          filename +
           '\n\nLength: ' +
           text_length +
-          '\n\nLast Modified: ' +
-          source_file_stat.mtime
-            .toISOString()
-            .replace('T', ' ')
-            .replace('Z', '') +
           '\n\n<details><summary>' +
           source_file_stat.mtime
             .toISOString()
