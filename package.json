@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.8.12",
+  "version": "0.8.13",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "publisher": "huangjien",
@@ -147,7 +147,7 @@
       "activitybar": [
         {
           "id": "vscodeChapterEval_markdownWebview",
-          "title": "",
+          "title": "AI Helper",
           "icon": "resources/eval.svg"
         }
       ]
@@ -204,6 +204,6 @@
     "child_process": "^1.0.2",
     "crypto": "^1.0.1",
     "husky": "^9.1.5",
-    "openai": "^4.58.1"
+    "openai": "^4.58.2"
   }
 }

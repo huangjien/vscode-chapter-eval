@@ -69,9 +69,9 @@ export async function evaluateChapter(
       writeToLocal(
         resultFilePath,
         stringHash +
-          '\n\nFilename: ' +
+          '\n\n' +
           filename +
-          '\n\nLength: ' +
+          '\n\nsize: ' +
           text_length +
           '\n\n<details><summary>' +
           source_file_stat.mtime
