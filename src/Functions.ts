@@ -69,18 +69,18 @@ export async function evaluateChapter(
       writeToLocal(
         resultFilePath,
         stringHash +
-          '\n\n' +
+          '\n\n ### ' +
           filename +
-          '\n\nsize: ' +
+          '\n\n### size: ' +
           text_length +
-          '\n\n<details><summary>' +
+          '\n\n' +
           source_file_stat.mtime
             .toISOString()
             .replace('T', ' ')
             .replace('Z', '') +
-          '</summary><br />\n\n' +
+          '\n\n' +
           evalContent.choices[0]['message']['content'] +
-          '</details>' +
+          '\n\n' +
           exist_content
       );
     })
