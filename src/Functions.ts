@@ -78,7 +78,7 @@ export async function evaluateChapter(
             .toISOString()
             .replace('T', ' ')
             .replace('Z', '') +
-          '</summary><br/>' +
+          '</summary><br />\n\n' +
           evalContent.choices[0]['message']['content'] +
           '</details>' +
           exist_content
