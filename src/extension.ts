@@ -15,6 +15,7 @@ import {
 import OpenAI from 'openai';
 import { readTextAloud, formatMarkdown, evaluateChapter } from './Functions';
 import { EvaluationWebViewProvider } from './EvaluationWebViewProvider';
+import { SettingsWebViewProvider } from './SettingsWebViewProvider';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -32,6 +33,17 @@ export function activate(context: vscode.ExtensionContext) {
 
   const provider = setupSidebarWebviewProvider(context);
   registerCommandOfShowEvaluation(context, provider, storagePath);
+  setupSettingWebviewProvider(context);
+}
+
+function setupSettingWebviewProvider(context: vscode.ExtensionContext) {
+  const provider = new SettingsWebViewProvider(context);
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+      'vscodeChapterEval_settingsWebview',
+      provider
+    )
+  );
 }
 
 function setupSidebarWebviewProvider(context: vscode.ExtensionContext) {
@@ -303,12 +315,10 @@ function registerCommandOfEvaluation(
     'vscodeChapterEval.evaluateMarkdown',
     async () => {
       const editor = vscode.window.activeTextEditor;
-      console.log('before check editor');
       if (!editor) {
         showMessage('No open Markdown file.', 'info');
         return;
       }
-      console.log('after check editor');
       if (!isMarkdownOrPlainText(editor)) {
         showMessage('This is not a Markdown or Plaintext file.', 'info');
         return;

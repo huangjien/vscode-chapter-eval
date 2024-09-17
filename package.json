@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.8.18",
+  "version": "0.8.19",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "publisher": "huangjien",
@@ -159,6 +159,12 @@
           "id": "vscodeChapterEval_markdownWebview",
           "name": "Chapter Evaluate",
           "contextualTitle": "Evaluation"
+        },
+        {
+          "type": "webview",
+          "id": "vscodeChapterEval_settingsWebview",
+          "name": "Settings",
+          "contextualTitle": "Settings"
         }
       ]
     },
