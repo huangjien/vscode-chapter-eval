@@ -57,7 +57,9 @@ function registerCommandOfShowEvaluation(
         if (!editor) {
           return;
         }
-        vscode.commands.executeCommand("vscodeChapterEval_markdownWebview.focus");
+        vscode.commands.executeCommand(
+          'vscodeChapterEval_markdownWebview.focus'
+        );
         const filename = getFileName(editor.document);
         const resultFilePath = path.join(storagePath, filename);
         if (fs.existsSync(resultFilePath)) {
