@@ -111,7 +111,7 @@ export function getAnalysisFolder(context: vscode.ExtensionContext) {
 }
 
 export function getFileName(document: vscode.TextDocument) {
-  return document.fileName.split('\\')?.pop()?.split('/')?.pop()!;
+  return document.fileName.split('\\')!.pop()!.split('/')!.pop()!;
 }
 
 // this method is called when your extension is deactivated
@@ -123,7 +123,7 @@ export function displayMarkdownFromFile(filePath: string) {
   vscode.commands.executeCommand('vscodeChapterEval.showEvaluation', uri);
 }
 
-export function showStatusBarProgress(task: Promise<any>) {
+export function showStatusBarProgress(task: Promise<any>): void {
   vscode.window.withProgress(
     {
       location: vscode.ProgressLocation.Notification,

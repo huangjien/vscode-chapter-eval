@@ -135,7 +135,7 @@ function setupStatusBarItem(
 function updateStatusBar(
   storagePath: string,
   statusBarItem: vscode.StatusBarItem
-): (e: vscode.TextEditor | vscode.TextDocument | undefined) => any {
+): (e: vscode.TextEditor | vscode.TextDocument | undefined) => void {
   return () => {
     const editor = vscode.window.activeTextEditor;
     if (editor && isMarkdownOrPlainText(editor)) {

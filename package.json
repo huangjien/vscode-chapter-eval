@@ -1,9 +1,10 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.8.17",
+  "version": "0.8.18",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
+  "type": "commonjs",
   "publisher": "huangjien",
   "homepage": "https://github.com/huangjien/vscode-chapter-eval/blob/main/README.md",
   "bugs": {
@@ -40,7 +41,8 @@
     "compile-tests": "tsc -p . --outDir dist",
     "watch-tests": "tsc -p . -w --outDir dist",
     "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
-    "lint": "eslint src --ext ts",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint --fix ./src",
     "test": "node ./out/runTest.js",
     "prettier": "prettier --write .",
     "update-package-lock": "npm install --package-lock-only",
@@ -187,23 +189,24 @@
     "@types/mocha": "^10.0.8",
     "@types/node": "^22.5.5",
     "@types/vscode": "^1.93.0",
-    "@typescript-eslint/eslint-plugin": "^8.5.0",
-    "@typescript-eslint/parser": "^8.5.0",
     "@vscode/test-electron": "^2.4.1",
-    "eslint": "^8.57.1",
+    "eslint": "^9.10.0",
+    "eslint-config-prettier": "^9.1.0",
     "glob": "^11.0.0",
     "marked": "^14.1.2",
     "mocha": "^10.7.3",
     "prettier": "^3.3.3",
     "ts-loader": "^9.5.1",
     "typescript": "^5.6.2",
+    "typescript-eslint": "^8.6.0",
     "webpack": "^5.94.0",
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
     "child_process": "^1.0.2",
     "crypto": "^1.0.1",
+    "eslint-plugin-prettier": "^5.2.1",
     "husky": "^9.1.6",
-    "openai": "^4.61.1"
+    "openai": "^4.62.1"
   }
 }
