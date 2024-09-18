@@ -4,19 +4,15 @@ export class SettingsWebViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = 'webView';
   public _view?: vscode.WebviewView;
   constructor(private context: vscode.ExtensionContext) {}
-  resolveWebviewView(
-    webviewView: vscode.WebviewView,
-    context: vscode.WebviewViewResolveContext,
-    token: vscode.CancellationToken
-  ): Thenable<void> | void {
+  resolveWebviewView(webviewView: vscode.WebviewView): Thenable<void> | void {
     this._view = webviewView;
     webviewView.webview.options = {
       enableScripts: true,
     };
-    webviewView.webview.html = this.getWebviewContent(webviewView.webview);
+    webviewView.webview.html = this.getWebviewContent();
   }
 
-  getWebviewContent(webview: vscode.Webview): string {
+  getWebviewContent(): string {
     const all = vscode.workspace.getConfiguration('vscodeChapterEval');
     return `
   <!DOCTYPE html>
