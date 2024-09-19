@@ -58,8 +58,7 @@ export async function evaluateChapter(
     .create({
       model: model,
       messages: [{ role: 'user', content: promptString }],
-      temperature: temperature,
-      max_tokens: maxToken,
+      temperature: temperature
     })
     .then((data) => {
       return JSON.stringify(data);
@@ -69,10 +68,14 @@ export async function evaluateChapter(
       writeToLocal(
         resultFilePath,
         stringHash +
-          '\n\n ### ' +
+          '\n\n### ' +
           filename +
           '\n\n### size: ' +
           text_length +
+          '\n\n#### model: ' +
+          model +
+          '\n\n#### temperature: ' +
+          temperature +
           '\n\n' +
           source_file_stat.mtime
             .toISOString()
