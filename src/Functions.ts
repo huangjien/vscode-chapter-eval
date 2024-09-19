@@ -17,8 +17,7 @@ export async function evaluateChapter(
   storagePath: string,
   promptString: string,
   model: string,
-  temperature: number,
-  maxToken: number
+  temperature: number
 ) {
   // get file base info, and chars number
   if (editor.document.isDirty) {

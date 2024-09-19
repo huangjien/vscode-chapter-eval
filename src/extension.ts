@@ -298,8 +298,6 @@ function registerCommandOfEvaluation(
 
   const temperature: number = getConfiguration('temperature', 1)!;
 
-  const maxToken: number = getConfiguration('maxToken', 4096)!;
-
   let openai: OpenAI;
   if (location === 'Remote') {
     openai = new OpenAI();
@@ -340,8 +338,7 @@ function registerCommandOfEvaluation(
         storagePath,
         promptString,
         model,
-        temperature,
-        maxToken
+        temperature
       );
       showStatusBarProgress(longRunTask);
     }

@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.8.22",
+  "version": "0.8.23",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -102,12 +102,6 @@
           "default": 0.7,
           "description": "Temperature to use for the GPT (between 0 (conservative) and 2 (creative))",
           "order": 5
-        },
-        "vscodeChapterEval.maxToken": {
-          "type": "number",
-          "default": 8192,
-          "description": "Maximum number of tokens inside response per request",
-          "order": 6
         }
       }
     },

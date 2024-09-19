@@ -24,14 +24,13 @@ export class SettingsWebViewProvider implements vscode.WebviewViewProvider {
 
   </head>
   <body>
-    <ol >
+    <ul >
         <li><p>Remote or Local: <b>${all.modelLocation}</b></p></li>
         <li><p>Local Model: <b>${all.localModel}</b></p></li>
         <li><p>Model Name: <b>${all.model}</b></p></li>
         <li><p>Temperature: <b>${all.temperature}</b></p></li>
-        <li><p>Max Token: <b>${all.maxToken}</b></p></li>
         <li><p>Prompt: <br /><b>${all.prompt}</b></p></li>
-    </ol>
+    </ul>
   </body>
   </html>
   `;
