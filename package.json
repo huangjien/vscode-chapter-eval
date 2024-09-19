@@ -1,12 +1,13 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.8.25",
+  "version": "0.8.26",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "type": "commonjs",
   "publisher": "huangjien",
-  "homepage": "https://github.com/huangjien/vscode-chapter-eval/blob/main/README.md",
+  "readme": "https://github.com/huangjien/vscode-chapter-eval/blob/main/README.md",
+  "homepage": "https://www.huangjien.com",
   "bugs": {
     "url": "https://github.com/huangjien/vscode-chapter-eval/issues",
     "email": "huangjien@gmail.com"
@@ -114,14 +115,14 @@
       },
       {
         "command": "vscodeChapterEval.showEvaluation",
-        "key": "ctrl+s ctrl+s",
-        "mac": "cmd+s cmd+s",
+        "key": "ctrl+e ctrl+s",
+        "mac": "cmd+e cmd+s",
         "when": "editorTextFocus"
       },
       {
         "command": "vscodeChapterEval.formatMarkdown",
-        "key": "ctrl+f ctrl+f",
-        "mac": "cmd+f cmd+f",
+        "key": "ctrl+e ctrl+f",
+        "mac": "cmd+e cmd+f",
         "when": "editorTextFocus"
       }
     ],
