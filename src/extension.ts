@@ -306,7 +306,7 @@ function registerCommandOfEvaluation(
       baseURL: 'http://localhost:11434/v1',
       apiKey: 'ollama', // required but unused
     });
-    model = getConfiguration('localModel', 'llama3.1:latest')!;
+    model = getConfiguration('localModel', 'qwen2.5:latest')!;
   }
 
   const evaluator = vscode.commands.registerCommand(

@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.8.23",
+  "version": "0.8.24",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -84,10 +84,10 @@
           "type": "string",
           "enum": [
             "llama3.1:latest",
-            "qwen2:7b",
-            "gemma:latest"
+            "qwen2.5:latest",
+            "gemma2:latest"
           ],
-          "default": "llama3.1:latest",
+          "default": "qwen2.5:latest",
           "description": "Which local ollama model to use",
           "order": 3
         },
@@ -107,9 +107,21 @@
     },
     "keybindings": [
       {
-        "command": "vscodeChapterEval.showExistedEvaluation",
-        "key": "ctrl+e",
-        "mac": "cmd+e",
+        "command": "vscodeChapterEval.evaluateMarkdown",
+        "key": "ctrl+e ctrl+e",
+        "mac": "cmd+e cmd+e",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "vscodeChapterEval.showEvaluation",
+        "key": "ctrl+s ctrl+s",
+        "mac": "cmd+s cmd+s",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "vscodeChapterEval.formatMarkdown",
+        "key": "ctrl+f ctrl+f",
+        "mac": "cmd+f cmd+f",
         "when": "editorTextFocus"
       }
     ],
