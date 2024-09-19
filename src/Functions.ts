@@ -57,7 +57,7 @@ export async function evaluateChapter(
     .create({
       model: model,
       messages: [{ role: 'user', content: promptString }],
-      temperature: temperature
+      temperature: temperature,
     })
     .then((data) => {
       return JSON.stringify(data);

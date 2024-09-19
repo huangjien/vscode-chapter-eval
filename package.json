@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "Chapter Evaluator",
-  "version": "0.8.24",
+  "version": "0.8.25",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -198,7 +198,6 @@
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
-    "@types/mocha": "^10.0.8",
     "@types/node": "^22.5.5",
     "@types/vscode": "^1.93.0",
     "@typescript-eslint/eslint-plugin": "^8.6.0",
@@ -208,7 +207,6 @@
     "eslint-config-prettier": "^9.1.0",
     "glob": "^11.0.0",
     "marked": "^14.1.2",
-    "mocha": "^10.7.3",
     "prettier": "^3.3.3",
     "ts-loader": "^9.5.1",
     "typescript": "^5.6.2",
