@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.8.29",
+  "version": "0.8.30",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -168,13 +168,13 @@
         {
           "type": "webview",
           "id": "vscodeChapterEval_markdownWebview",
-          "name": "Chapter Evaluate",
+          "name": "%vscodeChapterEval_markdownWebview.contextualTitle%",
           "contextualTitle": "%vscodeChapterEval_markdownWebview.contextualTitle%"
         },
         {
           "type": "webview",
           "id": "vscodeChapterEval_settingsWebview",
-          "name": "Settings",
+          "name": "%vscodeChapterEval_settingsWebview.contextualTitle%",
           "contextualTitle": "%vscodeChapterEval_settingsWebview.contextualTitle%"
         }
       ]

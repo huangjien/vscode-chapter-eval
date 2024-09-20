@@ -16,15 +16,17 @@ import OpenAI from 'openai';
 import { readTextAloud, formatMarkdown, evaluateChapter } from './Functions';
 import { EvaluationWebViewProvider } from './EvaluationWebViewProvider';
 import { SettingsWebViewProvider } from './SettingsWebViewProvider';
-import * as l10n  from '@vscode/l10n'
+import * as l10n from '@vscode/l10n';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-  const locale = vscode.env.language
-  console.log(path.join(context.extensionPath, 'l10n', 'bundle.l10n.json'))
-  l10n.config({fsPath: path.join(context.extensionPath, 'l10n', 'bundle.l10n.json')})
-  
+  const locale = vscode.env.language;
+  console.log(path.join(context.extensionPath, 'l10n', 'bundle.l10n.json'));
+  l10n.config({
+    fsPath: path.join(context.extensionPath, 'l10n', 'bundle.l10n.json'),
+  });
+
   const storagePath = getAnalysisFolder(context);
 
   registerCommandOfShowExistedEvaluation(context, storagePath);
@@ -129,10 +131,16 @@ function setupStatusBarItem(
         );
         if (selectedOption === 'Evaluate Current Chapter') {
           if (statusBarItem.text.startsWith('Evaluated')) {
-            showMessage(l10n.t('displayEvaluation','Display existing evaluation...'), 'info');
+            showMessage(
+              l10n.t('displayEvaluation', 'Display existing evaluation...'),
+              'info'
+            );
             vscode.commands.executeCommand('vscodeChapterEval.showEvaluation');
           } else {
-            showMessage(l10n.t('evaluateDocument','Evaluating current document...'), 'info');
+            showMessage(
+              l10n.t('evaluateDocument', 'Evaluating current document...'),
+              'info'
+            );
             vscode.commands.executeCommand(
               'vscodeChapterEval.evaluateMarkdown'
             );
@@ -210,11 +218,20 @@ function registerCommandOfShowExistedEvaluation(
         return async () => {
           const editor = vscode.window.activeTextEditor;
           if (!editor) {
-            showMessage(l10n.t('noOpenMarkdownFile','No open Markdown file.'), 'info');
+            showMessage(
+              l10n.t('noOpenMarkdownFile', 'No open Markdown file.'),
+              'info'
+            );
             return;
           }
           if (!isMarkdownOrPlainText(editor)) {
-            showMessage(l10n.t('notMarkdown','This is not a Markdown or Plaintext file.'), 'info');
+            showMessage(
+              l10n.t(
+                'notMarkdown',
+                'This is not a Markdown or Plaintext file.'
+              ),
+              'info'
+            );
             return;
           }
           let tip = 'No Evaluation Now.';
@@ -236,11 +253,17 @@ function registerCommandOfFormat(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('vscodeChapterEval.formatMarkdown', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
-        showMessage(l10n.t('noOpenMarkdownFile','No open Markdown file.'), 'info');
+        showMessage(
+          l10n.t('noOpenMarkdownFile', 'No open Markdown file.'),
+          'info'
+        );
         return;
       }
       if (!isMarkdownOrPlainText(editor)) {
-        showMessage(l10n.t('notMarkdown','This is not a Markdown or Plaintext file.'), 'info');
+        showMessage(
+          l10n.t('notMarkdown', 'This is not a Markdown or Plaintext file.'),
+          'info'
+        );
         return;
       }
 
@@ -266,18 +289,24 @@ function registerCommandOfReadOutLoud(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('vscodeChapterEval.readOutLoud', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
-        showMessage(l10n.t('noOpenMarkdownFile','No open Markdown file.'), 'info');
+        showMessage(
+          l10n.t('noOpenMarkdownFile', 'No open Markdown file.'),
+          'info'
+        );
         return;
       }
       if (!isMarkdownOrPlainText(editor)) {
-        showMessage(l10n.t('notMarkdown','This is not a Markdown or Plaintext file.'), 'info');
+        showMessage(
+          l10n.t('notMarkdown', 'This is not a Markdown or Plaintext file.'),
+          'info'
+        );
         return;
       }
       const text = editor.document.getText(editor.selection);
       if (text) {
         readTextAloud(text);
       } else {
-        showMessage('No text selected', 'info');
+        showMessage(l10n.t('noTextSelect', 'No text selected'), 'info');
       }
     })
   );
@@ -291,11 +320,17 @@ function registerCommandOfEvaluation(
   const localModel: string = getConfiguration('localModel')!;
   const apiKey: string = getConfiguration('openaiApiKey')!;
   if (!apiKey && location === 'Remote') {
-    showMessage('OpenAI API key is not set in settings.', 'error');
+    showMessage(
+      l10n.t('keyNotSet', 'Model API key is not set in settings.'),
+      'error'
+    );
     return;
   }
   if (!localModel && location === 'Local') {
-    showMessage('Local model is not set in settings.', 'error');
+    showMessage(
+      l10n.t('localModelNotSet', 'Local model is not set in settings.'),
+      'error'
+    );
     return;
   }
   process.env.OPENAI_API_KEY = apiKey;
@@ -319,17 +354,26 @@ function registerCommandOfEvaluation(
     async () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
-        showMessage(l10n.t('noOpenMarkdownFile','No open Markdown file.'), 'info');
+        showMessage(
+          l10n.t('noOpenMarkdownFile', 'No open Markdown file.'),
+          'info'
+        );
         return;
       }
       if (!isMarkdownOrPlainText(editor)) {
-        showMessage(l10n.t('notMarkdown','This is not a Markdown or Plaintext file.'), 'info');
+        showMessage(
+          l10n.t('notMarkdown', 'This is not a Markdown or Plaintext file.'),
+          'info'
+        );
         return;
       }
 
       let promptString: string = getConfiguration('prompt')!;
       if (!promptString) {
-        showMessage('OpenAI prompt is not set!', 'warning');
+        showMessage(
+          l10n.t('promptNotSet', 'OpenAI prompt is not set!'),
+          'warning'
+        );
         promptString = `You are ASSISTANT , work as literary critic. Please evaluate the tension of the following chapter and give it a score out of 100. 
             Also, describe the curve of the tension changes in the chapter. 
             Point out the three most outstanding advantages and the three biggest disadvantages of the chapter. 

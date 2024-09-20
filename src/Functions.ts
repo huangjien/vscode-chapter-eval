@@ -10,6 +10,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import OpenAI from 'openai';
 import * as vscode from 'vscode';
+import * as l10n from '@vscode/l10n';
 
 export async function evaluateChapter(
   openai: OpenAI,
@@ -22,7 +23,10 @@ export async function evaluateChapter(
   // get file base info, and chars number
   if (editor.document.isDirty) {
     showMessage(
-      'Please save your file before evaluation, or you may just waste your money!',
+      l10n.t(
+        'donotWaste',
+        'Please save your file before evaluation, or you may just waste your money!'
+      ),
       'warning'
     );
     return;
@@ -144,7 +148,7 @@ export function readTextAloud(text: string) {
       command = `espeak "${text}"`;
       break;
     default:
-      showMessage('Unsupported platform', 'error');
+      showMessage(l10n.t('unsupport', 'Unsupported platform'), 'error');
       return;
   }
 
@@ -157,6 +161,6 @@ export function readTextAloud(text: string) {
       showMessage(`stderr: ${stderr}`, 'error');
       return;
     }
-    showMessage(`Text read out loud successfully`, 'info');
+    showMessage(l10n.t('readOut', `Text read out loud successfully`), 'info');
   });
 }

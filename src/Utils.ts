@@ -2,6 +2,7 @@ import * as CryptoJS from 'crypto';
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as l10n from '@vscode/l10n';
 
 export function digest(message: string) {
   return CryptoJS.createHash('sha1')
@@ -12,7 +13,10 @@ export function digest(message: string) {
 
 export function writeToLocal(fileName: string, fileContent: string): string {
   fs.writeFileSync(fileName, fileContent, 'utf8');
-  showMessage(`Evaluation result saved to ${fileName}`, 'info');
+  showMessage(
+    l10n.t('saveResult', `Evaluation result saved to ${fileName}`),
+    'info'
+  );
   return fileName;
 }
 
