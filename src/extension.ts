@@ -24,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
   const locale = vscode.env.language;
   console.log(path.join(context.extensionPath, 'l10n', 'bundle.l10n.json'));
   l10n.config({
-    fsPath: path.join(context.extensionPath, 'l10n', 'bundle.l10n.json'),
+    fsPath: path.join(context.extensionPath, 'l10n', 'bundle.l10n.'+locale+'.json'),
   });
 
   const storagePath = getAnalysisFolder(context);
