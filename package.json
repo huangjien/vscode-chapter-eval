@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.8.28",
+  "version": "0.8.29",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -206,7 +206,7 @@
     "@typescript-eslint/eslint-plugin": "^8.6.0",
     "@typescript-eslint/parser": "^8.6.0",
     "@vscode/test-electron": "^2.4.1",
-    "eslint": "^9.10.0",
+    "eslint": "^9.11.0",
     "eslint-config-prettier": "^9.1.0",
     "glob": "^11.0.0",
     "marked": "^14.1.2",
@@ -223,6 +223,6 @@
     "crypto": "^1.0.1",
     "eslint-plugin-prettier": "^5.2.1",
     "husky": "^9.1.6",
-    "openai": "^4.62.1"
+    "openai": "^4.63.0"
   }
 }
