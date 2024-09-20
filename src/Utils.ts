@@ -14,7 +14,7 @@ export function digest(message: string) {
 export function writeToLocal(fileName: string, fileContent: string): string {
   fs.writeFileSync(fileName, fileContent, 'utf8');
   showMessage(
-    l10n.t('saveResult', `Evaluation result saved to ${fileName}`),
+    l10n.t('saveResult', fileName),
     'info'
   );
   return fileName;

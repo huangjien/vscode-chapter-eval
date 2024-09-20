@@ -3,7 +3,7 @@
   "evaluateDocument": "Evaluating current document...",
   "noOpenMarkdownFile": "No open Markdown file.",
   "notMarkdown": "This is not a Markdown or Plaintext file.",
-  "saveResult": "Evaluation result saved to ${fileName}",
+  "saveResult": "Evaluation result saved to {0}",
   "unsupport": "Unsupported platform",
   "readOut": "Text read out loud successfully",
   "donotWaste": "Please save your file before evaluation, or you may just waste your money!",

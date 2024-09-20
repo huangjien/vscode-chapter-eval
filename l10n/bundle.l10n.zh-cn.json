@@ -1,0 +1,14 @@
+{
+  "displayEvaluation": "显示现有评估...",
+  "evaluateDocument": "正在评估当前文档...",
+  "noOpenMarkdownFile": "没有打开的 Markdown 文件。",
+  "notMarkdown": "这不是 Markdown 或纯文本文件。",
+  "saveResult": "评估结果已保存到 {0}",
+  "unsupport": "不支持的平台",
+  "readOut": "文本已成功朗读",
+  "donotWaste": "请在评估前保存您的文件，否则可能会浪费您的钱！",
+  "promptNotSet": "OpenAI 提示尚未设置！",
+  "noTextSelect": "未选择文本",
+  "keyNotSet": "设置中未设置模型 API 密钥。",
+  "localModelNotSet": "设置中未设置本地模型。"
+}
