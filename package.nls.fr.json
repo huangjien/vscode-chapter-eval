@@ -1,0 +1,18 @@
+{
+    "vscodeChapterEval_markdownWebview.title": "Éditeur IA",
+    "vscodeChapterEval_markdownWebview.contextualTitle": "Évaluation",
+    "vscodeChapterEval_settingsWebview.contextualTitle": "Paramètres",
+    "configuration.title": "Configuration de l'Éditeur IA",
+    "vscodeChapterEval.evaluateMarkdown.title": "Évaluer le chapitre",
+    "vscodeChapterEval.showEvaluation.title": "Afficher l'évaluation",
+    "vscodeChapterEval.showExistedEvaluation.title": "Évaluation existante",
+    "vscodeChapterEval.formatMarkdown.title": "Formater le chapitre",
+    "vscodeChapterEval.readOutLoud.title": "Lire à haute voix",
+    "vscodeChapterEval.showProgress.title": "Évaluation en cours ...",
+    "vscodeChapterEval.temperature.description": "Température à utiliser pour le modèle IA (entre 0 (conservateur) et 2 (créatif))",
+    "vscodeChapterEval.prompt.description": "Prompt de modèle pour l'extension de l'Éditeur IA",
+    "vscodeChapterEval.localModel.description": "Quel modèle IA local utiliser",
+    "vscodeChapterEval.model.description": "Quel modèle ChatGPT utiliser",
+    "vscodeChapterEval.openaiApiKey.description": "Clé API OpenAI pour l'extension de l'Éditeur IA",
+    "vscodeChapterEval.modelLocation.description": "Utiliser un modèle IA local ou distant ?"
+}

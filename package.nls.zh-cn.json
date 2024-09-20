@@ -1,0 +1,18 @@
+{
+    "vscodeChapterEval_markdownWebview.title": "AI 编辑器",
+    "vscodeChapterEval_markdownWebview.contextualTitle": "评估",
+    "vscodeChapterEval_settingsWebview.contextualTitle": "设置",
+    "configuration.title": "AI 编辑器配置",
+    "vscodeChapterEval.evaluateMarkdown.title": "评估章节",
+    "vscodeChapterEval.showEvaluation.title": "显示评估",
+    "vscodeChapterEval.showExistedEvaluation.title": "现有评估",
+    "vscodeChapterEval.formatMarkdown.title": "格式化章节",
+    "vscodeChapterEval.readOutLoud.title": "大声朗读",
+    "vscodeChapterEval.showProgress.title": "评估中 ...",
+    "vscodeChapterEval.temperature.description": "AI 模型的温度设置（0 表示保守，2 表示创造性）",
+    "vscodeChapterEval.prompt.description": "AI 编辑器扩展的模型提示",
+    "vscodeChapterEval.localModel.description": "使用哪个本地 AI 模型",
+    "vscodeChapterEval.model.description": "使用哪个 ChatGPT 模型",
+    "vscodeChapterEval.openaiApiKey.description": "AI 编辑器扩展的 OpenAI API 密钥",
+    "vscodeChapterEval.modelLocation.description": "使用本地还是远程 AI 模型？"
+}

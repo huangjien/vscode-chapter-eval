@@ -16,10 +16,15 @@ import OpenAI from 'openai';
 import { readTextAloud, formatMarkdown, evaluateChapter } from './Functions';
 import { EvaluationWebViewProvider } from './EvaluationWebViewProvider';
 import { SettingsWebViewProvider } from './SettingsWebViewProvider';
+import * as l10n  from '@vscode/l10n'
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+  const locale = vscode.env.language
+  console.log(path.join(context.extensionPath, 'l10n', 'bundle.l10n.json'))
+  l10n.config({fsPath: path.join(context.extensionPath, 'l10n', 'bundle.l10n.json')})
+  
   const storagePath = getAnalysisFolder(context);
 
   registerCommandOfShowExistedEvaluation(context, storagePath);
@@ -124,10 +129,10 @@ function setupStatusBarItem(
         );
         if (selectedOption === 'Evaluate Current Chapter') {
           if (statusBarItem.text.startsWith('Evaluated')) {
-            showMessage('Display existing evaluation...', 'info');
+            showMessage(l10n.t('displayEvaluation','Display existing evaluation...'), 'info');
             vscode.commands.executeCommand('vscodeChapterEval.showEvaluation');
           } else {
-            showMessage('Evaluating current document...', 'info');
+            showMessage(l10n.t('evaluateDocument','Evaluating current document...'), 'info');
             vscode.commands.executeCommand(
               'vscodeChapterEval.evaluateMarkdown'
             );
@@ -205,11 +210,11 @@ function registerCommandOfShowExistedEvaluation(
         return async () => {
           const editor = vscode.window.activeTextEditor;
           if (!editor) {
-            showMessage('No open Markdown file.', 'info');
+            showMessage(l10n.t('noOpenMarkdownFile','No open Markdown file.'), 'info');
             return;
           }
           if (!isMarkdownOrPlainText(editor)) {
-            showMessage('This is not a Markdown or Plaintext file.', 'info');
+            showMessage(l10n.t('notMarkdown','This is not a Markdown or Plaintext file.'), 'info');
             return;
           }
           let tip = 'No Evaluation Now.';
@@ -231,11 +236,11 @@ function registerCommandOfFormat(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('vscodeChapterEval.formatMarkdown', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
-        showMessage('No open Markdown file.', 'info');
+        showMessage(l10n.t('noOpenMarkdownFile','No open Markdown file.'), 'info');
         return;
       }
       if (!isMarkdownOrPlainText(editor)) {
-        showMessage('This is not a Markdown or Plaintext file.', 'info');
+        showMessage(l10n.t('notMarkdown','This is not a Markdown or Plaintext file.'), 'info');
         return;
       }
 
@@ -261,11 +266,11 @@ function registerCommandOfReadOutLoud(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('vscodeChapterEval.readOutLoud', () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
-        showMessage('No open Markdown file.', 'info');
+        showMessage(l10n.t('noOpenMarkdownFile','No open Markdown file.'), 'info');
         return;
       }
       if (!isMarkdownOrPlainText(editor)) {
-        showMessage('This is not a Markdown or Plaintext file.', 'info');
+        showMessage(l10n.t('notMarkdown','This is not a Markdown or Plaintext file.'), 'info');
         return;
       }
       const text = editor.document.getText(editor.selection);
@@ -314,11 +319,11 @@ function registerCommandOfEvaluation(
     async () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
-        showMessage('No open Markdown file.', 'info');
+        showMessage(l10n.t('noOpenMarkdownFile','No open Markdown file.'), 'info');
         return;
       }
       if (!isMarkdownOrPlainText(editor)) {
-        showMessage('This is not a Markdown or Plaintext file.', 'info');
+        showMessage(l10n.t('notMarkdown','This is not a Markdown or Plaintext file.'), 'info');
         return;
       }
 

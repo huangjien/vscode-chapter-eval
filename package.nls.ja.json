@@ -1,0 +1,18 @@
+{
+    "vscodeChapterEval_markdownWebview.title": "AIエディター",
+    "vscodeChapterEval_markdownWebview.contextualTitle": "評価",
+    "vscodeChapterEval_settingsWebview.contextualTitle": "設定",
+    "configuration.title": "AIエディターの設定",
+    "vscodeChapterEval.evaluateMarkdown.title": "チャプターを評価",
+    "vscodeChapterEval.showEvaluation.title": "評価を表示",
+    "vscodeChapterEval.showExistedEvaluation.title": "既存の評価",
+    "vscodeChapterEval.formatMarkdown.title": "チャプターをフォーマット",
+    "vscodeChapterEval.readOutLoud.title": "音読",
+    "vscodeChapterEval.showProgress.title": "評価中 ...",
+    "vscodeChapterEval.temperature.description": "AIモデルの温度設定 (0 (保守的) から 2 (創造的) の間)",
+    "vscodeChapterEval.prompt.description": "AIエディター拡張機能のモデルプロンプト",
+    "vscodeChapterEval.localModel.description": "使用するローカルAIモデル",
+    "vscodeChapterEval.model.description": "使用するChatGPTモデル",
+    "vscodeChapterEval.openaiApiKey.description": "AIエディター拡張機能のOpenAI APIキー",
+    "vscodeChapterEval.modelLocation.description": "ローカルまたはリモートAIモデルを使用？"
+}

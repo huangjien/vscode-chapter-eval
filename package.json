@@ -1,10 +1,11 @@
 {
   "name": "vscode-chapter-eval",
-  "displayName": "Chapter Evaluator",
-  "version": "0.8.27",
+  "displayName": "AI Editor",
+  "version": "0.8.28",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "type": "commonjs",
+  "l10n": "./l10n",
   "publisher": "huangjien",
   "readme": "https://github.com/huangjien/vscode-chapter-eval/blob/main/README.md",
   "homepage": "https://www.huangjien.com",
@@ -36,6 +37,7 @@
   "private": false,
   "scripts": {
     "vscode:prepublish": "yarn run package",
+    "extract": "npx @vscode/l10n-dev export -o ./l10n ./src",
     "compile": "webpack",
     "watch": "webpack --watch",
     "package": "webpack --mode production --devtool hidden-source-map",
@@ -52,7 +54,7 @@
   "contributes": {
     "configuration": {
       "type": "object",
-      "title": "Chapter Evaluator Configuration",
+      "title": "%configuration.title%",
       "properties": {
         "vscodeChapterEval.modelLocation": {
           "type": "string",
@@ -61,14 +63,14 @@
             "Remote"
           ],
           "default": "Remote",
-          "description": "Use local ollama or remote open-ai?",
+          "description": "%vscodeChapterEval.modelLocation.description%",
           "order": 0
         },
         "vscodeChapterEval.openaiApiKey": {
           "type": "string",
           "default": "",
           "order": 1,
-          "description": "OpenAI API Key for Chapter Evaluator extension"
+          "description": "%vscodeChapterEval.openaiApiKey.description%"
         },
         "vscodeChapterEval.model": {
           "type": "string",
@@ -78,7 +80,7 @@
             "gpt-3.5-turbo"
           ],
           "default": "gpt-4o-mini",
-          "description": "Which ChatGPT model to use",
+          "description": "%vscodeChapterEval.model.description%",
           "order": 2
         },
         "vscodeChapterEval.localModel": {
@@ -89,19 +91,19 @@
             "gemma2:latest"
           ],
           "default": "qwen2.5:latest",
-          "description": "Which local ollama model to use",
+          "description": "%vscodeChapterEval.localModel.description%",
           "order": 3
         },
         "vscodeChapterEval.prompt": {
           "type": "string",
           "order": 4,
           "default": "You are ASSISTANT , work as literary critic. Please evaluate the tension of the following chapter and give it a score out of 100. Also, describe the curve of the tension changes in the chapter. Point out the three most outstanding advantages and the three biggest disadvantages of the chapter. If you find any typographical errors, please point them out. \nUSER: $PROMPT$ \nASSISTANT: ",
-          "description": "OpenAI API prompt for Chapter Evaluator extension"
+          "description": "%vscodeChapterEval.prompt.description%"
         },
         "vscodeChapterEval.temperature": {
           "type": "number",
           "default": 0.7,
-          "description": "Temperature to use for the GPT (between 0 (conservative) and 2 (creative))",
+          "description": "%vscodeChapterEval.temperature.description%",
           "order": 5
         }
       }
@@ -129,34 +131,34 @@
     "commands": [
       {
         "command": "vscodeChapterEval.evaluateMarkdown",
-        "title": "Evaluate Chapter"
+        "title": "%vscodeChapterEval.evaluateMarkdown.title%"
       },
       {
         "command": "vscodeChapterEval.showEvaluation",
-        "title": "Show Evaluation"
+        "title": "%vscodeChapterEval.showEvaluation.title%"
       },
       {
         "command": "vscodeChapterEval.showExistedEvaluation",
-        "title": "Existed Evaluation"
+        "title": "%vscodeChapterEval.showExistedEvaluation.title%"
       },
       {
         "command": "vscodeChapterEval.formatMarkdown",
-        "title": "Format Chapter"
+        "title": "%vscodeChapterEval.formatMarkdown.title%"
       },
       {
         "command": "vscodeChapterEval.readOutLoud",
-        "title": "Read Out Loud"
+        "title": "%vscodeChapterEval.readOutLoud.title%"
       },
       {
         "command": "vscodeChapterEval.showProgress",
-        "title": "Evaluating ..."
+        "title": "vscodeChapterEval.showProgress.title"
       }
     ],
     "viewsContainers": {
       "activitybar": [
         {
           "id": "vscodeChapterEval_markdownWebview",
-          "title": "AI Helper",
+          "title": "%vscodeChapterEval_markdownWebview.title%",
           "icon": "resources/eval.svg"
         }
       ]
@@ -167,13 +169,13 @@
           "type": "webview",
           "id": "vscodeChapterEval_markdownWebview",
           "name": "Chapter Evaluate",
-          "contextualTitle": "Evaluation"
+          "contextualTitle": "%vscodeChapterEval_markdownWebview.contextualTitle%"
         },
         {
           "type": "webview",
           "id": "vscodeChapterEval_settingsWebview",
           "name": "Settings",
-          "contextualTitle": "Settings"
+          "contextualTitle": "%vscodeChapterEval_settingsWebview.contextualTitle%"
         }
       ]
     },
@@ -216,6 +218,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "@vscode/l10n": "^0.0.18",
     "child_process": "^1.0.2",
     "crypto": "^1.0.1",
     "eslint-plugin-prettier": "^5.2.1",

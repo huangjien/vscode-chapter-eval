@@ -1,0 +1,58 @@
+{
+  "locale": "en",
+  "languageId": "en",
+  "translations": [
+    {
+      "languageId": "zh-cn",
+      "locale": "zh-CN",
+      "name": "Chinese (Simplified)"
+    },
+    {
+      "languageId": "zh-tw",
+      "locale": "zh-TW",
+      "name": "Chinese (Traditional)"
+    },
+    {
+      "languageId": "ja",
+      "locale": "ja",
+      "name": "Japanese"
+    },
+    {
+      "languageId": "fr",
+      "locale": "fr",
+      "name": "French"
+    },
+    {
+      "languageId": "de",
+      "locale": "de",
+      "name": "German"
+    },
+    {
+      "languageId": "it",
+      "locale": "it",
+      "name": "Italian"
+    },
+    {
+      "languageId": "es",
+      "locale": "es",
+      "name": "Spanish"
+    },
+    {
+      "languageId": "pt-br",
+      "locale": "pt-BR",
+      "name": "Portuguese (Brazil)"
+    },
+    {
+      "languageId": "ru",
+      "locale": "ru",
+      "name": "Russian"
+    },
+    {
+      "languageId": "ko",
+      "locale": "ko",
+      "name": "Korean"
+    }
+  ],
+  "output": "./l10n",
+  "useCodepage": false
+}

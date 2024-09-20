@@ -1,0 +1,19 @@
+{
+    "vscodeChapterEval_markdownWebview.title" : "Редактор AI",
+    "vscodeChapterEval_markdownWebview.contextualTitle": "Оценка",
+    "vscodeChapterEval_settingsWebview.contextualTitle": "Настройки",
+    "configuration.title": "Конфигурация Редактора AI",
+    "vscodeChapterEval.evaluateMarkdown.title": "Оценить Главу",
+    "vscodeChapterEval.showEvaluation.title": "Показать Оценку",
+    "vscodeChapterEval.showExistedEvaluation.title": "Существующая Оценка",
+    "vscodeChapterEval.formatMarkdown.title": "Форматировать Главу",
+    "vscodeChapterEval.readOutLoud.title": "Чтение вслух",
+    "vscodeChapterEval.showProgress.title": "Оценивается ...",
+
+    "vscodeChapterEval.temperature.description" : "Температура для использования в модели AI (от 0 (кonservativ) до 2 (kreativ))",
+    "vscodeChapterEval.prompt.description": "Призыв к действию для расширения редактора AI",
+    "vscodeChapterEval.localModel.description": "Какая локальная модель AI использовать?",
+    "vscodeChapterEval.model.description": "Какой моделью ChatGPT пользоваться?",
+    "vscodeChapterEval.openaiApiKey.description": "Ключ API OpenAI для расширения редактора AI",
+    "vscodeChapterEval.modelLocation.description": "Использовать локальную или удаленную модель?"
+}
