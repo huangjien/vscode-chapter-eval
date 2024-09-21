@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.8.38",
+  "version": "0.8.39",
   "description": "Evaluate a chapter of novel with AI.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -157,7 +157,7 @@
       },
       {
         "command": "vscodeChapterEval.showProgress",
-        "title": "vscodeChapterEval.showProgress.title"
+        "title": "%vscodeChapterEval.showProgress.title%"
       }
     ],
     "viewsContainers": {

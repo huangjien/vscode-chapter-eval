@@ -21,20 +21,11 @@ import * as l10n from '@vscode/l10n';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-  const locale = vscode.env.language;
-  console.log(path.join(context.extensionPath, 'l10n', 'bundle.l10n.json'));
-  l10n.config({
-    fsPath: path.join(
-      context.extensionPath,
-      'l10n',
-      'bundle.l10n.' + locale + '.json'
-    ),
-  });
+  setupL10N(context);
 
   const storagePath = getAnalysisFolder(context);
 
   registerCommandOfShowExistedEvaluation(context, storagePath);
-  // registerCommandOfShowEvaluation(context, storagePath);
   registerHoverProvider(storagePath);
   registerCommandOfEvaluation(storagePath, context);
   registerCommandOfReadOutLoud(context);
@@ -45,6 +36,17 @@ export function activate(context: vscode.ExtensionContext) {
   const provider = setupSidebarWebviewProvider(context);
   registerCommandOfShowEvaluation(context, provider, storagePath);
   setupSettingWebviewProvider(context);
+}
+
+function setupL10N(context: vscode.ExtensionContext) {
+  const locale = vscode.env.language;
+  l10n.config({
+    fsPath: path.join(
+      context.extensionPath,
+      'l10n',
+      'bundle.l10n.' + locale + '.json'
+    ),
+  });
 }
 
 function setupSettingWebviewProvider(context: vscode.ExtensionContext) {
