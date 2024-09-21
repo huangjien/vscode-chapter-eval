@@ -1,0 +1,22 @@
+{
+  "displayEvaluation": "기존 평가 표시...",
+  "evaluateDocument": "현재 문서 평가 중...",
+  "noOpenMarkdownFile": "열린 마크다운 파일이 없습니다.",
+  "notMarkdown": "이것은 마크다운이나 평문 파일이 아닙니다.",
+  "saveResult": "{0}에 평가 결과 저장됨",
+  "unsupport": "지원되지 않는 플랫폼",
+  "readOut": "텍스트가 성공적으로 크게 읽힘",
+  "donotWaste": "평가하기 전에 파일을 저장해주세요, 그렇지 않으면 돈을 낭비할 수 있습니다!",
+  "promptNotSet": "OpenAI 프롬프트가 설정되지 않았습니다!",
+  "noTextSelect": "텍스트가 선택되지 않았습니다",
+  "keyNotSet": "모델 API 키가 설정에 설정되지 않았습니다.",
+  "localModelNotSet": "로컬 모델이 설정에 설정되지 않았습니다.",
+  "noEvaluationNow": "현재 평가 없음.",
+  "evaluated": "평가됨",
+  "notEvaluated": "평가되지 않음",
+  "evaluateCurrent": "현재 장 평가",
+  "formatCurrent": "현재 장 형식화",
+  "infoCurrent": "현재 장 정보",
+  "aiEditor": "AI 편집기",
+  "processing": "처리 중 ..."
+}

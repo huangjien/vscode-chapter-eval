@@ -15,5 +15,12 @@
   "vscodeChapterEval.localModel.description": "어떤 로컬 AI 모델을 사용할 것인가요?",
   "vscodeChapterEval.model.description": "어떤 ChatGPT 모델을 사용할 것인가요?",
   "vscodeChapterEval.openaiApiKey.description": "AI 편집기 확장 프로그램에 대한 OpenAI API 키",
-  "vscodeChapterEval.modelLocation.description": "로컬 또는 원격 모델 사용?"
+  "vscodeChapterEval.modelLocation.description": "로컬 또는 원격 모델 사용?",
+
+  "vscodeChapterEval.temperature": "온도",
+  "vscodeChapterEval.prompt.title": "프롬프트",
+  "vscodeChapterEval.localModel.title": "로컬 모델",
+  "vscodeChapterEval.model.title": "원격 모델",
+  "vscodeChapterEval.openaiApiKey.title": "API 키",
+  "vscodeChapterEval.modelLocation.title": "모델 위치"
 }

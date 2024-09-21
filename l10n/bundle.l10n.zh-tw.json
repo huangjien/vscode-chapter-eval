@@ -1,0 +1,22 @@
+{
+  "displayEvaluation": "显示现有評估...",
+  "evaluateDocument": "正在評估當前文件...",
+  "noOpenMarkdownFile": "沒有開啟的Markdown文件。",
+  "notMarkdown": "這不是Markdown或純文本文件。",
+  "saveResult": "評估結果已儲存到 {0}",
+  "unsupport": "不支持的平台",
+  "readOut": "文本已成功朗讀",
+  "donotWaste": "請在評估前儲存您的文件，否則您可能會浪費金錢！",
+  "promptNotSet": "OpenAI提示未設定！",
+  "noTextSelect": "未選擇文本",
+  "keyNotSet": "模型API密鑰未在設定中設定。",
+  "localModelNotSet": "本地模型未在設定中設定。",
+  "noEvaluationNow": "現在沒有評估。",
+  "evaluated": "已評估",
+  "notEvaluated": "未評估",
+  "evaluateCurrent": "評估當前章節",
+  "formatCurrent": "格式化當前章節",
+  "infoCurrent": "當前章節信息",
+  "aiEditor": "AI編輯器",
+  "processing": "處理中 ..."
+}

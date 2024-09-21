@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.8.33",
+  "version": "0.8.34",
   "description": "Evaluate a chapter of novel with ChatGPT.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -57,6 +57,7 @@
       "title": "%configuration.title%",
       "properties": {
         "vscodeChapterEval.modelLocation": {
+          "title": "%vscodeChapterEval.modelLocation.title%",
           "type": "string",
           "enum": [
             "Local",
@@ -67,12 +68,14 @@
           "order": 0
         },
         "vscodeChapterEval.openaiApiKey": {
+          "title": "%vscodeChapterEval.openaiApiKey.title%",
           "type": "string",
           "default": "",
           "order": 1,
           "description": "%vscodeChapterEval.openaiApiKey.description%"
         },
         "vscodeChapterEval.model": {
+          "title": "%vscodeChapterEval.model.title%",
           "type": "string",
           "enum": [
             "gpt-4o",
@@ -84,6 +87,7 @@
           "order": 2
         },
         "vscodeChapterEval.localModel": {
+          "title": "%vscodeChapterEval.localModel.title%",
           "type": "string",
           "enum": [
             "llama3.1:latest",
@@ -95,12 +99,14 @@
           "order": 3
         },
         "vscodeChapterEval.prompt": {
+          "title": "%vscodeChapterEval.prompt.title%",
           "type": "string",
           "order": 4,
           "default": "You are ASSISTANT , work as literary critic. Please evaluate the tension of the following chapter and give it a score out of 100. Also, describe the curve of the tension changes in the chapter. Point out the three most outstanding advantages and the three biggest disadvantages of the chapter. If you find any typographical errors, please point them out. \nUSER: $PROMPT$ \nASSISTANT: ",
           "description": "%vscodeChapterEval.prompt.description%"
         },
         "vscodeChapterEval.temperature": {
+          "title": "%vscodeChapterEval.temperature%",
           "type": "number",
           "default": 0.7,
           "description": "%vscodeChapterEval.temperature.description%",

@@ -123,7 +123,7 @@ function setupStatusBarItem(
     updateStatusBar(storagePath, statusBarItem),
     null,
     context.subscriptions
-  )
+  );
 
   // define menu after click statusBar
   context.subscriptions.push(
@@ -134,7 +134,7 @@ function setupStatusBarItem(
           [
             l10n.t('evaluateCurrent'), //Evaluate Current Chapter
             l10n.t('formatCurrent'), //Format Current Chapter
-            l10n.t('infoCurrent') // Information of Current Chapter
+            l10n.t('infoCurrent'), // Information of Current Chapter
           ],
           { placeHolder: 'You can choose' }
         );
@@ -293,7 +293,7 @@ function registerCommandOfReadOutLoud(context: vscode.ExtensionContext) {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
         showMessage(
-          l10n.t('noOpenMarkdownFile'),  // No open Markdown file.
+          l10n.t('noOpenMarkdownFile'), // No open Markdown file.
           'info'
         );
         return;

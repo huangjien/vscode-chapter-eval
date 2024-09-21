@@ -14,5 +14,12 @@
   "vscodeChapterEval.localModel.description": "Welches lokale KI-Modell verwenden?",
   "vscodeChapterEval.model.description": "Welches ChatGPT-Modell verwenden?",
   "vscodeChapterEval.openaiApiKey.description": "OpenAI API-Schlüssel für die KI-Editor-Erweiterung",
-  "vscodeChapterEval.modelLocation.description": "Lokales oder entferntes KI-Modell verwenden?"
+  "vscodeChapterEval.modelLocation.description": "Lokales oder entferntes KI-Modell verwenden?",
+
+  "vscodeChapterEval.temperature": "Temperatur",
+  "vscodeChapterEval.prompt.title": "Eingabeaufforderung",
+  "vscodeChapterEval.localModel.title": "Lokales Modell",
+  "vscodeChapterEval.model.title": "Fernmodell",
+  "vscodeChapterEval.openaiApiKey.title": "API-Schlüssel",
+  "vscodeChapterEval.modelLocation.title": "Modellstandort"
 }

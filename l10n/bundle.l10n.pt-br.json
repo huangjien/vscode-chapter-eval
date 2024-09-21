@@ -1,0 +1,22 @@
+{
+  "displayEvaluation": "Exibir avaliação existente...",
+  "evaluateDocument": "Avaliando o documento atual...",
+  "noOpenMarkdownFile": "Nenhum arquivo Markdown aberto.",
+  "notMarkdown": "Este não é um arquivo Markdown ou de texto simples.",
+  "saveResult": "O resultado da avaliação foi salvo em {0}",
+  "unsupport": "Plataforma não suportada",
+  "readOut": "O texto foi lido em voz alta com sucesso",
+  "donotWaste": "Por favor, salve seu arquivo antes da avaliação, ou você pode apenas perder seu dinheiro!",
+  "promptNotSet": "O prompt do OpenAI não está definido!",
+  "noTextSelect": "Nenhum texto selecionado",
+  "keyNotSet": "A chave da API do modelo não está definida nas configurações.",
+  "localModelNotSet": "O modelo local não está definido nas configurações.",
+  "noEvaluationNow": "Sem avaliação no momento.",
+  "evaluated": "Avaliado",
+  "notEvaluated": "Não avaliado",
+  "evaluateCurrent": "Avaliar o Capítulo Atual",
+  "formatCurrent": "Formatar o Capítulo Atual",
+  "infoCurrent": "Informações do Capítulo Atual",
+  "aiEditor": "Editor AI",
+  "processing": "Processando ..."
+}

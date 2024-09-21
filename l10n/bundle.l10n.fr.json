@@ -1,0 +1,22 @@
+{
+  "displayEvaluation": "Afficher l'évaluation existante...",
+  "evaluateDocument": "Évaluation du document en cours...",
+  "noOpenMarkdownFile": "Aucun fichier Markdown ouvert.",
+  "notMarkdown": "Ce n'est pas un fichier Markdown ou texte brut.",
+  "saveResult": "Résultat de l'évaluation enregistré dans {0}",
+  "unsupport": "Plateforme non prise en charge",
+  "readOut": "Le texte a été lu à haute voix avec succès",
+  "donotWaste": "Veuillez enregistrer votre fichier avant l'évaluation, sinon vous pourriez gaspiller de l'argent!",
+  "promptNotSet": "L'invite OpenAI n'est pas définie!",
+  "noTextSelect": "Aucun texte sélectionné",
+  "keyNotSet": "La clé API du modèle n'est pas définie dans les paramètres.",
+  "localModelNotSet": "Le modèle local n'est pas défini dans les paramètres.",
+  "noEvaluationNow": "Pas d'évaluation pour le moment.",
+  "evaluated": "Évalué",
+  "notEvaluated": "Non évalué",
+  "evaluateCurrent": "Évaluer le chapitre en cours",
+  "formatCurrent": "Mettre en forme le chapitre en cours",
+  "infoCurrent": "Informations sur le chapitre en cours",
+  "aiEditor": "Éditeur IA",
+  "processing": "En cours de traitement ..."
+}

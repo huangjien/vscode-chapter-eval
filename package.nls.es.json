@@ -14,5 +14,12 @@
   "vscodeChapterEval.localModel.description": "Qué modelo IA local usar",
   "vscodeChapterEval.model.description": "Qué modelo ChatGPT usar",
   "vscodeChapterEval.openaiApiKey.description": "Clave API de OpenAI para la extensión Editor de IA",
-  "vscodeChapterEval.modelLocation.description": "¿Usar modelo IA local o remoto?"
+  "vscodeChapterEval.modelLocation.description": "¿Usar modelo IA local o remoto?",
+
+  "vscodeChapterEval.temperature": "Temperatura",
+  "vscodeChapterEval.prompt.title": "Indicador",
+  "vscodeChapterEval.localModel.title": "Modelo Local",
+  "vscodeChapterEval.model.title": "Modelo Remoto",
+  "vscodeChapterEval.openaiApiKey.title": "Clave API",
+  "vscodeChapterEval.modelLocation.title": "Ubicación del Modelo"
 }

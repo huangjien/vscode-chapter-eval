@@ -1,0 +1,22 @@
+{
+  "displayEvaluation": "既存の評価を表示しています...",
+  "evaluateDocument": "現在のドキュメントを評価しています...",
+  "noOpenMarkdownFile": "開いている Markdown ファイルがありません。",
+  "notMarkdown": "これは Markdown またはプレーンテキストファイルではありません。",
+  "saveResult": "評価結果を {0} に保存しました",
+  "unsupport": "サポートされていないプラットフォーム",
+  "readOut": "テキストを音声で読み上げました",
+  "donotWaste": "評価する前にファイルを保存してください。さもないとお金が無駄になるかもしれません！",
+  "promptNotSet": "OpenAI のプロンプトが設定されていません！",
+  "noTextSelect": "選択されたテキストがありません",
+  "keyNotSet": "モデル API キーが設定にありません。",
+  "localModelNotSet": "ローカルモデルが設定にありません。",
+  "noEvaluationNow": "現在評価はありません。",
+  "evaluated": "評価済み",
+  "notEvaluated": "未評価",
+  "evaluateCurrent": "現在の章を評価",
+  "formatCurrent": "現在の章をフォーマット",
+  "infoCurrent": "現在の章の情報",
+  "aiEditor": "AI エディター",
+  "processing": "処理中..."
+}

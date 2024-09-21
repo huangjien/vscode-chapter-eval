@@ -75,7 +75,7 @@ export function isMarkdownOrPlainText(editor: vscode.TextEditor) {
 
 export function printToOutput(result: string) {
   // Create an output channel (if it doesn't exist already) and get a reference to it
-  const outputChannel = vscode.window.createOutputChannel('Chapter Evaluation');
+  const outputChannel = vscode.window.createOutputChannel(l10n.t('aiEditor'));
 
   // Clear any previous content in the output channel
   outputChannel.clear();
@@ -128,7 +128,7 @@ export function showStatusBarProgress(task: Promise<any>): void {
   vscode.window.withProgress(
     {
       location: vscode.ProgressLocation.Notification,
-      title: 'Processing...',
+      title: l10n.t('processing'),
       cancellable: true, // Set to true if you want to allow cancelling the task
     },
     () => {

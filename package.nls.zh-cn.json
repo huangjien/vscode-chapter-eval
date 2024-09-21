@@ -14,5 +14,12 @@
   "vscodeChapterEval.localModel.description": "使用哪个本地 AI 模型",
   "vscodeChapterEval.model.description": "使用哪个 AI 模型",
   "vscodeChapterEval.openaiApiKey.description": "AI 编辑扩展的 OpenAI API 密钥",
-  "vscodeChapterEval.modelLocation.description": "使用本地还是远程 AI 模型？"
+  "vscodeChapterEval.modelLocation.description": "使用本地还是远程 AI 模型？",
+
+  "vscodeChapterEval.temperature": "温度",
+  "vscodeChapterEval.prompt.title": "提示",
+  "vscodeChapterEval.localModel.title": "本地模型",
+  "vscodeChapterEval.model.title": "远程模型",
+  "vscodeChapterEval.openaiApiKey.title": "API 密钥",
+  "vscodeChapterEval.modelLocation.title": "模型位置"
 }

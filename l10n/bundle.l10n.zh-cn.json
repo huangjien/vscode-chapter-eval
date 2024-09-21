@@ -5,10 +5,18 @@
   "notMarkdown": "这不是 Markdown 或纯文本文件。",
   "saveResult": "评估结果已保存到 {0}",
   "unsupport": "不支持的平台",
-  "readOut": "文本已成功朗读",
-  "donotWaste": "请在评估前保存您的文件，否则可能会浪费您的钱！",
-  "promptNotSet": "OpenAI 提示尚未设置！",
+  "readOut": "文本朗读成功",
+  "donotWaste": "请在评估前保存文件，否则可能浪费您的钱！",
+  "promptNotSet": "OpenAI 提示未设置！",
   "noTextSelect": "未选择文本",
-  "keyNotSet": "设置中未设置模型 API 密钥。",
-  "localModelNotSet": "设置中未设置本地模型。"
+  "keyNotSet": "模型 API 密钥未在设置中配置。",
+  "localModelNotSet": "本地模型未在设置中配置。",
+  "noEvaluationNow": "当前无评估。",
+  "evaluated": "已评估",
+  "notEvaluated": "未评估",
+  "evaluateCurrent": "评估当前章节",
+  "formatCurrent": "格式化当前章节",
+  "infoCurrent": "当前章节信息",
+  "aiEditor": "AI 编辑器",
+  "processing": "正在处理..."
 }

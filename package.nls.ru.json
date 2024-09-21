@@ -15,5 +15,12 @@
   "vscodeChapterEval.localModel.description": "Какая локальная модель AI использовать?",
   "vscodeChapterEval.model.description": "Какой моделью ChatGPT пользоваться?",
   "vscodeChapterEval.openaiApiKey.description": "Ключ API OpenAI для расширения редактора AI",
-  "vscodeChapterEval.modelLocation.description": "Использовать локальную или удаленную модель?"
+  "vscodeChapterEval.modelLocation.description": "Использовать локальную или удаленную модель?",
+
+  "vscodeChapterEval.temperature": "Температура",
+  "vscodeChapterEval.prompt.title": "Подсказка",
+  "vscodeChapterEval.localModel.title": "Местная модель",
+  "vscodeChapterEval.model.title": "Удалённая модель",
+  "vscodeChapterEval.openaiApiKey.title": "API ключ",
+  "vscodeChapterEval.modelLocation.title": "Расположение модели"
 }

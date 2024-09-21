@@ -24,8 +24,7 @@ export async function evaluateChapter(
   if (editor.document.isDirty) {
     showMessage(
       l10n.t(
-        'donotWaste',
-        'Please save your file before evaluation, or you may just waste your money!'
+        'donotWaste' // 'Please save your file before evaluation, or you may just waste your money!'
       ),
       'warning'
     );
@@ -73,11 +72,11 @@ export async function evaluateChapter(
         stringHash +
           '\n\n### ' +
           filename +
-          '\n\n### size: ' +
+          '\n\n### Size: ' +
           text_length +
-          '\n\n#### model: ' +
+          '\n\n#### Model: ' +
           model +
-          '\n\n#### temperature: ' +
+          '\n\n#### Temperature: ' +
           temperature +
           '\n\n' +
           source_file_stat.mtime
@@ -148,7 +147,7 @@ export function readTextAloud(text: string) {
       command = `espeak "${text}"`;
       break;
     default:
-      showMessage(l10n.t('unsupport', 'Unsupported platform'), 'error');
+      showMessage(l10n.t('unsupport'), 'error'); // Unsupported platform
       return;
   }
 
@@ -161,6 +160,6 @@ export function readTextAloud(text: string) {
       showMessage(`stderr: ${stderr}`, 'error');
       return;
     }
-    showMessage(l10n.t('readOut', `Text read out loud successfully`), 'info');
+    showMessage(l10n.t('readOut'), 'info'); // Text read out loud successfully
   });
 }

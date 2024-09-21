@@ -14,5 +14,12 @@
   "vscodeChapterEval.localModel.description": "使用するローカルAIモデル",
   "vscodeChapterEval.model.description": "使用するChatGPTモデル",
   "vscodeChapterEval.openaiApiKey.description": "AIエディター拡張機能のOpenAI APIキー",
-  "vscodeChapterEval.modelLocation.description": "ローカルまたはリモートAIモデルを使用？"
+  "vscodeChapterEval.modelLocation.description": "ローカルまたはリモートAIモデルを使用？",
+
+  "vscodeChapterEval.temperature": "温度",
+  "vscodeChapterEval.prompt.title": "プロンプト",
+  "vscodeChapterEval.localModel.title": "ローカルモデル",
+  "vscodeChapterEval.model.title": "リモートモデル",
+  "vscodeChapterEval.openaiApiKey.title": "APIキー",
+  "vscodeChapterEval.modelLocation.title": "モデルの場所"
 }
