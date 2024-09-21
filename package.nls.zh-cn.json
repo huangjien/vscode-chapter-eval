@@ -21,5 +21,7 @@
   "vscodeChapterEval.localModel.title": "本地模型",
   "vscodeChapterEval.model.title": "远程模型",
   "vscodeChapterEval.openaiApiKey.title": "API 密钥",
-  "vscodeChapterEval.modelLocation.title": "模型位置"
+  "vscodeChapterEval.modelLocation.title": "模型位置",
+
+  "project.description": "使用 AI 评估小说章节。"
 }

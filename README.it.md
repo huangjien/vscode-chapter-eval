@@ -9,7 +9,7 @@ Questa estensione mira a rendere reale il sogno di molti di scrivere un romanzo.
 ### Caratteristiche principali
 
 - **Supporto per file Markdown e testo**: Valutazione senza intoppi dei capitoli scritti in formato Markdown e testo.
-- **Integrazione di ChatGPT**: Utilizzo di ChatGPT di OpenAI per analizzare la tensione narrativa e la qualità della scrittura.
+- **Integrazione di AI**: Utilizzo di AI di OpenAI per analizzare la tensione narrativa e la qualità della scrittura.
 - **Supporto per modelli locali**: A partire dalla versione 0.7.x, questa estensione inizia a supportare la valutazione con modelli locali (ollama), sebbene i risultati possano variare.
 - **Interfaccia utente amichevole**: Comandi facilmente accessibili permettono una valutazione, una formattazione e una gestione del testo semplici.
 - **Supporto lettura testo-voce**: Questa estensione vi permette anche di far leggere il testoselezionato.
@@ -50,7 +50,7 @@ In un editor con i capitoli del romanzo:
 Fai clic con il pulsante destro del mouse sul testo.
 Seleziona "Valuta capitolo" dal menu contestuale.
 <img src="resources/evaluate.png" alt="Valuta capitolo" />
-Aspetta un momento e ChatGPT restituirà i risultati della valutazione e fornirà pregevoli indizi per la tua scrittura:
+Aspetta un momento e AI restituirà i risultati della valutazione e fornirà pregevoli indizi per la tua scrittura:
 
 <img src="resources/evaluation_reslult.png" alt="Risultati della valutazione" />
 Informazioni sui modelli locali

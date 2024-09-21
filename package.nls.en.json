@@ -13,7 +13,7 @@
   "vscodeChapterEval.temperature.description": "Temperature to use for the AI Model (between 0 (conservative) and 2 (creative))",
   "vscodeChapterEval.prompt.description": "model prompt for AI Editor extension",
   "vscodeChapterEval.localModel.description": "Which local AI model to use",
-  "vscodeChapterEval.model.description": "Which ChatGPT model to use",
+  "vscodeChapterEval.model.description": "Which AI model to use",
   "vscodeChapterEval.openaiApiKey.description": "OpenAI API Key for AI Editor extension",
   "vscodeChapterEval.modelLocation.description": "Use local or remote AI model?",
 
@@ -22,5 +22,7 @@
   "vscodeChapterEval.localModel.title": "Local Model",
   "vscodeChapterEval.model.title": "Remote Model",
   "vscodeChapterEval.openaiApiKey.title": "API Key",
-  "vscodeChapterEval.modelLocation.title": "Model Location"
+  "vscodeChapterEval.modelLocation.title": "Model Location",
+
+  "project.description": "Evaluate a chapter of novel with AI."
 }

@@ -9,7 +9,7 @@ Essa extensão visa realizar o sonho de muitos de escrever um romance. Como um p
 ### Principais recursos
 
 - **Suporte a arquivos Markdown e texto simples**: Avaliação contínua dos capítulos escritos em formatos Markdown e texto simples.
-- **Integração com ChatGPT**: Utiliza o ChatGPT da OpenAI para analisar a tensão narrativa e a qualidade da escrita.
+- **Integração com AI**: Utiliza o AI da OpenAI para analisar a tensão narrativa e a qualidade da escrita.
 - **Suporte a modelos locais**: A partir da versão 0.7.x, essa extensão começou a oferecer suporte à avaliação com modelos locais (ollama), embora os resultados possam variar.
 - **Interface amigável para o usuário**: Comandos facilmente acessíveis permitem uma avaliação, formatação e gerenciamento de texto simples.
 - **Suporte à conversão de texto em fala**: Essa extensão também permite que você faça a leitura do texto selecionado em voz alta.
@@ -48,7 +48,7 @@ No editor que contém o capítulo do romance:
 
 <img src="resources/evaluate.png" alt="Avaliar Capítulo" />
 
-Espere um momento, e o ChatGPT retornará os resultados da avaliação, fornecendo insights valiosos para sua escrita:
+Espere um momento, e o AI retornará os resultados da avaliação, fornecendo insights valiosos para sua escrita:
 
 <img src="resources/evaluation_reslult.png" alt="Resultado da Avaliação" />
 

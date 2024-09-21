@@ -1,8 +1,8 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.8.36",
-  "description": "Evaluate a chapter of novel with ChatGPT.",
+  "version": "0.8.37",
+  "description": "Evaluate a chapter of novel with AI.",
   "main": "./dist/extension",
   "type": "commonjs",
   "l10n": "./l10n",
@@ -31,7 +31,7 @@
     "chapter",
     "evaluate",
     "score",
-    "ChatGPT"
+    "AI"
   ],
   "preview": false,
   "private": false,

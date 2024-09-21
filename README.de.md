@@ -9,7 +9,7 @@ Diese Erweiterung soll die Romantraum der vielen zu Leben erwecken. Als kürzlic
 ### Hauptmerkmale
 
 - **Unterstützung für Markdown- und Textdateien**: Flüssige Bewertung von Kapiteln, die in Markdown- und Textdateiformat geschrieben wurden.
-- **Integration von ChatGPT**: Verwendung von OpenAIs ChatGPT, um die Erzählspannung und die Qualität des Schreibens zu analysieren.
+- **Integration von AI**: Verwendung von OpenAIs AI, um die Erzählspannung und die Qualität des Schreibens zu analysieren.
 - **Unterstützung von lokalen Modellen**: Ab Version 0.7.x unterstützt diese Erweiterung die Bewertung mit lokalen Modellen (ollama), wenn auch mit möglicherweise abweichenden Ergebnissen.
 - **Benutzerfreundliche Oberfläche**: Einfach zugängliche Befehle ermöglichen eine einfache Bewertung, Formatierung und Textverwaltung.
 - **Text-zu-Sprache-Unterstützung**: Diese Erweiterung ermöglicht es Ihnen auch, ausgewählten Text vorzulesen.

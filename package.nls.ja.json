@@ -12,7 +12,7 @@
   "vscodeChapterEval.temperature.description": "AIモデルの温度設定 (0 (保守的) から 2 (創造的) の間)",
   "vscodeChapterEval.prompt.description": "AIエディター拡張機能のモデルプロンプト",
   "vscodeChapterEval.localModel.description": "使用するローカルAIモデル",
-  "vscodeChapterEval.model.description": "使用するChatGPTモデル",
+  "vscodeChapterEval.model.description": "使用するAIモデル",
   "vscodeChapterEval.openaiApiKey.description": "AIエディター拡張機能のOpenAI APIキー",
   "vscodeChapterEval.modelLocation.description": "ローカルまたはリモートAIモデルを使用？",
 
@@ -21,5 +21,7 @@
   "vscodeChapterEval.localModel.title": "ローカルモデル",
   "vscodeChapterEval.model.title": "リモートモデル",
   "vscodeChapterEval.openaiApiKey.title": "APIキー",
-  "vscodeChapterEval.modelLocation.title": "モデルの場所"
+  "vscodeChapterEval.modelLocation.title": "モデルの場所",
+
+  "project.description": "AIを使用して小説の章を評価します。"
 }

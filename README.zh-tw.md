@@ -59,7 +59,7 @@ $PROMPT$
 
 <img src="resources/evaluate.png" alt="評估章節" />
 
-稍等片刻，ChatGPT 將會傳回評估結果，為您的寫作提供有價值的見解：
+稍等片刻，AI 將會傳回評估結果，為您的寫作提供有價值的見解：
 
 <img src="resources/evaluation_reslult.png" alt="評估結果" />
 

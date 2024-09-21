@@ -9,7 +9,7 @@ Cette extension vise à réaliser le rêve de nombreux écrivains de romans. En 
 ### Principales caractéristiques
 
 - **Prise en charge des fichiers Markdown et texte brut** : Évaluez sans soucis les chapitres écrits en Markdown ou en texte brut.
-- **Intégration de ChatGPT** : Utilisez l'analyse de ChatGPT par OpenAI pour évaluer la tension narrative et la qualité de l'écriture.
+- **Intégration de AI** : Utilisez l'analyse de AI par OpenAI pour évaluer la tension narrative et la qualité de l'écriture.
 - **Prise en charge des modèles locaux** : À partir de la version 0.7.x, cette extension prend en charge les modèles locaux (ollama) pour l'évaluation, bien que les résultats puissent varier.
 - **Interface utilisateur conviviale** : Des commandes accessibles facilitent l'évaluation, la mise en forme et la gestion des textes.
 - **Prise en charge de la lecture vocale** : Cette extension vous permet également de faire lire à haute voix le texte sélectionné.

@@ -13,7 +13,7 @@
   "vscodeChapterEval.temperature.description": "Температура для использования в модели AI (от 0 (кonservativ) до 2 (kreativ))",
   "vscodeChapterEval.prompt.description": "Призыв к действию для расширения редактора AI",
   "vscodeChapterEval.localModel.description": "Какая локальная модель AI использовать?",
-  "vscodeChapterEval.model.description": "Какой моделью ChatGPT пользоваться?",
+  "vscodeChapterEval.model.description": "Какой моделью AI пользоваться?",
   "vscodeChapterEval.openaiApiKey.description": "Ключ API OpenAI для расширения редактора AI",
   "vscodeChapterEval.modelLocation.description": "Использовать локальную или удаленную модель?",
 
@@ -22,5 +22,7 @@
   "vscodeChapterEval.localModel.title": "Местная модель",
   "vscodeChapterEval.model.title": "Удалённая модель",
   "vscodeChapterEval.openaiApiKey.title": "API ключ",
-  "vscodeChapterEval.modelLocation.title": "Расположение модели"
+  "vscodeChapterEval.modelLocation.title": "Расположение модели",
+
+  "project.description": "Оцените главу романа с помощью ИИ."
 }

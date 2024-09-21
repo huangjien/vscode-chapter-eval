@@ -9,7 +9,7 @@ Esta extensión busca hacer realidad el sueño de muchos de escribir una novela.
 ### Características principales
 
 - **Soporte para archivos Markdown y texto plano**: Evaluación fluida de capítulos escritos en formatos Markdown y texto plano.
-- **Integración con ChatGPT**: Utiliza ChatGPT de OpenAI para analizar la tensión narrativa y la calidad de la escritura.
+- **Integración con AI**: Utiliza AI de OpenAI para analizar la tensión narrativa y la calidad de la escritura.
 - **Soporte para modelos locales**: A partir de la versión 0.7.x, esta extensión comenzó a admitir la evaluación con modelos locales (ollama), aunque los resultados pueden variar.
 - **Interfaz de usuario amigable**: Comandos fácilmente accesibles permiten una evaluación, formateo y gestión de texto sencilla.
 - **Soporte para la conversión de texto a voz**: Esta extensión también le permite leer en voz alta el texto seleccionado.
@@ -51,7 +51,7 @@ En el editor que contiene el capítulo de la novela:
 Haga clic derecho en el texto.
 Seleccione "Evaluar Capítulo" en el menú contextual.
 <img src="resources/evaluate.png" alt="Evaluar Capítulo" />
-Espere un momento, y ChatGPT devolverá los resultados de la evaluación, proporcionando insights valiosos para su escritura:
+Espere un momento, y AI devolverá los resultados de la evaluación, proporcionando insights valiosos para su escritura:
 
 <img src="resources/evaluation_reslult.png" alt="Resultado de la Evaluación" />
 Acerca del modelo local

@@ -13,7 +13,7 @@
   "vscodeChapterEval.temperature.description": "Temperatura a usar para o modelo de IA (entre 0 (conservadora) e 2 (creativa))",
   "vscodeChapterEval.prompt.description": "Pista do modelo para a extensão do Editor de IA",
   "vscodeChapterEval.localModel.description": "Qual é o modelo de IA local a usar?",
-  "vscodeChapterEval.model.description": "Qual é o modelo ChatGPT a usar?",
+  "vscodeChapterEval.model.description": "Qual é o modelo AI a usar?",
   "vscodeChapterEval.openaiApiKey.description": "Chave API do OpenAI para a extensão do Editor de IA",
   "vscodeChapterEval.modelLocation.description": "Usar modelo local ou remoto?",
 
@@ -22,5 +22,7 @@
   "vscodeChapterEval.localModel.title": "Modelo Local",
   "vscodeChapterEval.model.title": "Modelo Remoto",
   "vscodeChapterEval.openaiApiKey.title": "Chave API",
-  "vscodeChapterEval.modelLocation.title": "Localização do Modelo"
+  "vscodeChapterEval.modelLocation.title": "Localização do Modelo",
+
+  "project.description": "Avaliar um capítulo de romance com IA."
 }
