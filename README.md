@@ -1,6 +1,6 @@
-# Chapter Evaluator
+# AI Editor
 
-**Chapter Evaluator** is a Visual Studio Code extension that leverages the capabilities of ChatGPT to assist authors in evaluating their novel chapters. This tool is designed to help both aspiring and seasoned writers gain insights into their writing and refine their craft.
+**AI Editor** is a Visual Studio Code extension that leverages the capabilities of AI to assist authors in evaluating their novel chapters. This tool is designed to help both aspiring and seasoned writers gain insights into their writing and refine their craft.
 
 ### Purpose of This Extension
 
@@ -9,14 +9,14 @@ This extension aims to fulfill the dream many of us have of writing a novel. As 
 ### Key Features
 
 - **Supports Markdown and Plain Text Files**: Evaluate chapters written in both Markdown and plain text formats seamlessly.
-- **ChatGPT Integration**: Utilize the power of OpenAI's ChatGPT to analyze the narrative tension and quality of your writing.
+- **AI Integration**: Utilize the power of AI to analyze the narrative tension and quality of your writing.
 - **Local Model Support**: From version 0.7.x onwards, the extension has begun supporting local models (ollama) for evaluation, although results may vary.
 - **User-Friendly Interface**: Easily accessible commands allow for straightforward evaluations, formatting, and text management.
 - **Text-To-Speech Support**: The extension also allows you to read your selected text aloud.
 
 ### Why You Should Use It
 
-Every writer deserves to feel confident about their work. With Chapter Evaluator, you can receive constructive feedback that focuses on crucial areas of your story, such as pacing, tension, and character development. This extension is about more than just getting scores; it's about understanding your writing better.
+Every writer deserves to feel confident about their work. With AI Editor, you can receive constructive feedback that focuses on crucial areas of your story, such as pacing, tension, and character development. This extension is about more than just getting scores; it's about understanding your writing better.
 
 ### Obtaining Your OpenAI API Key
 
@@ -51,13 +51,20 @@ In your editor containing the novel chapter:
 
 <img src="resources/evaluate.png" alt="Evaluate a chapter" />
 
-Wait a moment for ChatGPT to return the evaluation, which will provide valuable insights into your writing:
+Wait a moment for AI to return the evaluation, which will provide valuable insights into your writing:
 
 <img src="resources/evaluation_reslult.png" alt="Evaluation result" />
 
 ### A Note on Local Models
 
 Starting from version 0.7.x, local models are supported, though the effectiveness may vary with different configurations and model types.
+
+### L10N
+
+This tools support below languages:
+
+Chinese (Simplified - zh-cn), Chinese (Traditional - zh-tw), Japanese (ja), French (fr), German (de), Italian (it), Spanish (es), Portuguese (Brazilian - pt-br), Russian (ru), and Korean (ko) .
+
 
 ### Limitations & Feedback
 
