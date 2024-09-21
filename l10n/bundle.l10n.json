@@ -10,5 +10,11 @@
   "promptNotSet": "OpenAI prompt is not set!",
   "noTextSelect": "No text selected",
   "keyNotSet": "Model API key is not set in settings.",
-  "localModelNotSet": "Local model is not set in settings."
+  "localModelNotSet": "Local model is not set in settings.",
+  "noEvaluationNow": "No Evaluation Now.",
+  "evaluated": "Evaluated",
+  "notEvaluated": "Not Evaluated",
+  "evaluateCurrent": "Evaluate Current Chapter",
+  "formatCurrent":"Format Current Chapter",
+  "infoCurrent": "Information of Current Chapter"
 }

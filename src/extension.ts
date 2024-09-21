@@ -24,7 +24,11 @@ export function activate(context: vscode.ExtensionContext) {
   const locale = vscode.env.language;
   console.log(path.join(context.extensionPath, 'l10n', 'bundle.l10n.json'));
   l10n.config({
-    fsPath: path.join(context.extensionPath, 'l10n', 'bundle.l10n.'+locale+'.json'),
+    fsPath: path.join(
+      context.extensionPath,
+      'l10n',
+      'bundle.l10n.' + locale + '.json'
+    ),
   });
 
   const storagePath = getAnalysisFolder(context);
@@ -99,12 +103,12 @@ function setupStatusBarItem(
     400
   );
   statusBarItem.command = 'vscodeChapterEval.toggleStatusBar';
-  statusBarItem.hide(); // 默认隐藏状态栏项
+  statusBarItem.hide(); // by default, hide statusBar
 
   context.subscriptions.push(statusBarItem);
   updateStatusBar(storagePath, statusBarItem);
 
-  // 监听活动编辑器的变化
+  // Monitor editor status
   vscode.window.onDidChangeActiveTextEditor(
     updateStatusBar(storagePath, statusBarItem),
     null,
@@ -115,30 +119,35 @@ function setupStatusBarItem(
     null,
     context.subscriptions
   );
+  vscode.workspace.onDidOpenTextDocument(
+    updateStatusBar(storagePath, statusBarItem),
+    null,
+    context.subscriptions
+  )
 
-  // 定义点击状态栏后显示的菜单
+  // define menu after click statusBar
   context.subscriptions.push(
     vscode.commands.registerCommand(
       'vscodeChapterEval.toggleStatusBar',
       async () => {
         const selectedOption = await vscode.window.showQuickPick(
           [
-            'Evaluate Current Chapter',
-            'Format Current Chapter',
-            'Information of Current Chapter',
+            l10n.t('evaluateCurrent'), //Evaluate Current Chapter
+            l10n.t('formatCurrent'), //Format Current Chapter
+            l10n.t('infoCurrent') // Information of Current Chapter
           ],
           { placeHolder: 'You can choose' }
         );
-        if (selectedOption === 'Evaluate Current Chapter') {
-          if (statusBarItem.text.startsWith('Evaluated')) {
+        if (selectedOption === l10n.t('evaluateCurrent')) {
+          if (statusBarItem.text.startsWith(l10n.t('evaluated'))) {
             showMessage(
-              l10n.t('displayEvaluation', 'Display existing evaluation...'),
+              l10n.t('displayEvaluation'), // Display existing evaluation...
               'info'
             );
             vscode.commands.executeCommand('vscodeChapterEval.showEvaluation');
           } else {
             showMessage(
-              l10n.t('evaluateDocument', 'Evaluating current document...'),
+              l10n.t('evaluateDocument'), // Evaluating current document...
               'info'
             );
             vscode.commands.executeCommand(
@@ -146,10 +155,10 @@ function setupStatusBarItem(
             );
           }
         }
-        if (selectedOption === 'Format Current Chapter') {
+        if (selectedOption === l10n.t('formatCurrent')) {
           vscode.commands.executeCommand('vscodeChapterEval.formatMarkdown');
         }
-        if (selectedOption === 'Information of Current Chapter') {
+        if (selectedOption === l10n.t('infoCurrent')) {
           printToOutput(statusBarItem.tooltip!.toString());
         }
       }
@@ -180,10 +189,10 @@ function updateStatusBar(
 
       const resultFilePath = path.join(storagePath, filename);
       if (fs.existsSync(resultFilePath)) {
-        statusBarItem.text = 'Evaluated ✔️';
+        statusBarItem.text = l10n.t('evaluated') + ' ✔️';
         vscode.commands.executeCommand('vscodeChapterEval.showEvaluation');
       } else {
-        statusBarItem.text = 'Not Evaluated ⏳';
+        statusBarItem.text = l10n.t('notEvaluated') + ' ⏳';
       }
       statusBarItem.show();
     } else {
@@ -219,22 +228,16 @@ function registerCommandOfShowExistedEvaluation(
           const editor = vscode.window.activeTextEditor;
           if (!editor) {
             showMessage(
-              l10n.t('noOpenMarkdownFile', 'No open Markdown file.'),
+              l10n.t('noOpenMarkdownFile'), // No open Markdown file.
               'info'
             );
             return;
           }
           if (!isMarkdownOrPlainText(editor)) {
-            showMessage(
-              l10n.t(
-                'notMarkdown',
-                'This is not a Markdown or Plaintext file.'
-              ),
-              'info'
-            );
+            showMessage(l10n.t('notMarkdown'), 'info');
             return;
           }
-          let tip = 'No Evaluation Now.';
+          let tip = l10n.t('noEvaluationNow');
           const filename = getFileName(editor.document);
 
           const resultFilePath = path.join(storagePath, filename);
@@ -254,14 +257,14 @@ function registerCommandOfFormat(context: vscode.ExtensionContext) {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
         showMessage(
-          l10n.t('noOpenMarkdownFile', 'No open Markdown file.'),
+          l10n.t('noOpenMarkdownFile'), // No open Markdown file.
           'info'
         );
         return;
       }
       if (!isMarkdownOrPlainText(editor)) {
         showMessage(
-          l10n.t('notMarkdown', 'This is not a Markdown or Plaintext file.'),
+          l10n.t('notMarkdown'), // This is not a Markdown or Plaintext file.
           'info'
         );
         return;
@@ -290,14 +293,14 @@ function registerCommandOfReadOutLoud(context: vscode.ExtensionContext) {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
         showMessage(
-          l10n.t('noOpenMarkdownFile', 'No open Markdown file.'),
+          l10n.t('noOpenMarkdownFile'),  // No open Markdown file.
           'info'
         );
         return;
       }
       if (!isMarkdownOrPlainText(editor)) {
         showMessage(
-          l10n.t('notMarkdown', 'This is not a Markdown or Plaintext file.'),
+          l10n.t('notMarkdown'), // This is not a Markdown or Plaintext file.
           'info'
         );
         return;
@@ -306,7 +309,7 @@ function registerCommandOfReadOutLoud(context: vscode.ExtensionContext) {
       if (text) {
         readTextAloud(text);
       } else {
-        showMessage(l10n.t('noTextSelect', 'No text selected'), 'info');
+        showMessage(l10n.t('noTextSelect'), 'info'); // No text selected
       }
     })
   );
@@ -321,7 +324,7 @@ function registerCommandOfEvaluation(
   const apiKey: string = getConfiguration('openaiApiKey')!;
   if (!apiKey && location === 'Remote') {
     showMessage(
-      l10n.t('keyNotSet', 'Model API key is not set in settings.'),
+      l10n.t('keyNotSet'), // Model API key is not set in settings.
       'error'
     );
     return;
