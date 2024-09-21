@@ -18,5 +18,12 @@
   "formatCurrent": "Mettre en forme le chapitre en cours",
   "infoCurrent": "Informations sur le chapitre en cours",
   "aiEditor": "Éditeur IA",
-  "processing": "En cours de traitement ..."
+  "processing": "En cours de traitement ...",
+
+  "vscodeChapterEval.temperature": "Température",
+  "vscodeChapterEval.prompt.title": "Invite",
+  "vscodeChapterEval.localModel.title": "Modèle local",
+  "vscodeChapterEval.model.title": "Modèle distant",
+  "vscodeChapterEval.openaiApiKey.title": "Clé API",
+  "vscodeChapterEval.modelLocation.title": "Emplacement du modèle"
 }

@@ -31,16 +31,18 @@ En su entorno de VS Code, actualice la configuración de esta extensión para aj
 El prompt sugerido es:
 
 Por favor, lea el siguiente capítulo de la novela y evalúelo de acuerdo con los siguientes criterios, con una puntuación del 1 al 10 (1 es el más bajo y 10 es el más alto). Proporcione una explicación detallada para cada puntuación, basada en su evaluación, y cite ejemplos específicos de tramas o párrafos para respaldar su puntuación:
-Grado de atracción de la trama (1-10 puntos): ¿Es la trama de este capítulo atractivo? ¿Hay alguna razón para que desee continuar leyendo? La puntuación se basa en si la trama es compacta, interesante o llena de suspense.  Puntuación: ____ Razón y ejemplo:
-Desarrollo de personajes (1-10 puntos): ¿Son los personajes impresionantes? ¿Tienen sus acciones y diálogos profundidad y autenticidad? La puntuación se basa en si los personajes son únicos y si logran conectarse emocionalmente con el lector.  Puntuación: ____ Razón y ejemplo:
-Lenguaje y estilo de escritura (1-10 puntos): ¿Es la escritura del autor clara y expresiva, y ¿fluye bien el texto? La puntuación se basa en la belleza del lenguaje, la coherencia de la narrativa y la capacidad para transmitir emociones y ambiente de manera efectiva.  Puntuación: ____ Razón y ejemplo:
-Grado de involucramiento emocional (1-10 puntos): ¿Tuvo alguna reacción emocional al leer (como tensión, curiosidad, entusiasmo, etc.)? La puntuación se basa en si el texto puede desencadenar una fuerte resonancia emocional.  Puntuación: ____ Razón y ejemplo:
-Suspense y expectativa (1-10 puntos): ¿Este capítulo creó suspense o dejó preguntas sin responder, despertando su deseo de continuar leyendo? La puntuación se basa en si el final del capítulo es lo suficientemente cautivador.  Puntuación: ____ Razón y ejemplo:
-Atracción general (1-10 puntos): En general, ¿este capítulo te hizo querer continuar leyendo? La puntuación se basa en el desempeño general del capítulo y su atracción como inicio de una novela.  Puntuación: ____ Razón y ejemplo:
+Grado de atracción de la trama (1-10 puntos): ¿Es la trama de este capítulo atractivo? ¿Hay alguna razón para que desee continuar leyendo? La puntuación se basa en si la trama es compacta, interesante o llena de suspense. Puntuación: \_**\_ Razón y ejemplo:
+Desarrollo de personajes (1-10 puntos): ¿Son los personajes impresionantes? ¿Tienen sus acciones y diálogos profundidad y autenticidad? La puntuación se basa en si los personajes son únicos y si logran conectarse emocionalmente con el lector. Puntuación: \_\_** Razón y ejemplo:
+Lenguaje y estilo de escritura (1-10 puntos): ¿Es la escritura del autor clara y expresiva, y ¿fluye bien el texto? La puntuación se basa en la belleza del lenguaje, la coherencia de la narrativa y la capacidad para transmitir emociones y ambiente de manera efectiva. Puntuación: \_**\_ Razón y ejemplo:
+Grado de involucramiento emocional (1-10 puntos): ¿Tuvo alguna reacción emocional al leer (como tensión, curiosidad, entusiasmo, etc.)? La puntuación se basa en si el texto puede desencadenar una fuerte resonancia emocional. Puntuación: \_\_** Razón y ejemplo:
+Suspense y expectativa (1-10 puntos): ¿Este capítulo creó suspense o dejó preguntas sin responder, despertando su deseo de continuar leyendo? La puntuación se basa en si el final del capítulo es lo suficientemente cautivador. Puntuación: \_**\_ Razón y ejemplo:
+Atracción general (1-10 puntos): En general, ¿este capítulo te hizo querer continuar leyendo? La puntuación se basa en el desempeño general del capítulo y su atracción como inicio de una novela. Puntuación: \_\_** Razón y ejemplo:
 Por favor, proporcione la puntuación para cada sección y explique el motivo de su puntuación, citando fragmentos específicos para respaldar su juicio. Resolvamos este problema lentamente y paso a paso para asegurarnos de obtener el resultado de análisis correcto.
+
 ---
-$PROMPT$ 
----
+
+## $PROMPT$
+
 Nota: $PROMPT$ debe mantenerse sin cambios, ya que representa el contenido del capítulo actual.
 
 Cómo usar la extensión

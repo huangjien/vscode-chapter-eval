@@ -18,5 +18,12 @@
   "formatCurrent": "Форматировать текущий раздел",
   "infoCurrent": "Информация о текущем разделе",
   "aiEditor": "Редактор AI",
-  "processing": "Обработка ..."
+  "processing": "Обработка ...",
+
+  "vscodeChapterEval.temperature": "Температура",
+  "vscodeChapterEval.prompt.title": "Подсказка",
+  "vscodeChapterEval.localModel.title": "Местная модель",
+  "vscodeChapterEval.model.title": "Удалённая модель",
+  "vscodeChapterEval.openaiApiKey.title": "API ключ",
+  "vscodeChapterEval.modelLocation.title": "Расположение модели"
 }

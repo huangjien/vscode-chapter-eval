@@ -18,5 +18,12 @@
   "formatCurrent": "Formatta il capitolo corrente",
   "infoCurrent": "Informazioni sul capitolo corrente",
   "aiEditor": "Editor AI",
-  "processing": "In elaborazione ..."
+  "processing": "In elaborazione ...",
+
+  "vscodeChapterEval.temperature": "Temperatura",
+  "vscodeChapterEval.prompt.title": "Prompt",
+  "vscodeChapterEval.localModel.title": "Modello Locale",
+  "vscodeChapterEval.model.title": "Modello Remoto",
+  "vscodeChapterEval.openaiApiKey.title": "Chiave API",
+  "vscodeChapterEval.modelLocation.title": "Posizione del Modello"
 }

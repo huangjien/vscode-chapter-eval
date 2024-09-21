@@ -18,5 +18,12 @@
   "formatCurrent": "Format Current Chapter",
   "infoCurrent": "Information of Current Chapter",
   "aiEditor": "AI Editor",
-  "processing": "Processing ..."
+  "processing": "Processing ...",
+
+  "vscodeChapterEval.temperature": "Temperature",
+  "vscodeChapterEval.prompt.title": "Prompt",
+  "vscodeChapterEval.localModel.title": "Local Model",
+  "vscodeChapterEval.model.title": "Remote Model",
+  "vscodeChapterEval.openaiApiKey.title": "API Key",
+  "vscodeChapterEval.modelLocation.title": "Model Location"
 }

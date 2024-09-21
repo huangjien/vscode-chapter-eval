@@ -18,5 +18,12 @@
   "formatCurrent": "현재 장 형식화",
   "infoCurrent": "현재 장 정보",
   "aiEditor": "AI 편집기",
-  "processing": "처리 중 ..."
+  "processing": "처리 중 ...",
+
+  "vscodeChapterEval.temperature": "온도",
+  "vscodeChapterEval.prompt.title": "프롬프트",
+  "vscodeChapterEval.localModel.title": "로컬 모델",
+  "vscodeChapterEval.model.title": "원격 모델",
+  "vscodeChapterEval.openaiApiKey.title": "API 키",
+  "vscodeChapterEval.modelLocation.title": "모델 위치"
 }

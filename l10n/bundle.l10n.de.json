@@ -18,5 +18,12 @@
   "formatCurrent": "Aktuelles Kapitel formatieren",
   "infoCurrent": "Informationen zum aktuellen Kapitel",
   "aiEditor": "AI-Editor",
-  "processing": "In Bearbeitung ..."
+  "processing": "In Bearbeitung ...",
+
+  "vscodeChapterEval.temperature": "Temperatur",
+  "vscodeChapterEval.prompt.title": "Eingabeaufforderung",
+  "vscodeChapterEval.localModel.title": "Lokales Modell",
+  "vscodeChapterEval.model.title": "Fernmodell",
+  "vscodeChapterEval.openaiApiKey.title": "API-Schlüssel",
+  "vscodeChapterEval.modelLocation.title": "Modellstandort"
 }

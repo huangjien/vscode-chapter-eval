@@ -18,5 +18,12 @@
   "formatCurrent": "格式化当前章节",
   "infoCurrent": "当前章节信息",
   "aiEditor": "AI 编辑",
-  "processing": "正在处理..."
+  "processing": "正在处理...",
+
+  "vscodeChapterEval.temperature": "温度",
+  "vscodeChapterEval.prompt.title": "提示",
+  "vscodeChapterEval.localModel.title": "本地模型",
+  "vscodeChapterEval.model.title": "远程模型",
+  "vscodeChapterEval.openaiApiKey.title": "API 密钥",
+  "vscodeChapterEval.modelLocation.title": "模型位置"
 }

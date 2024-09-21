@@ -30,16 +30,18 @@ Nel tuo ambiente VS Code aggiorna le impostazioni di questa estensione per adatt
 Il prompt suggerito è il seguente:
 
 Si prega di leggere il seguente capitolo del romanzo e di valutarlo in base agli standard seguenti. Valutare ogni elemento su una scala da 1 a 10 (1 è il punteggio più basso, 10 il più alto). Si prega di spiegare in dettaglio i motivi della valutazione e di citare specifici episodi o paragrafi a supporto:  
-Attrattività della trama (1-10 punti): La trama di questo capitolo è affascinante? C'è un motivo per continuare a leggere? Valutare in base alla tensione, all'intrigo o all'interesse della trama.  Punteggio: ____ Motivazioni ed esempi: 
-Sviluppo dei personaggi (1-10 punti): I personaggi sono impressionanti? Le loro azioni e dialoghi hanno profondità e verosimiglianza? Valutare in base all'unicità dei personaggi e alla loro capacità di stabilire un legame emotivo con il lettore.  Punteggio: ____ Motivazioni ed esempi: 
-Lingua e stile di scrittura (1-10 punti): L'autore scrive in modo chiaro e espresso, il testo scorre fluidamente? Valutare in base alla bellezza del linguaggio, alla coerenza della narrazione e alla capacità di trasmettere efficacemente emozioni e atmosfera.  Punteggio: ____ Motivazioni ed esempi:
-Coinvolgimento emotivo (1-10 punti): Leggendolo, si prova una reazione emotiva (ad esempio, tensione, curiosità, eccitazione, ecc.)? Valutare in base alla capacità del testo di scatenare una forte risonanza emotiva.  Punteggio: ____ Motivazioni ed esempi: 
-Suspense e anticipazione (1-10 punti): Questo capitolo crea suspense o lascia aperte domande, stimolando la voglia di continuare a leggere? Valutare in base alla capacità del capitolo di rimanere coinvolgente alla fine.  Punteggio: ____ Motivazioni ed esempi: 
-Attrattività complessiva (1-10 punti): Nel suo insieme, questo capitolo ti dà la spinta per continuare a leggere? Valutare in base all'espressione complessiva del capitolo e alla sua attrattività generale come inizio di romanzo.  Punteggio: ____ Motivazioni ed esempi:
+Attrattività della trama (1-10 punti): La trama di questo capitolo è affascinante? C'è un motivo per continuare a leggere? Valutare in base alla tensione, all'intrigo o all'interesse della trama. Punteggio: \_**\_ Motivazioni ed esempi:
+Sviluppo dei personaggi (1-10 punti): I personaggi sono impressionanti? Le loro azioni e dialoghi hanno profondità e verosimiglianza? Valutare in base all'unicità dei personaggi e alla loro capacità di stabilire un legame emotivo con il lettore. Punteggio: \_\_** Motivazioni ed esempi:
+Lingua e stile di scrittura (1-10 punti): L'autore scrive in modo chiaro e espresso, il testo scorre fluidamente? Valutare in base alla bellezza del linguaggio, alla coerenza della narrazione e alla capacità di trasmettere efficacemente emozioni e atmosfera. Punteggio: \_**\_ Motivazioni ed esempi:
+Coinvolgimento emotivo (1-10 punti): Leggendolo, si prova una reazione emotiva (ad esempio, tensione, curiosità, eccitazione, ecc.)? Valutare in base alla capacità del testo di scatenare una forte risonanza emotiva. Punteggio: \_\_** Motivazioni ed esempi:
+Suspense e anticipazione (1-10 punti): Questo capitolo crea suspense o lascia aperte domande, stimolando la voglia di continuare a leggere? Valutare in base alla capacità del capitolo di rimanere coinvolgente alla fine. Punteggio: \_**\_ Motivazioni ed esempi:
+Attrattività complessiva (1-10 punti): Nel suo insieme, questo capitolo ti dà la spinta per continuare a leggere? Valutare in base all'espressione complessiva del capitolo e alla sua attrattività generale come inizio di romanzo. Punteggio: \_\_** Motivazioni ed esempi:
 Si prega di assegnare un punteggio a ogni sezione e di spiegare il motivo della punteggio, citando episodi o paragrafi specifici a sostegno del tuo giudizio. Risolviamo questo problema lentamente e step by step, per assicurarci di ottenere il risultato di analisi corretto.
+
 ---
-$PROMPT$ 
----
+
+## $PROMPT$
+
 Nota: $PROMPT$ dovrebbe rimanere invariato, poiché rappresenta il contenuto del capitolo corrente.
 
 Come usare l'estensione

@@ -65,7 +65,6 @@ This tools support below languages:
 
 Chinese (Simplified - zh-cn), Chinese (Traditional - zh-tw), Japanese (ja), French (fr), German (de), Italian (it), Spanish (es), Portuguese (Brazilian - pt-br), Russian (ru), and Korean (ko) .
 
-
 ### Limitations & Feedback
 
 As a proof of concept, this extension may have limitations or bugs. Your feedback and contributions are invaluable for improving its performance. If you enjoy using it, please consider [buying me a coffee ☕️](https://www.buymeacoffee.com/huangjien) to support future developments.

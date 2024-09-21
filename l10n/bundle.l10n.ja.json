@@ -18,5 +18,12 @@
   "formatCurrent": "現在の章をフォーマット",
   "infoCurrent": "現在の章の情報",
   "aiEditor": "AI エディター",
-  "processing": "処理中..."
+  "processing": "処理中...",
+
+  "vscodeChapterEval.temperature": "温度",
+  "vscodeChapterEval.prompt.title": "プロンプト",
+  "vscodeChapterEval.localModel.title": "ローカルモデル",
+  "vscodeChapterEval.model.title": "リモートモデル",
+  "vscodeChapterEval.openaiApiKey.title": "APIキー",
+  "vscodeChapterEval.modelLocation.title": "モデルの場所"
 }
