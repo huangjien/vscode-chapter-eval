@@ -17,6 +17,7 @@ import { readTextAloud, formatMarkdown, evaluateChapter } from './Functions';
 import { EvaluationWebViewProvider } from './EvaluationWebViewProvider';
 import { SettingsWebViewProvider } from './SettingsWebViewProvider';
 import * as l10n from '@vscode/l10n';
+import { RequestAndAnswerWebViewProvider } from './RequestAndAnswerWebViewProvider';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -33,9 +34,26 @@ export function activate(context: vscode.ExtensionContext) {
 
   setupStatusBarItem(context, storagePath);
 
-  const provider = setupSidebarWebviewProvider(context);
-  registerCommandOfShowEvaluation(context, provider, storagePath);
+  const sidebarProvider = setupSidebarWebviewProvider(context);
+  registerCommandOfShowEvaluation(context, sidebarProvider, storagePath);
   setupSettingWebviewProvider(context);
+  const interactionProvider = setupInteractionWebviewProvider(context);
+}
+
+function sendInteractionWebviewMessage(
+  interactionProvider: RequestAndAnswerWebViewProvider,
+  command: string,
+  question: string,
+  answer: string,
+  modelName: string,
+  temperature: string
+) {
+  interactionProvider._view?.webview.postMessage({
+    command: command,
+    question: question,
+    answer: answer,
+    temperature: temperature,
+  });
 }
 
 function setupL10N(context: vscode.ExtensionContext) {
@@ -47,6 +65,17 @@ function setupL10N(context: vscode.ExtensionContext) {
       'bundle.l10n.' + locale + '.json'
     ),
   });
+}
+
+function setupInteractionWebviewProvider(context: vscode.ExtensionContext) {
+  const provider = new RequestAndAnswerWebViewProvider(context);
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+      'vscodeChapterEval_interactionWebview',
+      provider
+    )
+  );
+  return provider;
 }
 
 function setupSettingWebviewProvider(context: vscode.ExtensionContext) {

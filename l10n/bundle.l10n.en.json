@@ -25,5 +25,8 @@
   "vscodeChapterEval.localModel.title": "Local Model",
   "vscodeChapterEval.model.title": "Remote Model",
   "vscodeChapterEval.openaiApiKey.title": "API Key",
-  "vscodeChapterEval.modelLocation.title": "Model Location"
+  "vscodeChapterEval.modelLocation.title": "Model Location",
+
+  "deleteObject": "Object with ID {0} deleted.",
+  "objectNotFound": "No object found with ID {0}."
 }

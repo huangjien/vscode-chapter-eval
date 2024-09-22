@@ -24,5 +24,7 @@
   "vscodeChapterEval.openaiApiKey.title": "API Key",
   "vscodeChapterEval.modelLocation.title": "Model Location",
 
-  "project.description": "Evaluate a chapter of novel with AI."
+  "project.description": "Evaluate a chapter of novel with AI.",
+
+  "vscodeChapterEval_interactionWebview.contextualTitle": "Interaction"
 }

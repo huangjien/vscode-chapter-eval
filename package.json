@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.8.39",
+  "version": "0.8.40",
   "description": "Evaluate a chapter of novel with AI.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -176,6 +176,12 @@
           "id": "vscodeChapterEval_markdownWebview",
           "name": "%vscodeChapterEval_markdownWebview.contextualTitle%",
           "contextualTitle": "%vscodeChapterEval_markdownWebview.contextualTitle%"
+        },
+        {
+          "type": "webview",
+          "id": "vscodeChapterEval_interactionWebview",
+          "name": "%vscodeChapterEval_interactionWebview.contextualTitle%",
+          "contextualTitle": "%vscodeChapterEval_interactionWebview.contextualTitle%"
         },
         {
           "type": "webview",
