@@ -1,5 +1,9 @@
 # Editor AI
 
+![GitHub](https://img.shields.io/github/license/huangjien/vscode-chapter-eval)
+
+[English](https://github.com/huangjien/vscode-chapter-eval/blob/main/README.md) | [Chinese (Simplified - zh-cn): 中文（简体）](https://github.com/huangjien/vscode-chapter-eval/blob/main/README.zh-cn.md) | [Chinese (Traditional - zh-tw): 中文（繁體）](https://github.com/huangjien/vscode-chapter-eval/blob/main/README.zh-tw.md) | [Cantonese (Traditional - zh-hk): 中文（繁體.粤语）](https://github.com/huangjien/vscode-chapter-eval/blob/main/README.zh-hk.md)｜[Japanese (ja): 日本語](https://github.com/huangjien/vscode-chapter-eval/blob/main/README.ja.md) | [French (fr): Français](https://github.com/huangjien/vscode-chapter-eval/blob/main/README.fr.md) | [German (de): Deutsch](https://github.com/huangjien/vscode-chapter-eval/blob/main/README.de.md) | [Italian (it): Italiano](https://github.com/huangjien/vscode-chapter-eval/blob/main/README.it.md) | [Spanish (es): Español](https://github.com/huangjien/vscode-chapter-eval/blob/main/README.es.md) | [Portuguese (Brazilian - pt-br): Português (Brasil)](https://github.com/huangjien/vscode-chapter-eval/blob/main/README.pt-br.md) | [Russian (ru): Русский](https://github.com/huangjien/vscode-chapter-eval/blob/main/README.ru.md) | [Korean (ko): 한국어](https://github.com/huangjien/vscode-chapter-eval/blob/main/README.ko.md)
+
 **Editor AI** è un'estensione di Visual Studio Code che sfrutta la potenza dell'IA per assistere gli autori nella valutazione dei capitoli dei loro romanzi. Questo strumento è stato progettato per aiutare gli scrittori ambiziosi e di经验丰富的作家i a ottenere un'introspezione sulla loro scrittura e per migliorare le loro abilità di scrittura.
 
 ### Scopo di questa estensione
