@@ -1,13 +1,13 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.8.40",
+  "version": "0.8.43",
   "description": "Evaluate a chapter of novel with AI.",
   "main": "./dist/extension",
   "type": "commonjs",
   "l10n": "./l10n",
   "publisher": "huangjien",
-  "readme": "https://github.com/huangjien/vscode-chapter-eval/blob/main/README.md",
+  "readme": "./README.md",
   "homepage": "https://www.huangjien.com",
   "bugs": {
     "url": "https://github.com/huangjien/vscode-chapter-eval/issues",

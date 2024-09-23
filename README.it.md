@@ -1,5 +1,9 @@
 # Editor AI
 
+![GitHub](https://img.shields.io/github/license/huangjien/vscode-chapter-eval)
+
+[English](./README.md) | [Chinese (Simplified - zh-cn): 中文（简体）](./README.zh-cn.md) | [Chinese (Traditional - zh-tw): 中文（繁體）](./README.zh-tw.md) | [Cantonese (Traditional - zh-hk): 中文（繁體.粤语）](./README.zh-hk.md)｜[Japanese (ja): 日本語](./README.ja.md) | [French (fr): Français](./README.fr.md) | [German (de): Deutsch](./README.de.md) | [Italian (it): Italiano](./README.it.md) | [Spanish (es): Español](./README.es.md) | [Portuguese (Brazilian - pt-br): Português (Brasil)](./README.pt-br.md) | [Russian (ru): Русский](./README.ru.md) | [Korean (ko): 한국어](./README.ko.md)
+
 **Editor AI** è un'estensione di Visual Studio Code che sfrutta la potenza dell'IA per assistere gli autori nella valutazione dei capitoli dei loro romanzi. Questo strumento è stato progettato per aiutare gli scrittori ambiziosi e di经验丰富的作家i a ottenere un'introspezione sulla loro scrittura e per migliorare le loro abilità di scrittura.
 
 ### Scopo di questa estensione

@@ -1,5 +1,9 @@
 # AI Editor
 
+![GitHub](https://img.shields.io/github/license/huangjien/vscode-chapter-eval)
+
+[English](./README.md) | [Chinese (Simplified - zh-cn): 中文（简体）](./README.zh-cn.md) | [Chinese (Traditional - zh-tw): 中文（繁體）](./README.zh-tw.md) | [Cantonese (Traditional - zh-hk): 中文（繁體.粤语）](./README.zh-hk.md)｜[Japanese (ja): 日本語](./README.ja.md) | [French (fr): Français](./README.fr.md) | [German (de): Deutsch](./README.de.md) | [Italian (it): Italiano](./README.it.md) | [Spanish (es): Español](./README.es.md) | [Portuguese (Brazilian - pt-br): Português (Brasil)](./README.pt-br.md) | [Russian (ru): Русский](./README.ru.md) | [Korean (ko): 한국어](./README.ko.md)
+
 **AI Editor** ist eine Visual Studio Code-Erweiterung, die die Kräfte von KI nutzt, um Autoren beim Bewerten ihrer Romankapitel zu unterstützen. Dieses Tool wurde entwickelt, um den Traum vieler Menschen, Romane zu schreiben, zu verwirklichen. Als Programmierer, der kürzlich diesen Weg begann, habe ich dieses Tool entwickelt, um meinen Kapitelaufsichtsprozess zu vereinfachen und meine Erzählkompetenz zu verbessern, ohne zwischen verschiedenen Tools umherhüpfen zu müssen.
 
 ### Zweck dieser Erweiterung
