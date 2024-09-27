@@ -1,5 +1,9 @@
 # Éditeur IA
 
+![GitHub](https://img.shields.io/github/license/huangjien/vscode-chapter-eval)
+
+[English](./README.md) | [Chinese (Simplified - zh-cn): 中文（简体）](./README.zh-cn.md) | [Chinese (Traditional - zh-tw): 中文（繁體）](./README.zh-tw.md) | [Cantonese (Traditional - zh-hk): 中文（繁體.粤语）](./README.zh-hk.md)｜[Japanese (ja): 日本語](./README.ja.md) | [French (fr): Français](./README.fr.md) | [German (de): Deutsch](./README.de.md) | [Italian (it): Italiano](./README.it.md) | [Spanish (es): Español](./README.es.md) | [Portuguese (Brazilian - pt-br): Português (Brasil)](./README.pt-br.md) | [Russian (ru): Русский](./README.ru.md) | [Korean (ko): 한국어](./README.ko.md)
+
 **L'Éditeur IA** est une extension de Visual Studio Code qui utilise les capacités de l'IA pour aider les auteurs à évaluer leurs chapitres de roman. Cet outil est conçu pour aider les écrivains chevronnés et débutants à obtenir des insights sur leur écriture et à améliorer leurs compétences d'écriture.
 
 ### Objectif de cette extension

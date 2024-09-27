@@ -1,5 +1,9 @@
 # AI 編輯
 
+![GitHub](https://img.shields.io/github/license/huangjien/vscode-chapter-eval)
+
+[English](./README.md) | [Chinese (Simplified - zh-cn): 中文（简体）](./README.zh-cn.md) | [Chinese (Traditional - zh-tw): 中文（繁體）](./README.zh-tw.md) | [Cantonese (Traditional - zh-hk): 中文（繁體.粤语）](./README.zh-hk.md)｜[Japanese (ja): 日本語](./README.ja.md) | [French (fr): Français](./README.fr.md) | [German (de): Deutsch](./README.de.md) | [Italian (it): Italiano](./README.it.md) | [Spanish (es): Español](./README.es.md) | [Portuguese (Brazilian - pt-br): Português (Brasil)](./README.pt-br.md) | [Russian (ru): Русский](./README.ru.md) | [Korean (ko): 한국어](./README.ko.md)
+
 **AI 編輯**係一個 Visual Studio Code 擴充套件，利用 AI 嘅能力嚟幫手作者評估佢哋嘅小說章節。呢個工具旨在幫手有抱負同經驗豐富嘅作家得到對佢哋寫作嘅洞察，並提升佢哋嘅寫作技巧。
 
 ### 呢個擴充套件嘅目的

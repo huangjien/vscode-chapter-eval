@@ -1,5 +1,9 @@
 # AI 에디터
 
+![GitHub](https://img.shields.io/github/license/huangjien/vscode-chapter-eval)
+
+[English](./README.md) | [Chinese (Simplified - zh-cn): 中文（简体）](./README.zh-cn.md) | [Chinese (Traditional - zh-tw): 中文（繁體）](./README.zh-tw.md) | [Cantonese (Traditional - zh-hk): 中文（繁體.粤语）](./README.zh-hk.md)｜[Japanese (ja): 日本語](./README.ja.md) | [French (fr): Français](./README.fr.md) | [German (de): Deutsch](./README.de.md) | [Italian (it): Italiano](./README.it.md) | [Spanish (es): Español](./README.es.md) | [Portuguese (Brazilian - pt-br): Português (Brasil)](./README.pt-br.md) | [Russian (ru): Русский](./README.ru.md) | [Korean (ko): 한국어](./README.ko.md)
+
 **AI 에디터**는 Visual Studio Code 확장 기능으로, AI의 능력을 이용하여 작가들이 소설 장을 평가하는 데 도움을 줍니다. 이 도구는 욕심 많은 작가들과经验丰富的作家들이 자신의 쓰기에 대한 통찰력을 얻고, 쓸줄을 높이기 위해 만들어졌습니다.
 
 ### 이 확장의 목적
