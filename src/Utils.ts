@@ -93,7 +93,7 @@ export function getConfiguration(key: string, defaultValue?: any) {
     .get(key, defaultValue);
 }
 
-export function getAnalysisFolder(context: vscode.ExtensionContext) {
+export function getOrCreateAnalysisFolder(context: vscode.ExtensionContext) {
   const workspaceFolders = vscode.workspace.workspaceFolders;
   if (!workspaceFolders) {
     const storagePath = context.globalStorageUri.fsPath;
@@ -106,6 +106,20 @@ export function getAnalysisFolder(context: vscode.ExtensionContext) {
   const a_path = path.join(workspaceRoot, 'Analysis');
   if (!fs.existsSync(a_path)) {
     fs.mkdirSync(a_path);
+  }
+
+  return a_path;
+}
+
+export function getAnalysisFolder() {
+  const workspaceFolders = vscode.workspace.workspaceFolders;
+  if (!workspaceFolders) {
+    return undefined;
+  }
+  const workspaceRoot = workspaceFolders[0].uri.fsPath;
+  const a_path = path.join(workspaceRoot, 'Analysis');
+  if (!fs.existsSync(a_path)) {
+    return undefined;
   }
 
   return a_path;

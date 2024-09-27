@@ -11,6 +11,7 @@ import {
   getFileName,
   showStatusBarProgress,
   printToOutput,
+  getOrCreateAnalysisFolder,
 } from './Utils';
 import OpenAI from 'openai';
 import { readTextAloud, formatMarkdown, evaluateChapter } from './Functions';
@@ -23,18 +24,16 @@ import * as l10n from '@vscode/l10n';
 export function activate(context: vscode.ExtensionContext) {
   setupL10N(context);
 
-  const storagePath = getAnalysisFolder(context);
-
-  registerCommandOfShowExistedEvaluation(context, storagePath);
-  registerHoverProvider(storagePath);
-  registerCommandOfEvaluation(storagePath, context);
+  registerCommandOfShowExistedEvaluation(context);
+  registerHoverProvider();
+  registerCommandOfEvaluation(context);
   registerCommandOfReadOutLoud(context);
   registerCommandOfFormat(context);
 
-  setupStatusBarItem(context, storagePath);
+  setupStatusBarItem(context);
 
   const provider = setupSidebarWebviewProvider(context);
-  registerCommandOfShowEvaluation(context, provider, storagePath);
+  registerCommandOfShowEvaluation(context, provider);
   setupSettingWebviewProvider(context);
 }
 
@@ -72,9 +71,12 @@ function setupSidebarWebviewProvider(context: vscode.ExtensionContext) {
 
 function registerCommandOfShowEvaluation(
   context: vscode.ExtensionContext,
-  provider: EvaluationWebViewProvider,
-  storagePath: string
+  provider: EvaluationWebViewProvider
 ) {
+  const storagePath = getAnalysisFolder();
+  if (!storagePath) {
+    return;
+  }
   context.subscriptions.push(
     vscode.commands.registerCommand('vscodeChapterEval.showEvaluation', () => {
       if (provider._view) {
@@ -96,17 +98,17 @@ function registerCommandOfShowEvaluation(
   );
 }
 
-function setupStatusBarItem(
-  context: vscode.ExtensionContext,
-  storagePath: string
-) {
+function setupStatusBarItem(context: vscode.ExtensionContext) {
   const statusBarItem = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right,
     400
   );
   statusBarItem.command = 'vscodeChapterEval.toggleStatusBar';
   statusBarItem.hide(); // by default, hide statusBar
-
+  const storagePath = getAnalysisFolder();
+  if (!storagePath) {
+    return;
+  }
   context.subscriptions.push(statusBarItem);
   updateStatusBar(storagePath, statusBarItem);
 
@@ -203,7 +205,11 @@ function updateStatusBar(
   };
 }
 
-function registerHoverProvider(storagePath: string) {
+function registerHoverProvider() {
+  const storagePath = getAnalysisFolder();
+  if (!storagePath) {
+    return;
+  }
   vscode.languages.registerHoverProvider('markdown', {
     provideHover(document) {
       const filename = getFileName(document);
@@ -218,8 +224,7 @@ function registerHoverProvider(storagePath: string) {
 }
 
 function registerCommandOfShowExistedEvaluation(
-  context: vscode.ExtensionContext,
-  storagePath: string
+  context: vscode.ExtensionContext
 ) {
   context.subscriptions.push(
     // ctrl+f1, show existed evaluation
@@ -241,6 +246,10 @@ function registerCommandOfShowExistedEvaluation(
           }
           let tip = l10n.t('noEvaluationNow');
           const filename = getFileName(editor.document);
+          const storagePath = getAnalysisFolder();
+          if (!storagePath) {
+            return;
+          }
 
           const resultFilePath = path.join(storagePath, filename);
           if (fs.existsSync(resultFilePath)) {
@@ -317,10 +326,7 @@ function registerCommandOfReadOutLoud(context: vscode.ExtensionContext) {
   );
 }
 
-function registerCommandOfEvaluation(
-  storagePath: string,
-  context: vscode.ExtensionContext
-) {
+function registerCommandOfEvaluation(context: vscode.ExtensionContext) {
   const location: string = getConfiguration('modelLocation')!;
   const localModel: string = getConfiguration('localModel')!;
   const apiKey: string = getConfiguration('openaiApiKey')!;
@@ -385,7 +391,7 @@ function registerCommandOfEvaluation(
             If you find any typographical errors, please point them out. 
             \n\nUSER: $PROMPT$ \n\nASSISTANT: `;
       }
-
+      const storagePath = getOrCreateAnalysisFolder(context);
       const longRunTask = evaluateChapter(
         openai,
         editor,
