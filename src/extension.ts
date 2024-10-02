@@ -66,6 +66,7 @@ function setupSidebarWebviewProvider(context: vscode.ExtensionContext) {
       provider
     )
   );
+  vscode.commands.executeCommand('vscodeChapterEval.showEvaluation');
   return provider;
 }
 
