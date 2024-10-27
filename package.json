@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "Evaluate a chapter of novel with AI.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -160,6 +160,18 @@
         "title": "%vscodeChapterEval.readOutLoud.title%"
       },
       {
+        "command": "vscodeChapterEval.showProgress",
+        "title": "%vscodeChapterEval.showProgress.title%"
+      },
+      {
+        "command": "vscodeChapterEval.summaryOfToday",
+        "title": "%vscodeChapterEval.summaryOfToday.title%"
+      },
+      {
+        "command": "vscodeChapterEval.generatePDF",
+        "title": "%vscodeChapterEval.generatePDF.title%"
+      },
+      {
         "command": "vscodeChapterEval.sortAndRenameFiles",
         "title": "%vscodeChapterEval.sortAndRenameFiles.title%"
       }
@@ -194,6 +206,16 @@
         {
           "when": "explorerResourceIsFolder",
           "command": "vscodeChapterEval.sortAndRenameFiles",
+          "group": "navigation"
+        },
+        {
+          "when": "explorerResourceIsFolder",
+          "command": "vscodeChapterEval.generatePDF",
+          "group": "navigation"
+        },
+        {
+          "when": "explorerResourceIsFolder",
+          "command": "vscodeChapterEval.summaryOfToday",
           "group": "navigation"
         }
       ],
@@ -235,11 +257,13 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "@types/markdown-pdf": "^9.0.5",
     "@vscode/l10n": "^0.0.18",
     "child_process": "^1.0.2",
     "crypto": "^1.0.1",
     "eslint-plugin-prettier": "^5.2.1",
     "husky": "^9.1.6",
-    "openai": "^4.68.4"
+    "openai": "^4.68.4",
+    "puppeteer": "^23.6.0"
   }
 }

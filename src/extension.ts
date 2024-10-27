@@ -14,7 +14,16 @@ import {
   getOrCreateAnalysisFolder,
 } from './Utils';
 import OpenAI from 'openai';
-import { readTextAloud, formatMarkdown, evaluateChapter } from './Functions';
+import {
+  readTextAloud,
+  formatMarkdown,
+  evaluateChapter,
+  sortAndRenameFiles,
+  appendToLog,
+  countChineseCharactersInDirectory,
+  generateCSVReport,
+  mergeMarkdownAndGeneratePDF,
+} from './Functions';
 import { EvaluationWebViewProvider } from './EvaluationWebViewProvider';
 import { SettingsWebViewProvider } from './SettingsWebViewProvider';
 import * as l10n from '@vscode/l10n';
@@ -31,6 +40,8 @@ export function activate(context: vscode.ExtensionContext) {
   registerCommandOfFormat(context);
   registerCommandOfSortAndRename(context);
   setupStatusBarItem(context);
+  registerCommandOfSummaryOfToday(context);
+  registerCommandOfGeneratePDF(context);
 
   const provider = setupSidebarWebviewProvider(context);
   registerCommandOfShowEvaluation(context, provider);
@@ -224,6 +235,52 @@ function registerHoverProvider() {
   });
 }
 
+function registerCommandOfSummaryOfToday(context: vscode.ExtensionContext) {
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'vscodeChapterEval.summaryOfToday',
+      async (...commandArgs) => {
+        if (commandArgs.length <= 0) {
+          showMessage(l10n.t('noFolderSelected'), 'info');
+          return;
+        }
+        const currentFolder = commandArgs[0].fsPath;
+        const stats = countChineseCharactersInDirectory(currentFolder);
+        vscode.window.showInformationMessage(
+          `Total Chinese characters: ${stats.totalCount}`
+        );
+
+        // Generate CSV report
+        generateCSVReport(stats, path.join(currentFolder, 'report.csv'));
+
+        // Append to log
+        appendToLog(stats, path.join(currentFolder, 'log.csv'));
+
+        return;
+      }
+    )
+  );
+}
+
+function registerCommandOfGeneratePDF(context: vscode.ExtensionContext) {
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'vscodeChapterEval.generatePDF',
+      async (...commandArgs) => {
+        if (commandArgs.length <= 0) {
+          showMessage(l10n.t('noFolderSelected'), 'info');
+          return;
+        }
+        const currentFolder = commandArgs[0].fsPath;
+
+        mergeMarkdownAndGeneratePDF(currentFolder, currentFolder + '.pdf');
+
+        return;
+      }
+    )
+  );
+}
+
 function registerCommandOfShowExistedEvaluation(
   context: vscode.ExtensionContext
 ) {
@@ -314,57 +371,6 @@ function registerCommandOfSortAndRename(context: vscode.ExtensionContext) {
         return;
       }
     )
-  );
-}
-
-function sortAndRenameFiles(folderPath: string) {
-  // Read all files in the directory
-  const files = fs.readdirSync(folderPath);
-
-  // Filter for markdown files and parse their names
-  const mdFiles = files
-    .filter((file) => file.endsWith('.md'))
-    .map((file) => {
-      const match = file.match(/^(\d+(?:\.\d+)?)_(.+)\.md$/);
-      if (match) {
-        return {
-          originalName: file,
-          number: parseFloat(match[1]),
-          baseName: match[2],
-        };
-      }
-      return null;
-    })
-    .filter((file): file is NonNullable<typeof file> => file !== null);
-
-  // Sort the files based on their number
-  mdFiles.sort((a, b) => a.number - b.number);
-
-  // Rename files
-  let newNumber = 1;
-  mdFiles.forEach((file) => {
-    const newName = `${newNumber}_${file.baseName}.md`;
-    const oldPath = path.join(folderPath, file.originalName);
-    const newPath = path.join(folderPath, newName);
-
-    fs.renameSync(oldPath, newPath);
-    // console.log(`Renamed ${file.originalName} to ${newName}`);
-    // if in Analysis folder, rename the corresponding file in the Analysis folder
-    const analysisFolder = getAnalysisFolder();
-    if (analysisFolder) {
-      const analysisFilePath = path.join(analysisFolder, file.originalName);
-      const newAnalysisFilePath = path.join(analysisFolder, newName);
-      if (fs.existsSync(analysisFilePath)) {
-        fs.renameSync(analysisFilePath, newAnalysisFilePath);
-        // console.log(`Renamed ${file.originalName} in Analysis folder to ${newName}`);
-      }
-    }
-
-    newNumber++;
-  });
-
-  vscode.window.showInformationMessage(
-    `Sorted and renamed ${mdFiles.length} markdown files in ${folderPath}`
   );
 }
 
