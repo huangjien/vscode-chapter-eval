@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.8.50",
+  "version": "0.9.1",
   "description": "Evaluate a chapter of novel with AI.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -156,8 +156,12 @@
         "title": "%vscodeChapterEval.readOutLoud.title%"
       },
       {
-        "command": "vscodeChapterEval.showProgress",
-        "title": "%vscodeChapterEval.showProgress.title%"
+        "command": "vscodeChapterEval.readOutLoud",
+        "title": "%vscodeChapterEval.readOutLoud.title%"
+      },
+      {
+        "command": "vscodeChapterEval.sortAndRenameFiles",
+        "title": "%vscodeChapterEval.sortAndRenameFiles.title%"
       }
     ],
     "viewsContainers": {
@@ -186,6 +190,13 @@
       ]
     },
     "menus": {
+      "explorer/context": [
+        {
+          "when": "explorerResourceIsFolder",
+          "command": "vscodeChapterEval.sortAndRenameFiles",
+          "group": "navigation"
+        }
+      ],
       "editor/context": [
         {
           "when": "resourceLangId == markdown || resourceLangId == plaintext",
@@ -207,7 +218,7 @@
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
-    "@types/node": "^22.7.9",
+    "@types/node": "^22.8.1",
     "@types/vscode": "^1.94.0",
     "@typescript-eslint/eslint-plugin": "^8.11.0",
     "@typescript-eslint/parser": "^8.11.0",

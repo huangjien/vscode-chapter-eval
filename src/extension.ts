@@ -29,7 +29,7 @@ export function activate(context: vscode.ExtensionContext) {
   registerCommandOfEvaluation(context);
   registerCommandOfReadOutLoud(context);
   registerCommandOfFormat(context);
-
+  registerCommandOfSortAndRename(context);
   setupStatusBarItem(context);
 
   const provider = setupSidebarWebviewProvider(context);
@@ -296,6 +296,75 @@ function registerCommandOfFormat(context: vscode.ExtensionContext) {
       });
       return;
     })
+  );
+}
+
+function registerCommandOfSortAndRename(context: vscode.ExtensionContext) {
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'vscodeChapterEval.sortAndRenameFiles',
+      async (...commandArgs) => {
+        if (commandArgs.length <= 0) {
+          showMessage(l10n.t('noFolderSelected'), 'info');
+          return;
+        }
+        const currentFolder = commandArgs[0].fsPath;
+        sortAndRenameFiles(currentFolder);
+
+        return;
+      }
+    )
+  );
+}
+
+function sortAndRenameFiles(folderPath: string) {
+  // Read all files in the directory
+  const files = fs.readdirSync(folderPath);
+
+  // Filter for markdown files and parse their names
+  const mdFiles = files
+    .filter((file) => file.endsWith('.md'))
+    .map((file) => {
+      const match = file.match(/^(\d+(?:\.\d+)?)_(.+)\.md$/);
+      if (match) {
+        return {
+          originalName: file,
+          number: parseFloat(match[1]),
+          baseName: match[2],
+        };
+      }
+      return null;
+    })
+    .filter((file): file is NonNullable<typeof file> => file !== null);
+
+  // Sort the files based on their number
+  mdFiles.sort((a, b) => a.number - b.number);
+
+  // Rename files
+  let newNumber = 1;
+  mdFiles.forEach((file) => {
+    const newName = `${newNumber}_${file.baseName}.md`;
+    const oldPath = path.join(folderPath, file.originalName);
+    const newPath = path.join(folderPath, newName);
+
+    fs.renameSync(oldPath, newPath);
+    // console.log(`Renamed ${file.originalName} to ${newName}`);
+    // if in Analysis folder, rename the corresponding file in the Analysis folder
+    const analysisFolder = getAnalysisFolder();
+    if (analysisFolder) {
+      const analysisFilePath = path.join(analysisFolder, file.originalName);
+      const newAnalysisFilePath = path.join(analysisFolder, newName);
+      if (fs.existsSync(analysisFilePath)) {
+        fs.renameSync(analysisFilePath, newAnalysisFilePath);
+        // console.log(`Renamed ${file.originalName} in Analysis folder to ${newName}`);
+      }
+    }
+
+    newNumber++;
+  });
+
+  vscode.window.showInformationMessage(
+    `Sorted and renamed ${mdFiles.length} markdown files in ${folderPath}`
   );
 }
 
