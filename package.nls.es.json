@@ -14,6 +14,9 @@
   "vscodeChapterEval.localModel.description": "Qué modelo IA local usar",
   "vscodeChapterEval.model.description": "Qué modelo AI usar",
   "vscodeChapterEval.openaiApiKey.description": "Clave API de OpenAI para la extensión Editor de IA",
+  "vscodeChapterEval.sortAndRenameFiles.title": "Ordenar Archivos Markdown",
+  "vscodeChapterEval.summaryOfToday.title": "Resumen de Hoy",
+  "vscodeChapterEval.generatePDF.title": "Generar PDF",
   "vscodeChapterEval.modelLocation.description": "¿Usar modelo IA local o remoto?",
 
   "vscodeChapterEval.temperature": "Temperatura",

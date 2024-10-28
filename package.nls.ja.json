@@ -14,6 +14,9 @@
   "vscodeChapterEval.localModel.description": "使用するローカルAIモデル",
   "vscodeChapterEval.model.description": "使用するAIモデル",
   "vscodeChapterEval.openaiApiKey.description": "AIエディター拡張機能のOpenAI APIキー",
+  "vscodeChapterEval.sortAndRenameFiles.title": "Markdownファイルを並べ替え＆名前を変更",
+  "vscodeChapterEval.summaryOfToday.title": "今日の概要",
+  "vscodeChapterEval.generatePDF.title": "PDFを生成",
   "vscodeChapterEval.modelLocation.description": "ローカルまたはリモートAIモデルを使用？",
 
   "vscodeChapterEval.temperature": "温度",

@@ -14,6 +14,9 @@
   "vscodeChapterEval.localModel.description": "使用哪个本地 AI 模型",
   "vscodeChapterEval.model.description": "使用哪个 AI 模型",
   "vscodeChapterEval.openaiApiKey.description": "AI 编辑扩展的 OpenAI API 密钥",
+  "vscodeChapterEval.sortAndRenameFiles.title": "排序 Markdown 文件",
+  "vscodeChapterEval.summaryOfToday.title": "今日总结",
+  "vscodeChapterEval.generatePDF.title": "生成 PDF",
   "vscodeChapterEval.modelLocation.description": "使用本地还是远程 AI 模型？",
 
   "vscodeChapterEval.temperature": "温度",

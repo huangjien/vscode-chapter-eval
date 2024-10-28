@@ -8,6 +8,9 @@
   "vscodeChapterEval.showExistedEvaluation.title": "Существующая Оценка",
   "vscodeChapterEval.formatMarkdown.title": "Форматировать Главу",
   "vscodeChapterEval.readOutLoud.title": "Чтение вслух",
+  "vscodeChapterEval.sortAndRenameFiles.title": "Сортировать файлы Markdown",
+  "vscodeChapterEval.summaryOfToday.title": "Сводка сегодняшнего дня",
+  "vscodeChapterEval.generatePDF.title": "Создать PDF",
   "vscodeChapterEval.showProgress.title": "Оценивается ...",
 
   "vscodeChapterEval.temperature.description": "Температура для использования в модели AI (от 0 (кonservativ) до 2 (kreativ))",
