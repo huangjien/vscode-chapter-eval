@@ -200,15 +200,7 @@ export async function evaluateChapter(
 
   // does not exist, call openAi to make it.
 
-  await openai.chat.completions
-    .create({
-      model: model,
-      messages: [{ role: 'user', content: promptString }],
-      temperature: temperature,
-    })
-    .then((data) => {
-      return JSON.stringify(data);
-    })
+  await callAI(openai, model, promptString, temperature)
     .then((data) => {
       const evalContent = JSON.parse(data);
       writeToLocal(
@@ -241,6 +233,18 @@ export async function evaluateChapter(
     displayMarkdownFromFile(resultFilePath);
   }
   return promptString;
+}
+
+function callAI(openai: OpenAI, model: string, promptString: string, temperature: number) {
+  return openai.chat.completions
+    .create({
+      model: model,
+      messages: [{ role: 'user', content: promptString }],
+      temperature: temperature,
+    })
+    .then((data) => {
+      return JSON.stringify(data);
+    });
 }
 
 export function formatMarkdown(text: string): string {

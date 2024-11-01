@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "description": "Evaluate a chapter of novel with AI.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -122,6 +122,12 @@
         "when": "editorTextFocus"
       },
       {
+        "command": "vscodeChapterEval.updateSelected",
+        "key": "ctrl+e ctrl+u",
+        "mac": "cmd+e cmd+u",
+        "when": "editorTextFocus"
+      },
+      {
         "command": "vscodeChapterEval.showEvaluation",
         "key": "ctrl+e ctrl+s",
         "mac": "cmd+e cmd+s",
@@ -138,6 +144,10 @@
       {
         "command": "vscodeChapterEval.evaluateMarkdown",
         "title": "%vscodeChapterEval.evaluateMarkdown.title%"
+      },
+      {
+        "command": "vscodeChapterEval.updateSelected",
+        "title": "%vscodeChapterEval.updateSelected.title%"
       },
       {
         "command": "vscodeChapterEval.showEvaluation",
@@ -198,6 +208,12 @@
           "id": "vscodeChapterEval_settingsWebview",
           "name": "%vscodeChapterEval_settingsWebview.contextualTitle%",
           "contextualTitle": "%vscodeChapterEval_settingsWebview.contextualTitle%"
+        },
+        {
+          "type": "webview",
+          "id": "vscodeChapterEval_candidateWebview",
+          "name": "%vscodeChapterEval_candidateWebview.contextualTitle%",
+          "contextualTitle": "%vscodeChapterEval_candidatesWebview.contextualTitle%"
         }
       ]
     },
@@ -223,6 +239,11 @@
         {
           "when": "resourceLangId == markdown || resourceLangId == plaintext",
           "command": "vscodeChapterEval.evaluateMarkdown",
+          "group": "navigation"
+        },
+        {
+          "when": "(resourceLangId == markdown || resourceLangId == plaintext ) && editorHasSelection",
+          "command": "vscodeChapterEval.updateSelected",
           "group": "navigation"
         },
         {

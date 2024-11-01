@@ -26,6 +26,7 @@ import {
 } from './Functions';
 import { EvaluationWebViewProvider } from './EvaluationWebViewProvider';
 import { SettingsWebViewProvider } from './SettingsWebViewProvider';
+import { CandidateWebViewProvider } from './CandidateWebViewProvider';
 import * as l10n from '@vscode/l10n';
 
 // this method is called when your extension is activated
@@ -33,9 +34,58 @@ import * as l10n from '@vscode/l10n';
 export function activate(context: vscode.ExtensionContext) {
   setupL10N(context);
 
+  const location: string = getConfiguration('modelLocation')!;
+  const localModel: string = getConfiguration('localModel')!;
+  const apiKey: string = getConfiguration('openaiApiKey')!;
+  if (!apiKey && location === 'Remote') {
+    showMessage(
+      l10n.t('keyNotSet'), // Model API key is not set in settings.
+      'error'
+    );
+    return;
+  }
+  if (!localModel && location === 'Local') {
+    showMessage(
+      l10n.t('localModelNotSet', 'Local model is not set in settings.'),
+      'error'
+    );
+    return;
+  }
+  process.env.OPENAI_API_KEY = apiKey;
+  let model: string = getConfiguration('model', 'gpt-4o-mini')!;
+
+  const temperature: number = getConfiguration('temperature', 1)!;
+
+  let promptString: string = getConfiguration('prompt')!;
+  if (!promptString) {
+    showMessage(l10n.t('promptNotSet', 'OpenAI prompt is not set!'), 'warning');
+    promptString = `You are ASSISTANT , work as literary critic. Please evaluate the tension of the following chapter and give it a score out of 100. 
+            Also, describe the curve of the tension changes in the chapter. 
+            Point out the three most outstanding advantages and the three biggest disadvantages of the chapter. 
+            If you find any typographical errors, please point them out. 
+            \n\nUSER: $PROMPT$ \n\nASSISTANT: `;
+  }
+
+  let openai: OpenAI;
+  if (location === 'Remote') {
+    openai = new OpenAI();
+  } else {
+    openai = new OpenAI({
+      baseURL: 'http://localhost:11434/v1',
+      apiKey: 'ollama', // required but unused
+    });
+    model = getConfiguration('localModel', 'qwen2.5:latest')!;
+  }
+
   registerCommandOfShowExistedEvaluation(context);
   registerHoverProvider();
-  registerCommandOfEvaluation(context);
+  registerCommandOfEvaluation(
+    context,
+    openai,
+    model,
+    promptString,
+    temperature
+  );
   registerCommandOfReadOutLoud(context);
   registerCommandOfFormat(context);
   registerCommandOfSortAndRename(context);
@@ -43,9 +93,11 @@ export function activate(context: vscode.ExtensionContext) {
   registerCommandOfSummaryOfToday(context);
   registerCommandOfGeneratePDF(context);
 
-  const provider = setupSidebarWebviewProvider(context);
-  registerCommandOfShowEvaluation(context, provider);
+  const evaluationProvider = setupSidebarWebviewProvider(context);
+  registerCommandOfShowEvaluation(context, evaluationProvider);
   setupSettingWebviewProvider(context);
+  const updateProvider = setupCandidateWebviewProvider(context);
+  registerCommandOfUpdateCandidate(context, updateProvider);
 }
 
 function setupL10N(context: vscode.ExtensionContext) {
@@ -69,6 +121,16 @@ function setupSettingWebviewProvider(context: vscode.ExtensionContext) {
   );
 }
 
+function setupCandidateWebviewProvider(context: vscode.ExtensionContext) {
+  const provider = new CandidateWebViewProvider(context);
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+      'vscodeChapterEval_candidateWebview',
+      provider
+    )
+  );
+}
+
 function setupSidebarWebviewProvider(context: vscode.ExtensionContext) {
   const provider = new EvaluationWebViewProvider(context);
   context.subscriptions.push(
@@ -79,6 +141,43 @@ function setupSidebarWebviewProvider(context: vscode.ExtensionContext) {
   );
   vscode.commands.executeCommand('vscodeChapterEval.showEvaluation');
   return provider;
+}
+
+function registerCommandOfUpdateCandidate(
+  context: vscode.ExtensionContext,
+  updateProvider: void
+) {
+  context.subscriptions.push(
+    vscode.commands.registerCommand('vscodeChapterEval.updateCandidate', () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) {
+        showMessage(
+          l10n.t('noOpenMarkdownFile'), // No open Markdown file.
+          'info'
+        );
+        return;
+      }
+      if (!isMarkdownOrPlainText(editor)) {
+        showMessage(
+          l10n.t('notMarkdownFile'), // Not a Markdown file.
+          'info'
+        );
+        return;
+      }
+      const selection = editor.document.getText(editor.selection);
+      if (!selection) {
+        showMessage(
+          l10n.t('noTextSelect'), // No selection.
+          'info'
+        );
+        return;
+      } else {
+        // Get the current editor's selected text, context (up and down)
+        // send to AI to get the 3 updated version
+        // display them in the sidebar
+      }
+    })
+  );
 }
 
 function registerCommandOfShowEvaluation(
@@ -402,40 +501,13 @@ function registerCommandOfReadOutLoud(context: vscode.ExtensionContext) {
   );
 }
 
-function registerCommandOfEvaluation(context: vscode.ExtensionContext) {
-  const location: string = getConfiguration('modelLocation')!;
-  const localModel: string = getConfiguration('localModel')!;
-  const apiKey: string = getConfiguration('openaiApiKey')!;
-  if (!apiKey && location === 'Remote') {
-    showMessage(
-      l10n.t('keyNotSet'), // Model API key is not set in settings.
-      'error'
-    );
-    return;
-  }
-  if (!localModel && location === 'Local') {
-    showMessage(
-      l10n.t('localModelNotSet', 'Local model is not set in settings.'),
-      'error'
-    );
-    return;
-  }
-  process.env.OPENAI_API_KEY = apiKey;
-  let model: string = getConfiguration('model', 'gpt-4o-mini')!;
-
-  const temperature: number = getConfiguration('temperature', 1)!;
-
-  let openai: OpenAI;
-  if (location === 'Remote') {
-    openai = new OpenAI();
-  } else {
-    openai = new OpenAI({
-      baseURL: 'http://localhost:11434/v1',
-      apiKey: 'ollama', // required but unused
-    });
-    model = getConfiguration('localModel', 'qwen2.5:latest')!;
-  }
-
+function registerCommandOfEvaluation(
+  context: vscode.ExtensionContext,
+  openai: OpenAI,
+  promptString: string,
+  model: string,
+  temperature: number
+) {
   const evaluator = vscode.commands.registerCommand(
     'vscodeChapterEval.evaluateMarkdown',
     async () => {
@@ -455,18 +527,6 @@ function registerCommandOfEvaluation(context: vscode.ExtensionContext) {
         return;
       }
 
-      let promptString: string = getConfiguration('prompt')!;
-      if (!promptString) {
-        showMessage(
-          l10n.t('promptNotSet', 'OpenAI prompt is not set!'),
-          'warning'
-        );
-        promptString = `You are ASSISTANT , work as literary critic. Please evaluate the tension of the following chapter and give it a score out of 100. 
-            Also, describe the curve of the tension changes in the chapter. 
-            Point out the three most outstanding advantages and the three biggest disadvantages of the chapter. 
-            If you find any typographical errors, please point them out. 
-            \n\nUSER: $PROMPT$ \n\nASSISTANT: `;
-      }
       const storagePath = getOrCreateAnalysisFolder(context);
       const longRunTask = evaluateChapter(
         openai,
