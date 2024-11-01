@@ -2,6 +2,7 @@
   "vscodeChapterEval_markdownWebview.title": "AI Editor",
   "vscodeChapterEval_markdownWebview.contextualTitle": "Evaluation",
   "vscodeChapterEval_settingsWebview.contextualTitle": "Settings",
+  "vscodeChapterEval_candidateWebview.contextualTitle": "Update",
   "configuration.title": "AI Editor Configuration",
   "vscodeChapterEval.evaluateMarkdown.title": "Evaluate Chapter",
   "vscodeChapterEval.showEvaluation.title": "Show Evaluation",
