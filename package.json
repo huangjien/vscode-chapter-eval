@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.9.6",
+  "version": "0.9.7",
   "description": "Evaluate a chapter of novel with AI.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -103,6 +103,13 @@
           "type": "string",
           "order": 4,
           "default": "You are ASSISTANT , work as literary critic. Please evaluate the tension of the following chapter and give it a score out of 100. Also, describe the curve of the tension changes in the chapter. Point out the three most outstanding advantages and the three biggest disadvantages of the chapter. If you find any typographical errors, please point them out. \nUSER: $PROMPT$ \nASSISTANT: ",
+          "description": "%vscodeChapterEval.prompt.description%"
+        },
+        "vscodeChapterEval.update_prompt": {
+          "title": "%vscodeChapterEval.update.title%",
+          "type": "string",
+          "order": 4,
+          "default": "You are an editor. Please update below sentences, to make them more attractive, readable and natrural. \nUSER: $PROMPT$ \nASSISTANT: ",
           "description": "%vscodeChapterEval.prompt.description%"
         },
         "vscodeChapterEval.temperature": {

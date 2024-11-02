@@ -23,11 +23,13 @@ import {
   countChineseCharactersInDirectory,
   generateCSVReport,
   mergeMarkdownAndGeneratePDF,
+  callAI,
 } from './Functions';
 import { EvaluationWebViewProvider } from './EvaluationWebViewProvider';
 import { SettingsWebViewProvider } from './SettingsWebViewProvider';
 import { CandidateWebViewProvider } from './CandidateWebViewProvider';
 import * as l10n from '@vscode/l10n';
+import { resourceUsage } from 'process';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -66,6 +68,15 @@ export function activate(context: vscode.ExtensionContext) {
             \n\nUSER: $PROMPT$ \n\nASSISTANT: `;
   }
 
+  let update_promptString: string = getConfiguration('update_prompt')!;
+  if (!update_promptString) {
+    showMessage(
+      l10n.t('promptNotSet', 'OpenAI update prompt is not set!'),
+      'warning'
+    );
+    update_promptString = `You are an editor. Please update below sentences, to make them more attractive, readable and natrural. \nUSER: $PROMPT$ \nASSISTANT:`;
+  }
+
   let openai: OpenAI;
   if (location === 'Remote') {
     openai = new OpenAI();
@@ -97,7 +108,14 @@ export function activate(context: vscode.ExtensionContext) {
   registerCommandOfShowEvaluation(context, evaluationProvider);
   setupSettingWebviewProvider(context);
   const updateProvider = setupCandidateWebviewProvider(context);
-  registerCommandOfUpdateCandidate(context, updateProvider);
+  registerCommandOfUpdateCandidate(
+    context,
+    updateProvider,
+    openai,
+    model,
+    update_promptString,
+    temperature
+  );
 }
 
 function setupL10N(context: vscode.ExtensionContext) {
@@ -129,6 +147,7 @@ function setupCandidateWebviewProvider(context: vscode.ExtensionContext) {
       provider
     )
   );
+  return provider;
 }
 
 function setupSidebarWebviewProvider(context: vscode.ExtensionContext) {
@@ -145,7 +164,11 @@ function setupSidebarWebviewProvider(context: vscode.ExtensionContext) {
 
 function registerCommandOfUpdateCandidate(
   context: vscode.ExtensionContext,
-  updateProvider: void
+  updateProvider: CandidateWebViewProvider,
+  openai: OpenAI,
+  model: string,
+  update_promptString: string,
+  temperature: number
 ) {
   context.subscriptions.push(
     vscode.commands.registerCommand('vscodeChapterEval.updateCandidate', () => {
@@ -175,6 +198,14 @@ function registerCommandOfUpdateCandidate(
         // Get the current editor's selected text, context (up and down)
         // send to AI to get the 3 updated version
         // display them in the sidebar
+        const prompt = update_promptString.replace('$PROMPT$', selection);
+        const longRunTask = callAI(openai, model, prompt, temperature).then(
+          (data) => {
+            const evalContent = JSON.parse(data);
+            updateProvider.updateContent(evalContent);
+          }
+        );
+        showStatusBarProgress(longRunTask);
       }
     })
   );

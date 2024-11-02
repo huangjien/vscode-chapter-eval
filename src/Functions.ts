@@ -235,7 +235,12 @@ export async function evaluateChapter(
   return promptString;
 }
 
-function callAI(openai: OpenAI, model: string, promptString: string, temperature: number) {
+export function callAI(
+  openai: OpenAI,
+  model: string,
+  promptString: string,
+  temperature: number
+) {
   return openai.chat.completions
     .create({
       model: model,
