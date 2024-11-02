@@ -29,7 +29,6 @@ import { EvaluationWebViewProvider } from './EvaluationWebViewProvider';
 import { SettingsWebViewProvider } from './SettingsWebViewProvider';
 import { CandidateWebViewProvider } from './CandidateWebViewProvider';
 import * as l10n from '@vscode/l10n';
-import { resourceUsage } from 'process';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed

@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "description": "Evaluate a chapter of novel with AI.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -106,7 +106,7 @@
           "description": "%vscodeChapterEval.prompt.description%"
         },
         "vscodeChapterEval.update_prompt": {
-          "title": "%vscodeChapterEval.update.title%",
+          "title": "%vscodeChapterEval_candidateWebview.contextualTitle%",
           "type": "string",
           "order": 4,
           "default": "You are an editor. Please update below sentences, to make them more attractive, readable and natrural. \nUSER: $PROMPT$ \nASSISTANT: ",
