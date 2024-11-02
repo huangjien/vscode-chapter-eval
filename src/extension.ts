@@ -188,6 +188,8 @@ function registerCommandOfUpdateCandidate(
         return;
       }
       const selection = editor.document.getText(editor.selection);
+      const documentText = editor.document.getText();
+      
       if (!selection) {
         showMessage(
           l10n.t('noTextSelect'), // No selection.
@@ -198,7 +200,7 @@ function registerCommandOfUpdateCandidate(
         // Get the current editor's selected text, context (up and down)
         // send to AI to get the 3 updated version
         // display them in the sidebar
-        const prompt = update_promptString.replace('$PROMPT$', selection);
+        const prompt = update_promptString.replace('$PROMPT$', selection).replace('$CONTEXT$', documentText);
         const longRunTask = callAI(openai, model, prompt, temperature).then(
           (data) => {
             const evalContent = JSON.parse(data);
@@ -208,8 +210,9 @@ function registerCommandOfUpdateCandidate(
 \n\n### Completion Token Size: ${evalContent.usage['completion_tokens']}  
 \n\n### Total Token Size: ${evalContent.usage['total_tokens']}
 \n\n
+\`\`\`
 ${evalContent.choices[0]['message']['content']}           
-            
+\`\`\`            
 `;
             updateProvider.updateContent(result);
           }
