@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.9.13",
+  "version": "0.9.14",
   "description": "Evaluate a chapter of novel with AI.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -285,7 +285,6 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@types/markdown-pdf": "^9.0.5",
     "@vscode/l10n": "^0.0.18",
     "child_process": "^1.0.2",
     "crypto": "^1.0.1",
