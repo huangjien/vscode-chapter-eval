@@ -171,7 +171,8 @@ function registerCommandOfUpdateCandidate(
   temperature: number
 ) {
   context.subscriptions.push(
-    vscode.commands.registerCommand('vscodeChapterEval.updateCandidate', () => {
+    vscode.commands.registerCommand('vscodeChapterEval.updateSelected', () => {
+      console.log('updateCandidate');
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
         showMessage(
@@ -202,7 +203,16 @@ function registerCommandOfUpdateCandidate(
         const longRunTask = callAI(openai, model, prompt, temperature).then(
           (data) => {
             const evalContent = JSON.parse(data);
-            updateProvider.updateContent(evalContent);
+            const result = `
+\n\n### Model: ${evalContent.model}
+\n\n### Prompt Token Size: ${evalContent.usage['prompt_tokens']} 
+\n\n### Completion Token Size: ${evalContent.usage['completion_tokens']}  
+\n\n### Total Token Size: ${evalContent.usage['total_tokens']}
+\n\n
+${evalContent.choices[0]['message']['content']}           
+            
+`;
+            updateProvider.updateContent(result);
           }
         );
         showStatusBarProgress(longRunTask);
