@@ -92,8 +92,8 @@ export function activate(context: vscode.ExtensionContext) {
   registerCommandOfEvaluation(
     context,
     openai,
-    model,
     promptString,
+    model,
     temperature
   );
   registerCommandOfReadOutLoud(context);
