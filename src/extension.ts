@@ -210,9 +210,9 @@ function registerCommandOfUpdateCandidate(
 \n\n### Completion Token Size: ${evalContent.usage['completion_tokens']}  
 \n\n### Total Token Size: ${evalContent.usage['total_tokens']}
 \n\n
-\`\`\`
+
 ${evalContent.choices[0]['message']['content']}           
-\`\`\`            
+            
 `;
             updateProvider.updateContent(result);
           }
