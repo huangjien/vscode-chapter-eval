@@ -116,6 +116,8 @@ export function activate(context: vscode.ExtensionContext) {
     update_promptString,
     temperature
   );
+  const provider = new ChapterDecorationProvider();
+  context.subscriptions.push(vscode.window.registerFileDecorationProvider(provider))
 }
 
 function setupL10N(context: vscode.ExtensionContext) {
@@ -127,6 +129,39 @@ function setupL10N(context: vscode.ExtensionContext) {
       'bundle.l10n.' + locale + '.json'
     ),
   });
+}
+
+class ChapterDecorationProvider implements vscode.FileDecorationProvider {
+  private readonly _onDidChangeFileDecorations: vscode.EventEmitter<
+    vscode.Uri | vscode.Uri[]
+  > = new vscode.EventEmitter<vscode.Uri | vscode.Uri[]>();
+  readonly onDidChangeFileDecorations: vscode.Event<vscode.Uri | vscode.Uri[]> =
+    this._onDidChangeFileDecorations.event;
+
+  provideFileDecoration(
+    uri: vscode.Uri,
+    token: vscode.CancellationToken
+  ): vscode.ProviderResult<vscode.FileDecoration> {
+    // if it is in Analysis folder, ignore it
+    // if it is in the project root folder, ignore it
+    if (uri.fsPath.endsWith('.md')) {
+      const fileName = path.basename(uri.fsPath);
+      const filePath = path.join(getAnalysisFolder() ?? '', fileName);
+      if (fs.existsSync(filePath)) {
+        // let's calculate the number of the file (it may contain CJK characters)
+        // const [text_length, non, invisible] = countChineseString(
+        //   fs.readFileSync(filePath).toString()
+        // );
+        // TODO: let's calculate the evaluation scores
+        return {
+          badge: ' ✔️',
+          tooltip: 'Evaluated'
+          
+        };
+      }
+      return undefined;
+    }
+  }
 }
 
 function setupSettingWebviewProvider(context: vscode.ExtensionContext) {
