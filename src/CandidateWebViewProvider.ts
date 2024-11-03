@@ -32,7 +32,7 @@ export class CandidateWebViewProvider implements vscode.WebviewViewProvider {
   <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>AI Evaluation</title>
+      <title>${l10n.t('vscodeChapterEval_candidateWebview.contextualTitle')}</title>
       <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   </head>
   <body>
