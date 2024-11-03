@@ -147,15 +147,10 @@ class ChapterDecorationProvider implements vscode.FileDecorationProvider {
       const fileName = path.basename(uri.fsPath);
       const filePath = path.join(getAnalysisFolder() ?? '', fileName);
       if (fs.existsSync(filePath)) {
-        // let's calculate the number of the file (it may contain CJK characters)
-        // const [text_length, non, invisible] = countChineseString(
-        //   fs.readFileSync(filePath).toString()
-        // );
-        // TODO: let's calculate the evaluation scores
+       
         return {
           badge: ' ✔️',
-          tooltip: 'Evaluated'
-          
+          tooltip: 'Evaluated '
         };
       }
       return undefined;
@@ -242,8 +237,12 @@ function registerCommandOfUpdateCandidate(
 \n\n### Prompt Token Size: ${evalContent.usage['prompt_tokens']} 
 \n\n### Completion Token Size: ${evalContent.usage['completion_tokens']}  
 \n\n### Total Token Size: ${evalContent.usage['total_tokens']}
-\n\n
-
+\n\n### Original Selected:\n
+----------\n
+${selection}
+----------\n
+\n\n### Suggestion:\n
+----------\n
 ${evalContent.choices[0]['message']['content']}           
             
 `;
