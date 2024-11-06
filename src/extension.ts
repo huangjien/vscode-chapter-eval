@@ -237,11 +237,11 @@ function registerCommandOfUpdateCandidate(
 \n\n### Prompt Token Size: ${evalContent.usage['prompt_tokens']} 
 \n\n### Completion Token Size: ${evalContent.usage['completion_tokens']}  
 \n\n### Total Token Size: ${evalContent.usage['total_tokens']}
-\n\n### Original Selected:\n
-----------\n
-${selection}
-----------\n
-\n\n### Suggestion:\n
+\n\n### Original Selected:\n\n
+----------\n\n
+${selection}\n\n
+----------\n\n
+\n\n### Suggestion:\n\n
 ----------\n
 ${evalContent.choices[0]['message']['content']}           
             
