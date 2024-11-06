@@ -247,6 +247,17 @@ ${evalContent.choices[0]['message']['content']}
             
 `;
             updateProvider.updateContent(result);
+            // then save it to the end of eval file
+            const filename = getFileName(editor.document);
+          const storagePath = getAnalysisFolder();
+          if (!storagePath) {
+            return;
+          }
+
+          const resultFilePath = path.join(storagePath, filename);
+          if (fs.existsSync(resultFilePath)) {
+            fs.appendFileSync(resultFilePath, result);
+          }
           }
         );
         showStatusBarProgress(longRunTask);
