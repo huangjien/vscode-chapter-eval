@@ -432,7 +432,7 @@ function registerCommandOfSummaryOfToday(context: vscode.ExtensionContext) {
         const currentFolder = commandArgs[0].fsPath;
         const stats = countChineseCharactersInDirectory(currentFolder);
         vscode.window.showInformationMessage(
-          `Total Chinese characters: ${stats.totalCount}`
+          `Total Chinese words: ${stats.totalCount} Chapters: ${stats.fileCount}`
         );
 
         // Generate CSV report
