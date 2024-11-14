@@ -390,10 +390,10 @@ function updateStatusBar(
 
       const resultFilePath = path.join(storagePath, filename);
       if (fs.existsSync(resultFilePath)) {
-        statusBarItem.text = l10n.t('evaluated') + ' ✔️';
+        statusBarItem.text = l10n.t('evaluated') + ' ✔️ ' + text_length.toString();
         vscode.commands.executeCommand('vscodeChapterEval.showEvaluation');
       } else {
-        statusBarItem.text = l10n.t('notEvaluated') + ' ⏳';
+        statusBarItem.text = l10n.t('notEvaluated') + ' ⏳ ' + text_length.toString();
       }
       statusBarItem.show();
     } else {
