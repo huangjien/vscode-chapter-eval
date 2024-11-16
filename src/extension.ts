@@ -116,7 +116,9 @@ export function activate(context: vscode.ExtensionContext) {
     temperature
   );
   const provider = new ChapterDecorationProvider();
-  context.subscriptions.push(vscode.window.registerFileDecorationProvider(provider))
+  context.subscriptions.push(
+    vscode.window.registerFileDecorationProvider(provider)
+  );
 }
 
 function setupL10N(context: vscode.ExtensionContext) {
@@ -147,10 +149,9 @@ class ChapterDecorationProvider implements vscode.FileDecorationProvider {
       const fileName = path.basename(uri.fsPath);
       const filePath = path.join(getAnalysisFolder() ?? '', fileName);
       if (fs.existsSync(filePath)) {
-       
         return {
           badge: ' ✔️',
-          tooltip: 'Evaluated '
+          tooltip: 'Evaluated ',
         };
       }
       return undefined;
@@ -249,15 +250,15 @@ ${evalContent.choices[0]['message']['content']}
             updateProvider.updateContent(result);
             // then save it to the end of eval file
             const filename = getFileName(editor.document);
-          const storagePath = getAnalysisFolder();
-          if (!storagePath) {
-            return;
-          }
+            const storagePath = getAnalysisFolder();
+            if (!storagePath) {
+              return;
+            }
 
-          const resultFilePath = path.join(storagePath, filename);
-          if (fs.existsSync(resultFilePath)) {
-            fs.appendFileSync(resultFilePath, result);
-          }
+            const resultFilePath = path.join(storagePath, filename);
+            if (fs.existsSync(resultFilePath)) {
+              fs.appendFileSync(resultFilePath, result);
+            }
           }
         );
         showStatusBarProgress(longRunTask);
@@ -390,11 +391,13 @@ function updateStatusBar(
 
       const resultFilePath = path.join(storagePath, filename);
       if (fs.existsSync(resultFilePath)) {
-        statusBarItem.text =  '✔️ ' + text_length.toString();
-        statusBarItem.tooltip = l10n.t('evaluated') + '\n' + statusBarItem.tooltip;
+        statusBarItem.text = '✔️ ' + text_length.toString();
+        statusBarItem.tooltip =
+          l10n.t('evaluated') + '\n' + statusBarItem.tooltip;
         vscode.commands.executeCommand('vscodeChapterEval.showEvaluation');
       } else {
-        statusBarItem.tooltip = l10n.t('notEvaluated') + '\n' + statusBarItem.tooltip;
+        statusBarItem.tooltip =
+          l10n.t('notEvaluated') + '\n' + statusBarItem.tooltip;
         statusBarItem.text = '⏳ ' + text_length.toString();
       }
       statusBarItem.show();
