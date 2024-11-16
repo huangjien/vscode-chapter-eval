@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.9.26",
+  "version": "0.9.27",
   "description": "Evaluate a chapter of novel with AI.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -291,8 +291,11 @@
   },
   "files": [
     "dist/**/*",
+    "l10n/**/*",
     "LICENSE",
     "resources",
-    "package.json"
+    "package.json",
+    "package.nls.json",
+    "package.nls.*.json"
   ]
 }
