@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.9.29",
+  "version": "0.9.30",
   "description": "Evaluate a chapter of novel with AI.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -236,22 +236,22 @@
         {
           "when": "resourceLangId == markdown || resourceLangId == plaintext",
           "command": "vscodeChapterEval.evaluateMarkdown",
-          "group": "navigation"
+          "group": "eval@1"
         },
         {
           "when": "(resourceLangId == markdown || resourceLangId == plaintext ) && editorHasSelection",
           "command": "vscodeChapterEval.updateSelected",
-          "group": "navigation"
+          "group": "eval@3"
         },
         {
           "when": "resourceLangId == markdown || resourceLangId == plaintext",
           "command": "vscodeChapterEval.readOutLoud",
-          "group": "navigation"
+          "group": "eval@4"
         },
         {
           "when": "resourceLangId == markdown || resourceLangId == plaintext",
           "command": "vscodeChapterEval.formatMarkdown",
-          "group": "navigation"
+          "group": "eval@2"
         }
       ]
     }
