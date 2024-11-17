@@ -5,6 +5,7 @@
   "vscodeChapterEval_candidateWebview.contextualTitle": "Update",
   "configuration.title": "AI Editor Configuration",
   "vscodeChapterEval.evaluateMarkdown.title": "Evaluate Chapter",
+  "vscodeChapterEval.updateSelected.title": "Rewrite Selected",
   "vscodeChapterEval.showEvaluation.title": "Show Evaluation",
   "vscodeChapterEval.showExistedEvaluation.title": "Existed Evaluation",
   "vscodeChapterEval.formatMarkdown.title": "Format Chapter",

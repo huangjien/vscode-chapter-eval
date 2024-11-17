@@ -5,6 +5,7 @@
   "configuration.title": "AI 编辑配置",
   "vscodeChapterEval.evaluateMarkdown.title": "评估章节",
   "vscodeChapterEval.showEvaluation.title": "显示评估",
+  "vscodeChapterEval.updateSelected.title": "修改选择的文字",
   "vscodeChapterEval.showExistedEvaluation.title": "现有评估",
   "vscodeChapterEval.formatMarkdown.title": "格式化章节",
   "vscodeChapterEval.readOutLoud.title": "大声朗读",
