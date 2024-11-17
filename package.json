@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.9.27",
+  "version": "0.9.28",
   "description": "Evaluate a chapter of novel with AI.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -161,10 +161,6 @@
       {
         "command": "vscodeChapterEval.formatMarkdown",
         "title": "%vscodeChapterEval.formatMarkdown.title%"
-      },
-      {
-        "command": "vscodeChapterEval.readOutLoud",
-        "title": "%vscodeChapterEval.readOutLoud.title%"
       },
       {
         "command": "vscodeChapterEval.readOutLoud",
