@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import * as l10n from '@vscode/l10n';
 import { getNonce, getUri } from './Utils';
 
 export class ChartWebViewProvider implements vscode.WebviewViewProvider {
@@ -24,7 +23,10 @@ export class ChartWebViewProvider implements vscode.WebviewViewProvider {
     ]);
     webviewView.webview.html = this.getWebviewContent(
       webviewView.webview,
-      this.stylesUri, [],[],[]
+      this.stylesUri,
+      [],
+      [],
+      []
     );
   }
 
@@ -32,16 +34,19 @@ export class ChartWebViewProvider implements vscode.WebviewViewProvider {
     this._view!.webview!.html = this.getWebviewContent(
       this._view!.webview,
       this.stylesUri!,
-      event, tension, emotion
+      event,
+      tension,
+      emotion
     );
   }
 
   getWebviewContent(
     webview: vscode.Webview,
     stylesUri: vscode.Uri,
-    event: never[], tension: never[], emotion: never[]
+    event: any[],
+    tension: any[],
+    emotion: any[]
   ): string {
-    
     return `
   <!DOCTYPE html>
   <html lang="en">

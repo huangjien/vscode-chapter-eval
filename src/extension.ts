@@ -59,41 +59,9 @@ export function activate(context: vscode.ExtensionContext) {
   const temperature: number = getConfiguration('temperature', 1)!;
 
   let evaluate_promptString: string = getConfiguration('prompt')!;
-  if (!evaluate_promptString) {
-    showMessage(l10n.t('promptNotSet', 'OpenAI prompt is not set!'), 'warning');
-    evaluate_promptString = `You are ASSISTANT , work as literary critic. Please evaluate the tension of the following chapter and give it a score out of 100. 
-            Also, describe the curve of the tension changes in the chapter. 
-            Point out the three most outstanding advantages and the three biggest disadvantages of the chapter. 
-            If you find any typographical errors, please point them out. 
-            \n\nUSER: $PROMPT$ \n\nASSISTANT: `;
-  }
-
   let update_promptString: string = getConfiguration('update_prompt')!;
-  if (!update_promptString) {
-    showMessage(
-      l10n.t('promptNotSet', 'OpenAI update prompt is not set!'),
-      'warning'
-    );
-    update_promptString = `You are an editor. Please update below sentences, to make them more attractive, readable and natrural. \nUSER: $PROMPT$ \nASSISTANT:`;
-  }
-
   let cliche_promptString: string = getConfiguration('cliche_prompt')!;
-  if (!cliche_promptString) {
-    showMessage(
-      l10n.t('promptNotSet', 'OpenAI update prompt is not set!'),
-      'warning'
-    );
-    cliche_promptString = `You are an editor. Please update below sentences, to make them more attractive, readable and natrural. \nUSER: $PROMPT$ \nASSISTANT:`;
-  }
-
   let chart_promptString: string = getConfiguration('chart_prompt')!;
-  if (!chart_promptString) {
-    showMessage(
-      l10n.t('promptNotSet', 'OpenAI update prompt is not set!'),
-      'warning'
-    );
-    chart_promptString = `You are an editor. Please update below sentences, to make them more attractive, readable and natrural. \nUSER: $PROMPT$ \nASSISTANT:`;
-  }
 
   // if in current workspace root, there is prompt folder, then find the prompts in there and replace the one from settings.
   ({
@@ -107,6 +75,39 @@ export function activate(context: vscode.ExtensionContext) {
     cliche_promptString,
     chart_promptString
   ));
+
+  if (!evaluate_promptString) {
+    showMessage(l10n.t('promptNotSet', 'OpenAI prompt is not set!'), 'warning');
+    evaluate_promptString = `You are ASSISTANT , work as literary critic. Please evaluate the tension of the following chapter and give it a score out of 100. 
+            Also, describe the curve of the tension changes in the chapter. 
+            Point out the three most outstanding advantages and the three biggest disadvantages of the chapter. 
+            If you find any typographical errors, please point them out. 
+            \n\nUSER: $PROMPT$ \n\nASSISTANT: `;
+  }
+
+  if (!update_promptString) {
+    showMessage(
+      l10n.t('promptNotSet', 'OpenAI update prompt is not set!'),
+      'warning'
+    );
+    update_promptString = `You are an editor. Please update below sentences, to make them more attractive, readable and natrural. \nUSER: $PROMPT$ \nASSISTANT:`;
+  }
+
+  if (!cliche_promptString) {
+    showMessage(
+      l10n.t('promptNotSet', 'OpenAI update prompt is not set!'),
+      'warning'
+    );
+    cliche_promptString = `You are an editor. Please update below sentences, to make them more attractive, readable and natrural. \nUSER: $PROMPT$ \nASSISTANT:`;
+  }
+
+  if (!chart_promptString) {
+    showMessage(
+      l10n.t('promptNotSet', 'OpenAI update prompt is not set!'),
+      'warning'
+    );
+    chart_promptString = `You are an editor. Please update below sentences, to make them more attractive, readable and natrural. \nUSER: $PROMPT$ \nASSISTANT:`;
+  }
 
   let openai: OpenAI;
   if (location === 'Remote') {
@@ -294,7 +295,6 @@ function registerCommandOfUpdateCandidate(
 ) {
   context.subscriptions.push(
     vscode.commands.registerCommand('vscodeChapterEval.updateSelected', () => {
-
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
         showMessage(
@@ -391,9 +391,11 @@ function registerCommandOfGenerateChart(
         (data) => {
           const evalContent = JSON.parse(data);
           //evalContent need to be handled here
-          
-          const content = extractJsonFromString(evalContent.choices[0]['message']['content']);
-console.log(content)
+
+          const content = extractJsonFromString(
+            evalContent.choices[0]['message']['content']
+          );
+          console.log(content);
           const event = content.curve.map((item: { event: any }) => item.event); // X轴: 事件描述
           const tensionValues = content.curve.map(
             (item: { tension: any }) => item.tension
@@ -401,7 +403,7 @@ console.log(content)
           const emotionValues = content.curve.map(
             (item: { emotion: any }) => item.emotion
           ); // Y轴: 情绪
-          console.log(event, tensionValues, emotionValues)
+          console.log(event, tensionValues, emotionValues);
           chartProvider.updateContent(event, tensionValues, emotionValues);
         }
       );
@@ -413,7 +415,6 @@ console.log(content)
 // function extractJsonFromString(input: string): any {
 //   // Regular expression to match a JSON block
 //   const jsonRegex = /{(?:[^{}]|"(?:\\.|[^"\\])*")*}/s;
-
 
 //   // Find the JSON block
 //   const match = input.match(jsonRegex);
@@ -435,27 +436,27 @@ function extractJsonFromString(input: string): any {
   let endIndex = -1;
 
   for (let i = 0; i < input.length; i++) {
-      if (input[i] === '{') {
-          if (depth === 0) startIndex = i;
-          depth++;
-      } else if (input[i] === '}') {
-          depth--;
-          if (depth === 0) {
-              endIndex = i + 1;
-              break;
-          }
+    if (input[i] === '{') {
+      if (depth === 0) startIndex = i;
+      depth++;
+    } else if (input[i] === '}') {
+      depth--;
+      if (depth === 0) {
+        endIndex = i + 1;
+        break;
       }
+    }
   }
 
   if (startIndex === -1 || endIndex === -1) {
-      throw new Error("No valid JSON object found in the provided input.");
+    throw new Error('No valid JSON object found in the provided input.');
   }
 
   const jsonString = input.slice(startIndex, endIndex).trim();
   try {
-      return JSON.parse(jsonString);
+    return JSON.parse(jsonString);
   } catch (error) {
-      throw new Error("Invalid JSON format: " + error);
+    throw new Error('Invalid JSON format: ' + error);
   }
 }
 
