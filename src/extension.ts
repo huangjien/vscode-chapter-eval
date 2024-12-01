@@ -140,8 +140,7 @@ class ChapterDecorationProvider implements vscode.FileDecorationProvider {
     this._onDidChangeFileDecorations.event;
 
   provideFileDecoration(
-    uri: vscode.Uri,
-    token: vscode.CancellationToken
+    uri: vscode.Uri
   ): vscode.ProviderResult<vscode.FileDecoration> {
     // if it is in Analysis folder, ignore it
     // if it is in the project root folder, ignore it

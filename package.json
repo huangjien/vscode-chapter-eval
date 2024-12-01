@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.9.31",
+  "version": "0.9.32",
   "description": "Evaluate a chapter of novel with AI.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -263,7 +263,7 @@
     "@typescript-eslint/eslint-plugin": "^8.16.0",
     "@typescript-eslint/parser": "^8.16.0",
     "@vscode/test-electron": "^2.4.1",
-    "eslint": "^9.15.0",
+    "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",
     "glob": "^11.0.0",
     "marked": "^15.0.3",
