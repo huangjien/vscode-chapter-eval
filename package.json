@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.9.32",
+  "version": "0.9.33",
   "description": "Evaluate a chapter of novel with AI.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -147,6 +147,10 @@
         "title": "%vscodeChapterEval.evaluateMarkdown.title%"
       },
       {
+        "command": "vscodeChapterEval.generateChart",
+        "title": "Show Chart"
+      },
+      {
         "command": "vscodeChapterEval.updateSelected",
         "title": "%vscodeChapterEval.updateSelected.title%"
       },
@@ -208,6 +212,12 @@
         },
         {
           "type": "webview",
+          "id": "vscodeChapterEval_chartWebview",
+          "name": "Tension and Emotion Chart",
+          "contextualTitle": "Tension and Emotion Chart"
+        },
+        {
+          "type": "webview",
           "id": "vscodeChapterEval_candidateWebview",
           "name": "%vscodeChapterEval_candidateWebview.contextualTitle%",
           "contextualTitle": "%vscodeChapterEval_candidateWebview.contextualTitle%"
@@ -239,6 +249,11 @@
           "group": "eval@1"
         },
         {
+          "when": "resourceLangId == markdown || resourceLangId == plaintext",
+          "command": "vscodeChapterEval.generateChart",
+          "group": "eval@2"
+        },
+        {
           "when": "(resourceLangId == markdown || resourceLangId == plaintext ) && editorHasSelection",
           "command": "vscodeChapterEval.updateSelected",
           "group": "eval@3"
@@ -251,7 +266,7 @@
         {
           "when": "resourceLangId == markdown || resourceLangId == plaintext",
           "command": "vscodeChapterEval.formatMarkdown",
-          "group": "eval@2"
+          "group": "eval@5"
         }
       ]
     }
@@ -278,6 +293,7 @@
   },
   "dependencies": {
     "@vscode/l10n": "^0.0.18",
+    "chart.js": "^4.4.6",
     "child_process": "^1.0.2",
     "crypto": "^1.0.1",
     "eslint-plugin-prettier": "^5.2.1",

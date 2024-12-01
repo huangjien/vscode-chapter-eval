@@ -15,6 +15,7 @@ import * as l10n from '@vscode/l10n';
 import { marked } from 'marked';
 import puppeteer from 'puppeteer';
 
+
 export async function mergeMarkdownAndGeneratePDF(
   sourceDir: string,
   outputPDFPath: string

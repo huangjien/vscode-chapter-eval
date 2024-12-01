@@ -28,6 +28,7 @@ import {
 import { EvaluationWebViewProvider } from './EvaluationWebViewProvider';
 import { SettingsWebViewProvider } from './SettingsWebViewProvider';
 import { CandidateWebViewProvider } from './CandidateWebViewProvider';
+import { ChartWebViewProvider } from './ChartWebViewProvider';
 import * as l10n from '@vscode/l10n';
 
 // this method is called when your extension is activated
@@ -57,10 +58,10 @@ export function activate(context: vscode.ExtensionContext) {
 
   const temperature: number = getConfiguration('temperature', 1)!;
 
-  let promptString: string = getConfiguration('prompt')!;
-  if (!promptString) {
+  let evaluate_promptString: string = getConfiguration('prompt')!;
+  if (!evaluate_promptString) {
     showMessage(l10n.t('promptNotSet', 'OpenAI prompt is not set!'), 'warning');
-    promptString = `You are ASSISTANT , work as literary critic. Please evaluate the tension of the following chapter and give it a score out of 100. 
+    evaluate_promptString = `You are ASSISTANT , work as literary critic. Please evaluate the tension of the following chapter and give it a score out of 100. 
             Also, describe the curve of the tension changes in the chapter. 
             Point out the three most outstanding advantages and the three biggest disadvantages of the chapter. 
             If you find any typographical errors, please point them out. 
@@ -75,6 +76,37 @@ export function activate(context: vscode.ExtensionContext) {
     );
     update_promptString = `You are an editor. Please update below sentences, to make them more attractive, readable and natrural. \nUSER: $PROMPT$ \nASSISTANT:`;
   }
+
+  let cliche_promptString: string = getConfiguration('cliche_prompt')!;
+  if (!cliche_promptString) {
+    showMessage(
+      l10n.t('promptNotSet', 'OpenAI update prompt is not set!'),
+      'warning'
+    );
+    cliche_promptString = `You are an editor. Please update below sentences, to make them more attractive, readable and natrural. \nUSER: $PROMPT$ \nASSISTANT:`;
+  }
+
+  let chart_promptString: string = getConfiguration('chart_prompt')!;
+  if (!chart_promptString) {
+    showMessage(
+      l10n.t('promptNotSet', 'OpenAI update prompt is not set!'),
+      'warning'
+    );
+    chart_promptString = `You are an editor. Please update below sentences, to make them more attractive, readable and natrural. \nUSER: $PROMPT$ \nASSISTANT:`;
+  }
+
+  // if in current workspace root, there is prompt folder, then find the prompts in there and replace the one from settings.
+  ({
+    evaluate_promptString,
+    update_promptString,
+    cliche_promptString,
+    chart_promptString,
+  } = getPromptStringFromWorkspaceFolder(
+    evaluate_promptString,
+    update_promptString,
+    cliche_promptString,
+    chart_promptString
+  ));
 
   let openai: OpenAI;
   if (location === 'Remote') {
@@ -92,7 +124,7 @@ export function activate(context: vscode.ExtensionContext) {
   registerCommandOfEvaluation(
     context,
     openai,
-    promptString,
+    evaluate_promptString,
     model,
     temperature
   );
@@ -105,6 +137,15 @@ export function activate(context: vscode.ExtensionContext) {
 
   const evaluationProvider = setupSidebarWebviewProvider(context);
   registerCommandOfShowEvaluation(context, evaluationProvider);
+  const chartProvider = setupChartWebviewProvider(context);
+  registerCommandOfGenerateChart(
+    context,
+    chartProvider,
+    openai,
+    model,
+    chart_promptString,
+    temperature
+  );
   setupSettingWebviewProvider(context);
   const updateProvider = setupCandidateWebviewProvider(context);
   registerCommandOfUpdateCandidate(
@@ -119,6 +160,47 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.window.registerFileDecorationProvider(provider)
   );
+}
+
+function getPromptStringFromWorkspaceFolder(
+  evaluate_promptString: string,
+  update_promptString: string,
+  cliche_promptString: string,
+  chart_promptString: string
+) {
+  const promptFolder = path.join(
+    vscode.workspace.workspaceFolders![0].uri.fsPath,
+    'Prompt'
+  );
+  if (fs.existsSync(promptFolder)) {
+    const promptFiles = fs.readdirSync(promptFolder);
+    promptFiles.forEach((file) => {
+      if (file.endsWith('.md')) {
+        const filePath = path.join(promptFolder, file);
+        const prompt = fs.readFileSync(filePath, 'utf8');
+
+        evaluate_promptString = prompt;
+        if (file.startsWith('update')) {
+          update_promptString = prompt;
+        }
+        if (file.startsWith('cliche')) {
+          cliche_promptString = prompt;
+        }
+        if (file.startsWith('chart')) {
+          chart_promptString = prompt;
+        }
+        if (file.startsWith('evaluate')) {
+          evaluate_promptString = prompt;
+        }
+      }
+    });
+  }
+  return {
+    evaluate_promptString,
+    update_promptString,
+    cliche_promptString,
+    chart_promptString,
+  };
 }
 
 function setupL10N(context: vscode.ExtensionContext) {
@@ -168,6 +250,17 @@ function setupSettingWebviewProvider(context: vscode.ExtensionContext) {
   );
 }
 
+function setupChartWebviewProvider(context: vscode.ExtensionContext) {
+  const provider = new ChartWebViewProvider(context);
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+      'vscodeChapterEval_chartWebview',
+      provider
+    )
+  );
+  return provider;
+}
+
 function setupCandidateWebviewProvider(context: vscode.ExtensionContext) {
   const provider = new CandidateWebViewProvider(context);
   context.subscriptions.push(
@@ -201,7 +294,7 @@ function registerCommandOfUpdateCandidate(
 ) {
   context.subscriptions.push(
     vscode.commands.registerCommand('vscodeChapterEval.updateSelected', () => {
-      console.log('updateCandidate');
+
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
         showMessage(
@@ -264,6 +357,106 @@ ${evalContent.choices[0]['message']['content']}
       }
     })
   );
+}
+
+function registerCommandOfGenerateChart(
+  context: vscode.ExtensionContext,
+  chartProvider: ChartWebViewProvider,
+  openai: OpenAI,
+  model: string,
+  chart_promptString: string,
+  temperature: number
+) {
+  context.subscriptions.push(
+    vscode.commands.registerCommand('vscodeChapterEval.generateChart', () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) {
+        showMessage(
+          l10n.t('noOpenMarkdownFile'), // No open Markdown file.
+          'info'
+        );
+        return;
+      }
+      if (!isMarkdownOrPlainText(editor)) {
+        showMessage(
+          l10n.t('notMarkdownFile'), // Not a Markdown file.
+          'info'
+        );
+        return;
+      }
+      // call openai generate chart data
+      const text = editor.document.getText();
+      const prompt = chart_promptString.replace('$PROMPT$', text);
+      const longRunTask = callAI(openai, model, prompt, temperature).then(
+        (data) => {
+          const evalContent = JSON.parse(data);
+          //evalContent need to be handled here
+          
+          const content = extractJsonFromString(evalContent.choices[0]['message']['content']);
+console.log(content)
+          const event = content.curve.map((item: { event: any }) => item.event); // X轴: 事件描述
+          const tensionValues = content.curve.map(
+            (item: { tension: any }) => item.tension
+          ); // Y轴: 张力
+          const emotionValues = content.curve.map(
+            (item: { emotion: any }) => item.emotion
+          ); // Y轴: 情绪
+          console.log(event, tensionValues, emotionValues)
+          chartProvider.updateContent(event, tensionValues, emotionValues);
+        }
+      );
+      showStatusBarProgress(longRunTask);
+    })
+  );
+}
+
+// function extractJsonFromString(input: string): any {
+//   // Regular expression to match a JSON block
+//   const jsonRegex = /{(?:[^{}]|"(?:\\.|[^"\\])*")*}/s;
+
+
+//   // Find the JSON block
+//   const match = input.match(jsonRegex);
+//   if (!match) {
+//       throw new Error("No JSON block found in the provided input.");
+//   }
+
+//   const jsonString = match[0].trim();
+//   try {
+//       return JSON.parse(jsonString);
+//   } catch (error) {
+//       throw new Error("Invalid JSON format: " + error);
+//   }
+// }
+
+function extractJsonFromString(input: string): any {
+  let depth = 0;
+  let startIndex = -1;
+  let endIndex = -1;
+
+  for (let i = 0; i < input.length; i++) {
+      if (input[i] === '{') {
+          if (depth === 0) startIndex = i;
+          depth++;
+      } else if (input[i] === '}') {
+          depth--;
+          if (depth === 0) {
+              endIndex = i + 1;
+              break;
+          }
+      }
+  }
+
+  if (startIndex === -1 || endIndex === -1) {
+      throw new Error("No valid JSON object found in the provided input.");
+  }
+
+  const jsonString = input.slice(startIndex, endIndex).trim();
+  try {
+      return JSON.parse(jsonString);
+  } catch (error) {
+      throw new Error("Invalid JSON format: " + error);
+  }
 }
 
 function registerCommandOfShowEvaluation(
