@@ -43,10 +43,11 @@ export class ChartWebViewProvider implements vscode.WebviewViewProvider {
   getWebviewContent(
     webview: vscode.Webview,
     stylesUri: vscode.Uri,
-    event: any[],
-    tension: any[],
-    emotion: any[]
+    event: string[],
+    tension: number[],
+    emotion: number[]
   ): string {
+    const events = event.map(item => "'" + item.replace(/,/g, '') + "'")
     return `
   <!DOCTYPE html>
   <html lang="en">
@@ -61,14 +62,17 @@ export class ChartWebViewProvider implements vscode.WebviewViewProvider {
       <canvas id="Chart" width="400" height="200"></canvas>
       <script>
         const ctx = document.getElementById('Chart').getContext('2d');
+        const labels = [${events}];
+        const tensions = [${tension}];
+        const emotions = [${emotion}];
         const chart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ${event},
+                labels,
                 datasets: [
                     {
                         label: 'Tension',
-                        data: ${tension},
+                        data: tensions,
                         borderColor: 'rgba(255, 99, 132, 1)',
                         backgroundColor: 'rgba(255, 99, 132, 0.2)', // 填充颜色
                         borderWidth: 2,
@@ -78,7 +82,7 @@ export class ChartWebViewProvider implements vscode.WebviewViewProvider {
                     },
                     {
                         label: 'Emotion',
-                        data: ${emotion},
+                        data: emotions,
                         borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 2,
                         fill: false,
