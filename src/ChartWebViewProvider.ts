@@ -47,7 +47,7 @@ export class ChartWebViewProvider implements vscode.WebviewViewProvider {
     tension: number[],
     emotion: number[]
   ): string {
-    const events = event.map(item => "'" + item.replace(/,/g, '') + "'")
+    const events = event.map((item) => "'" + item.replace(/,/g, '') + "'");
     return `
   <!DOCTYPE html>
   <html lang="en">

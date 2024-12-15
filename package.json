@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.9.36",
+  "version": "0.9.37",
   "description": "Evaluate a chapter of novel with AI.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -298,7 +298,7 @@
     "crypto": "^1.0.1",
     "eslint-plugin-prettier": "^5.2.1",
     "husky": "^9.1.7",
-    "openai": "^4.76.2",
+    "openai": "^4.76.3",
     "puppeteer": "^23.10.4"
   },
   "files": [
