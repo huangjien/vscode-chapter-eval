@@ -77,7 +77,7 @@ export function activate(context: vscode.ExtensionContext) {
   ));
 
   if (!evaluate_promptString) {
-    showMessage(l10n.t('promptNotSet', 'OpenAI prompt is not set!'), 'warning');
+    // showMessage(l10n.t('promptNotSet', 'OpenAI prompt is not set!'), 'warning');
     evaluate_promptString = `You are ASSISTANT , work as literary critic. Please evaluate the tension of the following chapter and give it a score out of 100. 
             Also, describe the curve of the tension changes in the chapter. 
             Point out the three most outstanding advantages and the three biggest disadvantages of the chapter. 
