@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.9.36",
+  "version": "0.10.2",
   "description": "Evaluate a chapter of novel with AI.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -275,21 +275,21 @@
     "@types/glob": "^8.1.0",
     "@types/node": "^22.10.2",
     "@types/vscode": "^1.96.0",
-    "@typescript-eslint/eslint-plugin": "^8.18.0",
-    "@typescript-eslint/parser": "^8.18.0",
+    "@typescript-eslint/eslint-plugin": "^8.18.2",
+    "@typescript-eslint/parser": "^8.18.2",
     "@vscode/test-electron": "^2.4.1",
-    "eslint": "^9.16.0",
+    "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
     "glob": "^11.0.0",
-    "marked": "^15.0.3",
+    "marked": "^15.0.4",
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
-    "tailwindcss": "^3.4.16",
+    "tailwindcss": "^3.4.17",
     "ts-loader": "^9.5.1",
     "typescript": "^5.7.2",
-    "typescript-eslint": "^8.18.0",
+    "typescript-eslint": "^8.18.2",
     "webpack": "^5.97.1",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^6.0.1"
   },
   "dependencies": {
     "@vscode/l10n": "^0.0.18",
@@ -298,8 +298,8 @@
     "crypto": "^1.0.1",
     "eslint-plugin-prettier": "^5.2.1",
     "husky": "^9.1.7",
-    "openai": "^4.76.2",
-    "puppeteer": "^23.10.4"
+    "openai": "^4.77.0",
+    "puppeteer": "^23.11.1"
   },
   "files": [
     "dist/**/*",
