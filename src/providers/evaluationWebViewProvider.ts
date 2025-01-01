@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { marked } from 'marked';
-import { getNonce, getUri } from './Utils';
+import { getNonce, getUri } from '../Utils';
 
 export class EvaluationWebViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = 'markdownView';

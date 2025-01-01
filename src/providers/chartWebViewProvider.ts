@@ -1,6 +1,16 @@
 import * as vscode from 'vscode';
-import { getNonce, getUri } from './Utils';
+import { getNonce, getUri } from '../Utils';
 
+export function setupChartWebviewProvider(context: vscode.ExtensionContext) {
+  const provider = new ChartWebViewProvider(context);
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+      'vscodeChapterEval_chartWebview',
+      provider
+    )
+  );
+  return provider;
+}
 export class ChartWebViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = 'webView';
   public _view?: vscode.WebviewView;

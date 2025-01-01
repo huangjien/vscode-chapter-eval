@@ -168,3 +168,32 @@ export function showStatusBarProgress(task: Promise<any>): void {
     }
   );
 }
+export function extractJsonFromString(input: string): any {
+  let depth = 0;
+  let startIndex = -1;
+  let endIndex = -1;
+
+  for (let i = 0; i < input.length; i++) {
+    if (input[i] === '{') {
+      if (depth === 0) startIndex = i;
+      depth++;
+    } else if (input[i] === '}') {
+      depth--;
+      if (depth === 0) {
+        endIndex = i + 1;
+        break;
+      }
+    }
+  }
+
+  if (startIndex === -1 || endIndex === -1) {
+    throw new Error('No valid JSON object found in the provided input.');
+  }
+
+  const jsonString = input.slice(startIndex, endIndex).trim();
+  try {
+    return JSON.parse(jsonString);
+  } catch (error) {
+    throw new Error('Invalid JSON format: ' + error);
+  }
+}

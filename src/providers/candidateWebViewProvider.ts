@@ -1,8 +1,20 @@
 import * as vscode from 'vscode';
 import * as l10n from '@vscode/l10n';
 import { marked } from 'marked';
-import { getNonce, getUri } from './Utils';
+import { getNonce, getUri } from '../Utils';
 
+export function setupCandidateWebviewProvider(
+  context: vscode.ExtensionContext
+) {
+  const provider = new CandidateWebViewProvider(context);
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+      'vscodeChapterEval_candidateWebview',
+      provider
+    )
+  );
+  return provider;
+}
 export class CandidateWebViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = 'webView';
   public _view?: vscode.WebviewView;

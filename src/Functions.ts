@@ -367,3 +367,53 @@ export function readTextAloud(text: string) {
     showMessage(l10n.t('readOut'), 'info'); // Text read out loud successfully
   });
 }
+export function setupL10N(context: vscode.ExtensionContext) {
+  const locale = vscode.env.language;
+  l10n.config({
+    fsPath: path.join(
+      context.extensionPath,
+      'l10n',
+      'bundle.l10n.' + locale + '.json'
+    ),
+  });
+}
+export function getPromptStringFromWorkspaceFolder(
+  evaluate_promptString: string,
+  update_promptString: string,
+  cliche_promptString: string,
+  chart_promptString: string
+) {
+  const promptFolder = path.join(
+    vscode.workspace.workspaceFolders![0].uri.fsPath,
+    'Prompt'
+  );
+  if (fs.existsSync(promptFolder)) {
+    const promptFiles = fs.readdirSync(promptFolder);
+    promptFiles.forEach((file) => {
+      if (file.endsWith('.md')) {
+        const filePath = path.join(promptFolder, file);
+        const prompt = fs.readFileSync(filePath, 'utf8');
+
+        evaluate_promptString = prompt;
+        if (file.startsWith('update')) {
+          update_promptString = prompt;
+        }
+        if (file.startsWith('cliche')) {
+          cliche_promptString = prompt;
+        }
+        if (file.startsWith('chart')) {
+          chart_promptString = prompt;
+        }
+        if (file.startsWith('evaluate')) {
+          evaluate_promptString = prompt;
+        }
+      }
+    });
+  }
+  return {
+    evaluate_promptString,
+    update_promptString,
+    cliche_promptString,
+    chart_promptString,
+  };
+}
