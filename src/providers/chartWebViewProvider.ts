@@ -1,18 +1,18 @@
-import * as vscode from 'vscode';
-import { getNonce, getUri } from '../Utils';
+import * as vscode from "vscode";
+import { getNonce, getUri } from "../Utils";
 
 export function setupChartWebviewProvider(context: vscode.ExtensionContext) {
   const provider = new ChartWebViewProvider(context);
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
-      'vscodeChapterEval_chartWebview',
+      "vscodeChapterEval_chartWebview",
       provider
     )
   );
   return provider;
 }
 export class ChartWebViewProvider implements vscode.WebviewViewProvider {
-  public static readonly viewType = 'webView';
+  public static readonly viewType = "webView";
   public _view?: vscode.WebviewView;
   public webviewUri: vscode.Uri | undefined;
   public stylesUri: vscode.Uri | undefined;
@@ -24,12 +24,12 @@ export class ChartWebViewProvider implements vscode.WebviewViewProvider {
       enableScripts: true,
     };
     this.stylesUri = getUri(webviewView.webview, this.context.extensionUri, [
-      'dist',
-      'extension.css',
+      "dist",
+      "extension.css",
     ]);
     this.webviewUri = getUri(webviewView.webview, this.context.extensionUri, [
-      'dist',
-      'extension.js',
+      "dist",
+      "extension.js",
     ]);
     webviewView.webview.html = this.getWebviewContent(
       webviewView.webview,
@@ -57,7 +57,7 @@ export class ChartWebViewProvider implements vscode.WebviewViewProvider {
     tension: number[],
     emotion: number[]
   ): string {
-    const events = event.map((item) => "'" + item.replace(/,/g, '') + "'");
+    const events = event.map((item) => "'" + item.replace(/,/g, "") + "'");
     return `
   <!DOCTYPE html>
   <html lang="en">

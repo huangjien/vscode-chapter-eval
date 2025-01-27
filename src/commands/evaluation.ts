@@ -1,13 +1,13 @@
-import * as l10n from '@vscode/l10n';
-import OpenAI from 'openai';
-import * as vscode from 'vscode';
-import { evaluateChapter } from '../Functions';
+import * as l10n from "@vscode/l10n";
+import OpenAI from "openai";
+import * as vscode from "vscode";
+import { evaluateChapter } from "../Functions";
 import {
   showMessage,
   isMarkdownOrPlainText,
   getOrCreateAnalysisFolder,
   showStatusBarProgress,
-} from '../Utils';
+} from "../Utils";
 
 export function registerCommandOfEvaluation(
   context: vscode.ExtensionContext,
@@ -17,20 +17,20 @@ export function registerCommandOfEvaluation(
   temperature: number
 ) {
   const evaluator = vscode.commands.registerCommand(
-    'vscodeChapterEval.evaluateMarkdown',
+    "vscodeChapterEval.evaluateMarkdown",
     async () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
         showMessage(
-          l10n.t('noOpenMarkdownFile', 'No open Markdown file.'),
-          'info'
+          l10n.t("noOpenMarkdownFile", "No open Markdown file."),
+          "info"
         );
         return;
       }
       if (!isMarkdownOrPlainText(editor)) {
         showMessage(
-          l10n.t('notMarkdown', 'This is not a Markdown or Plaintext file.'),
-          'info'
+          l10n.t("notMarkdown", "This is not a Markdown or Plaintext file."),
+          "info"
         );
         return;
       }

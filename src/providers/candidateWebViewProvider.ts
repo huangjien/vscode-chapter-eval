@@ -1,7 +1,7 @@
-import * as vscode from 'vscode';
-import * as l10n from '@vscode/l10n';
-import { marked } from 'marked';
-import { getNonce, getUri } from '../Utils';
+import * as vscode from "vscode";
+import * as l10n from "@vscode/l10n";
+import { marked } from "marked";
+import { getNonce, getUri } from "../Utils";
 
 export function setupCandidateWebviewProvider(
   context: vscode.ExtensionContext
@@ -9,14 +9,14 @@ export function setupCandidateWebviewProvider(
   const provider = new CandidateWebViewProvider(context);
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
-      'vscodeChapterEval_candidateWebview',
+      "vscodeChapterEval_candidateWebview",
       provider
     )
   );
   return provider;
 }
 export class CandidateWebViewProvider implements vscode.WebviewViewProvider {
-  public static readonly viewType = 'webView';
+  public static readonly viewType = "webView";
   public _view?: vscode.WebviewView;
   public webviewUri: vscode.Uri | undefined;
   public stylesUri: vscode.Uri | undefined;
@@ -28,12 +28,12 @@ export class CandidateWebViewProvider implements vscode.WebviewViewProvider {
       enableScripts: true,
     };
     this.stylesUri = getUri(webviewView.webview, this.context.extensionUri, [
-      'dist',
-      'extension.css',
+      "dist",
+      "extension.css",
     ]);
     this.webviewUri = getUri(webviewView.webview, this.context.extensionUri, [
-      'dist',
-      'extension.js',
+      "dist",
+      "extension.js",
     ]);
     webviewView.webview.html = this.getWebviewContent(
       webviewView.webview,
@@ -52,7 +52,7 @@ export class CandidateWebViewProvider implements vscode.WebviewViewProvider {
   getWebviewContent(
     webview: vscode.Webview,
     stylesUri: vscode.Uri,
-    markdownText: string = ''
+    markdownText: string = ""
   ): string {
     const htmlContent = marked(markdownText)!;
     return `
@@ -69,7 +69,7 @@ export class CandidateWebViewProvider implements vscode.WebviewViewProvider {
     style-src-elem 'self' ${webview.cspSource} 'unsafe-inline';">
 
     <link rel="stylesheet" href="${stylesUri}">
-      <title>${l10n.t('vscodeChapterEval_candidateWebview.contextualTitle')}</title>
+      <title>${l10n.t("vscodeChapterEval_candidateWebview.contextualTitle")}</title>
   </head>
   <body>
       <div id="content">${htmlContent}</div>

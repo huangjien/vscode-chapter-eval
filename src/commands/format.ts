@@ -1,23 +1,23 @@
-import * as l10n from '@vscode/l10n';
-import * as vscode from 'vscode';
-import { formatMarkdown } from '../Functions';
-import { showMessage, isMarkdownOrPlainText } from '../Utils';
+import * as l10n from "@vscode/l10n";
+import * as vscode from "vscode";
+import { formatMarkdown } from "../Functions";
+import { showMessage, isMarkdownOrPlainText } from "../Utils";
 
 export function registerCommandOfFormat(context: vscode.ExtensionContext) {
   context.subscriptions.push(
-    vscode.commands.registerCommand('vscodeChapterEval.formatMarkdown', () => {
+    vscode.commands.registerCommand("vscodeChapterEval.formatMarkdown", () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
         showMessage(
-          l10n.t('noOpenMarkdownFile'), // No open Markdown file.
-          'info'
+          l10n.t("noOpenMarkdownFile"), // No open Markdown file.
+          "info"
         );
         return;
       }
       if (!isMarkdownOrPlainText(editor)) {
         showMessage(
-          l10n.t('notMarkdown'), // This is not a Markdown or Plaintext file.
-          'info'
+          l10n.t("notMarkdown"), // This is not a Markdown or Plaintext file.
+          "info"
         );
         return;
       }

@@ -1,14 +1,14 @@
-import * as l10n from '@vscode/l10n';
-import OpenAI from 'openai';
-import * as vscode from 'vscode';
-import { ChartWebViewProvider } from '../providers/chartWebViewProvider';
-import { extractJsonFromString } from '../Utils';
-import { callAI } from '../Functions';
+import * as l10n from "@vscode/l10n";
+import OpenAI from "openai";
+import * as vscode from "vscode";
+import { ChartWebViewProvider } from "../providers/chartWebViewProvider";
+import { extractJsonFromString } from "../Utils";
+import { callAI } from "../Functions";
 import {
   showMessage,
   isMarkdownOrPlainText,
   showStatusBarProgress,
-} from '../Utils';
+} from "../Utils";
 
 export function registerCommandOfGenerateChart(
   context: vscode.ExtensionContext,
@@ -19,31 +19,31 @@ export function registerCommandOfGenerateChart(
   temperature: number
 ) {
   context.subscriptions.push(
-    vscode.commands.registerCommand('vscodeChapterEval.generateChart', () => {
+    vscode.commands.registerCommand("vscodeChapterEval.generateChart", () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
         showMessage(
-          l10n.t('noOpenMarkdownFile'), // No open Markdown file.
-          'info'
+          l10n.t("noOpenMarkdownFile"), // No open Markdown file.
+          "info"
         );
         return;
       }
       if (!isMarkdownOrPlainText(editor)) {
         showMessage(
-          l10n.t('notMarkdownFile'), // Not a Markdown file.
-          'info'
+          l10n.t("notMarkdownFile"), // Not a Markdown file.
+          "info"
         );
         return;
       }
       // call openai generate chart data
       const text = editor.document.getText();
-      const prompt = chart_promptString.replace('$PROMPT$', text);
+      const prompt = chart_promptString.replace("$PROMPT$", text);
       const longRunTask = callAI(openai, model, prompt, temperature).then(
         (data) => {
           const evalContent = JSON.parse(data);
           //evalContent need to be handled here
           const content = extractJsonFromString(
-            evalContent.choices[0]['message']['content']
+            evalContent.choices[0]["message"]["content"]
           );
           console.log(content);
           const event = content.curve.map((item: { event: any }) => item.event); // X轴: 事件描述
