@@ -1,7 +1,7 @@
 {
   "name": "vscode-chapter-eval",
   "displayName": "AI Editor",
-  "version": "0.10.6",
+  "version": "0.10.7",
   "description": "Evaluate a chapter of novel with AI.",
   "main": "./dist/extension",
   "type": "commonjs",
@@ -277,7 +277,7 @@
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
-    "@types/node": "^22.10.10",
+    "@types/node": "^22.13.0",
     "@types/vscode": "^1.96.0",
     "@typescript-eslint/eslint-plugin": "^8.22.0",
     "@typescript-eslint/parser": "^8.22.0",
@@ -288,7 +288,7 @@
     "marked": "^15.0.6",
     "postcss": "^8.5.1",
     "prettier": "^3.4.2",
-    "tailwindcss": "^3.4.17",
+    "tailwindcss": "^4.0.3",
     "ts-loader": "^9.5.2",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.22.0",
@@ -302,7 +302,7 @@
     "crypto": "^1.0.1",
     "eslint-plugin-prettier": "^5.2.3",
     "husky": "^9.1.7",
-    "openai": "^4.80.1",
+    "openai": "^4.82.0",
     "puppeteer": "^24.1.1"
   },
   "files": [

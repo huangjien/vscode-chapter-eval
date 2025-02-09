@@ -16,12 +16,14 @@ import { ChapterDecorationProvider } from "../providers/chapterDecorationProvide
 import { setupSettingWebviewProvider } from "../providers/settingsWebViewProvider";
 import { setupSidebarWebviewProvider } from "../providers/sidebarWebViewProvider";
 import { setupStatusBarItem } from "../statusBar/statusBar";
-import { getConfiguration, showMessage } from "../Utils";
-import { l10n } from "vscode";
-import { getPromptStringFromWorkspaceFolder, setupL10N } from "../Functions";
+import { getConfiguration } from "../Utils";
+import { setupL10N } from "../Functions";
+import { PromptsManager } from "../Prompts";
 
 export function register2VSCode(context: vscode.ExtensionContext) {
   setupL10N(context);
+
+  const openai = new OpenAI(getConfiguration("openaiKey", ""));
 
   const provider = new ChapterDecorationProvider();
   context.subscriptions.push(
@@ -31,9 +33,9 @@ export function register2VSCode(context: vscode.ExtensionContext) {
   registerCommandOfEvaluation(
     context,
     openai,
-    evaluate_promptString,
-    model,
-    temperature
+    PromptsManager.getInstance().getPromptByName("evaluate")!["prompt"],
+    PromptsManager.getInstance().getPromptByName("evaluate")!["modelName"],
+    PromptsManager.getInstance().getPromptByName("evaluate")!["temperature"]
   );
   setupSettingWebviewProvider(context);
   const updateProvider = setupCandidateWebviewProvider(context);
@@ -41,18 +43,18 @@ export function register2VSCode(context: vscode.ExtensionContext) {
     context,
     updateProvider,
     openai,
-    model,
-    update_promptString,
-    temperature
+    PromptsManager.getInstance().getPromptByName("update")!["modelName"],
+    PromptsManager.getInstance().getPromptByName("update")!["prompt"],
+    PromptsManager.getInstance().getPromptByName("update")!["temperature"]
   );
   const chartProvider = setupChartWebviewProvider(context);
   registerCommandOfGenerateChart(
     context,
     chartProvider,
     openai,
-    model,
-    chart_promptString,
-    temperature
+    PromptsManager.getInstance().getPromptByName("chart")!["modelName"],
+    PromptsManager.getInstance().getPromptByName("chart")!["prompt"],
+    PromptsManager.getInstance().getPromptByName("chart")!["temperature"]
   );
   const evaluationProvider = setupSidebarWebviewProvider(context);
   registerCommandOfShowEvaluation(context, evaluationProvider);

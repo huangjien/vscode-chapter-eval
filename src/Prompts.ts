@@ -3,7 +3,7 @@ import { getConfiguration, showMessage } from "./Utils";
 import { getPromptStringFromWorkspaceFolder } from "./Functions";
 import OpenAI from "openai";
 
-class Prompt {
+export class Prompt {
   constructor(
     public name: string,
     public temperature: number,
@@ -13,15 +13,20 @@ class Prompt {
   ) {}
 }
 
-class PromptsManager {
+export class PromptsManager {
   private static instance: PromptsManager;
   private prompts: Map<string, Prompt>;
-  private openai: OpenAI;
+  private openai: OpenAI | undefined;
 
   private constructor() {
     this.prompts = new Map();
     // Load prompts from the specified folder here
     // ... (implementation to read files and create Prompt objects)
+    this.loadConfigurations();
+  }
+
+  public getOpenAI() {
+    return this.openai;
   }
 
   public loadConfigurations() {
@@ -41,9 +46,6 @@ class PromptsManager {
         "error"
       );
     }
-    let model: string = getConfiguration("model", "gpt-4o-mini")!;
-
-    const temperature: number = getConfiguration("temperature", 1)!;
 
     let evaluate_promptString: string = getConfiguration("prompt")!;
     let update_promptString: string = getConfiguration("update_prompt")!;
@@ -105,7 +107,6 @@ class PromptsManager {
         baseURL: "http://localhost:11434/v1",
         apiKey: "ollama", // required but unused
       });
-      model = getConfiguration("localModel", "qwen2.5:latest")!;
     }
   }
 
